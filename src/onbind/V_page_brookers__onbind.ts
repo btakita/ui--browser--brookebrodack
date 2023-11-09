@@ -1,85 +1,111 @@
 import { browser__ctx__ensure } from '@btakita/domain--browser--brookebrodack'
 import { V_page_brookers__onbind_ } from '@btakita/ui--all--brookebrodack'
+import { sleep } from '@ctx-core/function'
 import { type Ctx, ctx__set } from '@ctx-core/object'
-import { type TimelineDefinition } from '@motionone/dom'
-import { timeline } from 'motion'
-export function V_page_brookers__onbind__init() {
+import { spring, timeline } from 'motion'
+export async function V_page_brookers__onbind__init() {
 	let ctx = browser__ctx__ensure()
-	ctx__set(ctx, V_page_brookers__onbind_, (V_page_brookers:HTMLDivElement, ctx:Ctx)=>{
+	ctx__set(ctx, V_page_brookers__onbind_, async (V_page_brookers:HTMLDivElement, ctx:Ctx)=>{
 		let h1 = V_page_brookers.querySelector('h1')!
 		let h2 = V_page_brookers.querySelector('h2')!
-		let cooler_in_space = V_page_brookers.querySelector('.cooler-in-space')!
-		let V_page_brookers_content = V_page_brookers.querySelector('.V_page_brookers_content')!
-		let V_page_brookers_sidebar = V_page_brookers.querySelector('.V_page_brookers_sidebar')!
-		let V_page_brookers_hero = V_page_brookers.querySelector('.V_page_brookers_hero')!
-		timeline([
-			...h1__tldef_(),
-			...h2__tldef_(),
-			...cooler_in_space__tldef_(),
-			...V_page_brookers_sidebar__tldef_(),
-			// ...V_page_brookers_hero__tldef_(),
-		])
+		let V_page_brookers_hero = V_page_brookers.querySelector<HTMLElement>('.V_page_brookers_hero')!
+		let V_page_brookers_img_a = V_page_brookers.querySelector<HTMLElement>('.V_page_brookers_img_a')!
+		let V_page_brookers_content = V_page_brookers.querySelector<HTMLElement>('.V_page_brookers_content')!
+		let V_page_brookers_sidebar = V_page_brookers.querySelector<HTMLElement>('.V_page_brookers_sidebar')!
+		await ready__wait_for()
+		let hero_middle_x = hero_middle_x_()
+		let hero_animation = hero_animation__new()
+		let img_a_animation = img_a_animation__new()
+		let content_animation = content_animation__new()
+		let sidebar_animation = sidebar_animation__new()
 		V_page_brookers.classList.remove('hidden')
-		function h1__tldef_():TimelineDefinition {
-			return [
-				[
-					h1,
+		async function ready__wait_for() {
+			let try_count = 0
+			while ((innerWidth__is_pending() || V_page_brookers_hero__is_pending()) && try_count < 5) {
+				await sleep(100)
+			}
+			/**
+			 * Chrome seems to have a short period where the innerWidth is incorrect.
+			 * During this period, outerWidth is 0.
+			 * TODO: 2023-11-8: check if this is necessary in the future
+			 */
+			function innerWidth__is_pending() {
+				return !window.outerWidth
+			}
+			function V_page_brookers_hero__is_pending() {
+				return !V_page_brookers_hero.getBoundingClientRect().width
+			}
+		}
+		function hero_middle_x_() {
+			let V_page_brookers_hero__width = V_page_brookers_hero.getBoundingClientRect().width
+			return (
+				V_page_brookers_hero__width
+					? window.innerWidth / 2 - V_page_brookers_hero__width / 2
+					: '50vw'
+			)
+		}
+		function hero_animation__new() {
+			return timeline([
+				[h1,
 					{
-						x: ['-50vw', 0],
-						y: ['-50vh', 0],
+						x: ['-25vw', 1, 0],
+						y: ['-25vh', 1, 0],
 						rotate: [-45, 10, 0],
 						opacity: [0, .5, 1]
 					},
-					// { duration: 0.5, easing: 'ease' }
 					{
-						duration: 0.65,
-						// easing: [0.3, 0.66, 0.25, 1],
+						duration: .65,
 						easing: 'ease-in',
 						rotate: {
 							duration: .8,
-							easing: [.3, .66, .25, 1,],
-						},
+							easing: spring({ stiffness: 300, damping: 10 }),
+						}
 					}
-				]
-			]
-		}
-		function h2__tldef_():TimelineDefinition {
-			return [
-				[
-					h2,
+				],
+				[h2,
 					{
-						x: ['50vw', 0],
-						y: ['-50vh', 0],
+						x: ['25vw', -1, 0],
+						y: ['-25vh', 1, 0],
 						rotate: [45, -10, 0],
 						opacity: [0, .5, 1]
 					},
-					// { duration: 0.5, easing: 'ease' }
 					{
-						duration: 0.65,
-						// easing: [0.3, 0.66, 0.25, 1],
+						duration: .65,
 						easing: 'ease-in',
 						rotate: {
 							duration: .8,
-							easing: [.3, .66, .25, 1,],
+							easing: spring({ stiffness: 300, damping: 10 }),
 						}
 					}
-				]
-			]
+				],
+			])
 		}
-		function cooler_in_space__tldef_():TimelineDefinition {
-			return [
+		function img_a_animation__new() {
+			setTimeout(()=>
+				V_page_brookers_img_a.classList.remove('hidden'),
+				hero_animation.duration * 1000)
+			return timeline([
 				[
-					cooler_in_space,
+					V_page_brookers_img_a,
 					{
-						x: ['-100vw', '-50vw', '25vw'],
-						opacity: [0, .5, 1]
+						x: ['-100vw', '-100vw']
 					},
 					{
-						duration: .4
+						duration: hero_animation.duration
 					}
 				],
 				[
-					cooler_in_space,
+					V_page_brookers_img_a,
+					{
+						x: ['-100vw', '25vw'],
+						opacity: [0, 1]
+					},
+					{
+						duration: .2
+					}
+				],
+				[
+					V_page_brookers_img_a,
 					{
 						x: [0, '-100vw'],
 					},
@@ -89,38 +115,53 @@ export function V_page_brookers__onbind__init() {
 						persist: false
 					}
 				]
-			]
+			])
 		}
-		function V_page_brookers_sidebar__tldef_():TimelineDefinition {
-			return [
+		function content_animation__new() {
+			return timeline([
 				[
-					V_page_brookers_sidebar,
-					// V_page_brookers_content,
+					V_page_brookers_content,
 					{
-						x: ['50vw', 0],
+						x: [hero_middle_x, hero_middle_x]
+					},
+					{
+						duration: img_a_animation.duration
+					}
+				],
+				[
+					V_page_brookers_content,
+					{
+						x: [hero_middle_x, 0],
 						y: 0,
-						opacity: [0, .5, 1]
 					},
 					{
 						duration: .4
 					}
 				]
-			]
+			])
 		}
-		function V_page_brookers_hero__tldef_():TimelineDefinition {
-		  return [
+		function sidebar_animation__new() {
+			return timeline([
 				[
-					V_page_brookers_hero,
+					V_page_brookers_sidebar,
 					{
-						x: ['50vw', 0],
-						y: ['50vh', 0],
+						x: [hero_middle_x, hero_middle_x]
 					},
 					{
-						duration: .4,
-						// at: 0
+						duration: img_a_animation.duration
+					}
+				],
+				[
+					V_page_brookers_sidebar,
+					{
+						x: ['100vw', 0],
+						y: 0,
+					},
+					{
+						duration: .4
 					}
 				]
-			]
+			])
 		}
 	})
 }

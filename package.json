@@ -5,9 +5,12 @@
   "types": "src/index.ts",
   "dependencies": {
     "@btakita/domain--browser--brookebrodack": "workspace:*",
+    "@ctx-core/dom": "^15.0.3",
+    "@ctx-core/function": "^21.20.2",
     "@ctx-core/object": "^29.0.0"
   },
   "devDependencies": {
+    "@motionone/types": "^10.16.3",
     "bun-types": "latest"
   },
   "peerDependencies": {
