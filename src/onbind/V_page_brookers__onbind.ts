@@ -142,6 +142,9 @@ export async function V_page_brookers__onbind__init() {
 			])
 		}
 		function content_sidebar_animation__new() {
+			setTimeout(()=>
+				V_page_brookers_sidebar.classList.remove('hidden'),
+				img_a_animation.duration * 1000)
 			return timeline([
 				[
 					V_page_brookers_sidebar,
@@ -185,6 +188,5 @@ export async function V_page_brookers__onbind__init() {
 				]
 			])
 		}
-
 	})
 }
