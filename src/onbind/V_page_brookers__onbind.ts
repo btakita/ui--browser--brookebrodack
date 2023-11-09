@@ -17,7 +17,8 @@ export async function V_page_brookers__onbind__init() {
 		let hero_animation = hero_animation__new()
 		let img_a_animation = img_a_animation__new()
 		let content_animation = content_animation__new()
-		let sidebar_animation = sidebar_animation__new()
+		let content_sidebar_animation = content_sidebar_animation__new()
+		let content_hero_animation = content_hero_animation__new()
 		V_page_brookers.classList.remove('hidden')
 		async function ready__wait_for() {
 			let try_count = 0
@@ -140,7 +141,7 @@ export async function V_page_brookers__onbind__init() {
 				]
 			])
 		}
-		function sidebar_animation__new() {
+		function content_sidebar_animation__new() {
 			return timeline([
 				[
 					V_page_brookers_sidebar,
@@ -163,5 +164,27 @@ export async function V_page_brookers__onbind__init() {
 				]
 			])
 		}
+		function content_hero_animation__new() {
+			return timeline([
+				[
+					V_page_brookers_hero,
+					{},
+					{
+						duration: img_a_animation.duration
+					}
+				],
+				[
+					V_page_brookers_hero,
+					{
+						x: [null, 12],
+						y: 0,
+					},
+					{
+						duration: .4
+					}
+				]
+			])
+		}
+
 	})
 }
