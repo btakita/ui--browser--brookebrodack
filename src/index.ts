@@ -1,1 +1,1 @@
-export * from './onbind'
+export * from './onbind/index.js'

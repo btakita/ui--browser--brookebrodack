@@ -1,7 +1,7 @@
 import { browser__ctx__ensure } from '@btakita/domain--browser--brookebrodack'
 import { V_page_brookers__onbind_ } from '@btakita/ui--all--brookebrodack'
-import { sleep } from '@ctx-core/function'
-import { type Ctx, ctx__set } from '@ctx-core/object'
+import { sleep } from 'ctx-core/function'
+import { type Ctx, ctx__set } from 'ctx-core/object'
 import { spring, timeline } from 'motion'
 export async function V_page_brookers__onbind__init() {
 	let ctx = browser__ctx__ensure()
