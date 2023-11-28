@@ -5,8 +5,8 @@
   "types": "src/index.ts",
   "dependencies": {
     "@btakita/domain--browser--brookebrodack": "workspace:*",
-    "@ctx-core/dom": "^15.1.32",
-    "ctx-core": "^4.8.0"
+    "@ctx-core/dom": "^15.1.33",
+    "ctx-core": "^4.8.1"
   },
   "devDependencies": {
     "@motionone/types": "^10.16.3",
