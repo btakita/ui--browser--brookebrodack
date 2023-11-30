@@ -1,5 +1,5 @@
 import { browser__ctx__ensure } from '@btakita/domain--browser--brookebrodack'
-import { brookers__page__onbind_ } from '@btakita/ui--all--brookebrodack'
+import { brookers__page__onbind_ } from '@btakita/ui--any--brookebrodack'
 import { sleep } from 'ctx-core/function'
 import { type Ctx, ctx__set } from 'ctx-core/object'
 import { spring, timeline } from 'motion'
