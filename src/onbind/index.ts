@@ -1,1 +1,1 @@
-export * from './V_page_brookers__onbind.js'
+export * from './brookers__page__onbind.js'
