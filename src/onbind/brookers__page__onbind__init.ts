@@ -83,7 +83,7 @@ export async function brookers__page__onbind__init() {
 		}
 		function img_a_animation__new() {
 			setTimeout(()=>
-				brookers__page__img_a_c_.classList.remove('hidden'),
+					brookers__page__img_a_c_.classList.remove('hidden'),
 				hero_animation.duration * 1000)
 			return timeline([
 				[
@@ -143,7 +143,7 @@ export async function brookers__page__onbind__init() {
 		}
 		function content_sidebar_animation__new() {
 			setTimeout(()=>
-				brookers__page__sidebar_c_.classList.remove('hidden'),
+					brookers__page__sidebar_c_.classList.remove('hidden'),
 				img_a_animation.duration * 1000)
 			return timeline([
 				[
