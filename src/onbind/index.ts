@@ -1,1 +1,1 @@
-export * from './brookers__page__onbind.js'
+export * from './brookers__page__onbind__init.js'
