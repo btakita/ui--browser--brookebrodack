@@ -1,25 +1,47 @@
 /// <reference lib="dom" />
-import { browser__ctx } from '@btakita/domain--browser--brookebrodack'
+import { type brookers__timeline_op_T } from '@btakita/domain--any--brookebrodack'
 import { sleep } from 'ctx-core/function'
 import { spring, timeline } from 'motion'
-export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement) {
-	let ctx = browser__ctx
-	let h1 = brookers__page_c_.querySelector('h1')!
-	let h2 = brookers__page_c_.querySelector('h2')!
-	let brookers__page__hero_c_ = brookers__page_c_.querySelector('.brookers__page__hero_c_') as HTMLElement
-	let brookers__page__img_a_c_ = brookers__page_c_.querySelector('.brookers__page__img_a_c_') as HTMLElement
-	let brookers__page__content_c_ = brookers__page_c_.querySelector('.brookers__page__content_c_') as HTMLElement
-	let brookers__page__sidebar_c_ = brookers__page_c_.querySelector('.brookers__page__sidebar_c_') as HTMLElement
+export async function brookers__page__hy__bind(brookers__page_c:HTMLDivElement) {
+	await brookers__page__animate(brookers__page_c)
+	await brookers__page__timeline__op__init(brookers__page_c)
+}
+async function brookers__page__timeline__op__init(brookers__page_c:HTMLDivElement) {
+	const brookers__page_c_a = Array.from(
+		brookers__page_c.querySelectorAll('.brookers__page_c')
+	) as HTMLOListElement[]
+	for (const brookers__page_c of brookers__page_c_a) {
+		const op_a =
+			JSON.parse(brookers__page_c.dataset.op_a ?? '{}') as brookers__timeline_op_T[]
+		for (const op of op_a) {
+			switch (op.type) {
+				case 'html':
+
+			}
+		}
+	}
+}
+async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
+	const h1 = brookers__page_c.querySelector('h1')!
+	const h2 = brookers__page_c.querySelector('h2')!
+	const brookers__page__hero_c =
+		brookers__page_c.querySelector('.brookers__page__hero_c') as HTMLElement
+	const brookers__page__img_a_c =
+		brookers__page_c.querySelector('.brookers__page__img_a_c') as HTMLElement
+	const brookers__page__content_c =
+		brookers__page_c.querySelector('.brookers__page__content_c') as HTMLElement
+	const brookers__timeline_c =
+		brookers__page_c.querySelector('.brookers__timeline_c') as HTMLElement
 	await ready__wait_for()
-	let hero_middle_x = hero_middle_x_()
-	let hero_animation = hero_animation__new()
-	let img_a_animation = img_a_animation__new()
-	let content_animation = content_animation__new()
-	let content_sidebar_animation = content_sidebar_animation__new()
-	let content_hero_animation = content_hero_animation__new()
-	brookers__page_c_.classList.remove('hidden')
+	const hero_middle_x = hero_middle_x_()
+	const hero_animation = hero_animation__new()
+	const img_a_animation = img_a_animation__new()
+	content_animation__new()
+	content_sidebar_animation__new()
+	content_hero_animation__new()
+	brookers__page_c.classList.remove('hidden')
 	async function ready__wait_for() {
-		let try_count = 0
+		const try_count = 0
 		while ((innerWidth__is_pending() || brookers__page__hero__is_pending()) && try_count < 5) {
 			await sleep(100)
 		}
@@ -32,11 +54,11 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 			return !window.outerWidth
 		}
 		function brookers__page__hero__is_pending() {
-			return !brookers__page__hero_c_.getBoundingClientRect().width
+			return !brookers__page__hero_c.getBoundingClientRect().width
 		}
 	}
 	function hero_middle_x_() {
-		let brookers__page__hero__width = brookers__page__hero_c_.getBoundingClientRect().width
+		const brookers__page__hero__width = brookers__page__hero_c.getBoundingClientRect().width
 		return (
 			brookers__page__hero__width
 				? window.innerWidth / 2 - brookers__page__hero__width / 2
@@ -81,11 +103,11 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 	}
 	function img_a_animation__new() {
 		setTimeout(()=>
-				brookers__page__img_a_c_.classList.remove('hidden'),
-			hero_animation.duration * 1000)
+			brookers__page__img_a_c.classList.remove('hidden'),
+		hero_animation.duration * 1000)
 		return timeline([
 			[
-				brookers__page__img_a_c_,
+				brookers__page__img_a_c,
 				{
 					x: ['-100vw', '-100vw']
 				},
@@ -94,7 +116,7 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 				}
 			],
 			[
-				brookers__page__img_a_c_,
+				brookers__page__img_a_c,
 				{
 					x: ['-100vw', '25vw'],
 					opacity: [0, 1]
@@ -104,7 +126,7 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 				}
 			],
 			[
-				brookers__page__img_a_c_,
+				brookers__page__img_a_c,
 				{
 					x: [0, '-100vw'],
 				},
@@ -119,7 +141,7 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 	function content_animation__new() {
 		return timeline([
 			[
-				brookers__page__content_c_,
+				brookers__page__content_c,
 				{
 					x: [hero_middle_x, hero_middle_x]
 				},
@@ -128,7 +150,7 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 				}
 			],
 			[
-				brookers__page__content_c_,
+				brookers__page__content_c,
 				{
 					x: [hero_middle_x, 0],
 					y: 0,
@@ -141,11 +163,11 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 	}
 	function content_sidebar_animation__new() {
 		setTimeout(()=>
-				brookers__page__sidebar_c_.classList.remove('hidden'),
-			img_a_animation.duration * 1000)
+			brookers__timeline_c.classList.remove('hidden'),
+		img_a_animation.duration * 1000)
 		return timeline([
 			[
-				brookers__page__sidebar_c_,
+				brookers__timeline_c,
 				{
 					x: [hero_middle_x, hero_middle_x]
 				},
@@ -154,7 +176,7 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 				}
 			],
 			[
-				brookers__page__sidebar_c_,
+				brookers__timeline_c,
 				{
 					x: ['100vw', 0],
 					y: 0,
@@ -168,14 +190,14 @@ export async function brookers__page__hy__bind(brookers__page_c_:HTMLDivElement)
 	function content_hero_animation__new() {
 		return timeline([
 			[
-				brookers__page__hero_c_,
+				brookers__page__hero_c,
 				{},
 				{
 					duration: img_a_animation.duration
 				}
 			],
 			[
-				brookers__page__hero_c_,
+				brookers__page__hero_c,
 				{
 					x: [null, 12],
 					y: 0,
