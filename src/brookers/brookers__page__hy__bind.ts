@@ -30,8 +30,8 @@ async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
 		brookers__page_c.querySelector('.brookers__page__img_a_c') as HTMLElement
 	const brookers__page__content_c =
 		brookers__page_c.querySelector('.brookers__page__content_c') as HTMLElement
-	const brookers__timeline_c =
-		brookers__page_c.querySelector('.brookers__timeline_c') as HTMLElement
+	const brookers__page__sidebar_c =
+		brookers__page_c.querySelector('.brookers__page__sidebar_c') as HTMLElement
 	await ready__wait_for()
 	const hero_middle_x = hero_middle_x_()
 	const hero_animation = hero_animation__new()
@@ -163,11 +163,11 @@ async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
 	}
 	function content_sidebar_animation__new() {
 		setTimeout(()=>
-			brookers__timeline_c.classList.remove('hidden'),
+			brookers__page__sidebar_c.classList.remove('hidden'),
 		img_a_animation.duration * 1000)
 		return timeline([
 			[
-				brookers__timeline_c,
+				brookers__page__sidebar_c,
 				{
 					x: [hero_middle_x, hero_middle_x]
 				},
@@ -176,7 +176,7 @@ async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
 				}
 			],
 			[
-				brookers__timeline_c,
+				brookers__page__sidebar_c,
 				{
 					x: ['100vw', 0],
 					y: 0,
