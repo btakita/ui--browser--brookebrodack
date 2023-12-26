@@ -24,14 +24,16 @@ async function brookers__page__timeline__op__init(brookers__page_c:HTMLDivElemen
 async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
 	const h1 = brookers__page_c.querySelector('h1')!
 	const h2 = brookers__page_c.querySelector('h2')!
-	const brookers__page__hero_c =
-		brookers__page_c.querySelector('.brookers__page__hero_c') as HTMLElement
-	const brookers__page__img_a_c =
-		brookers__page_c.querySelector('.brookers__page__img_a_c') as HTMLElement
 	const brookers__page__content_c =
 		brookers__page_c.querySelector('.brookers__page__content_c') as HTMLElement
+	const brookers__page__hero_c =
+		brookers__page_c.querySelector('.brookers__page__hero_c') as HTMLElement
 	const brookers__page__sidebar_c =
 		brookers__page_c.querySelector('.brookers__page__sidebar_c') as HTMLElement
+	const brookers__page__content__inner_c =
+		brookers__page_c.querySelector('.brookers__page__content__inner_c') as HTMLElement
+	const brookers__page__img_a_c =
+		brookers__page_c.querySelector('.brookers__page__img_a_c') as HTMLElement
 	await ready__wait_for()
 	const hero_middle_x = hero_middle_x_()
 	const hero_animation = hero_animation__new()
@@ -163,7 +165,7 @@ async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
 	}
 	function content_sidebar_animation__new() {
 		setTimeout(()=>
-			brookers__page__sidebar_c.classList.remove('hidden'),
+			brookers__page__content__inner_c.classList.remove('hidden'),
 		img_a_animation.duration * 1000)
 		return timeline([
 			[
