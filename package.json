@@ -2,8 +2,12 @@
 	"name": "@btakita/ui--browser--brookebrodack",
 	"type": "module",
 	"version": "0.0.0",
-	"module": "src/index.ts",
+	"module": "index.ts",
 	"types": "src/index.ts",
+	"exports": {
+		".": "./index.ts",
+		"./brookers": "./brookers/index.ts"
+	},
 	"dependencies": {
 		"@btakita/domain--browser--brookebrodack": "workspace:*",
 		"@ctx-core/dom": "^15.2.0",
