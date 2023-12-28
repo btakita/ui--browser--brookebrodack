@@ -4,21 +4,36 @@ import { sleep } from 'ctx-core/function'
 import { spring, timeline } from 'motion'
 export async function brookers__page__hy__bind(brookers__page_c:HTMLDivElement) {
 	await brookers__page__animate(brookers__page_c)
-	await brookers__page__timeline__op__init(brookers__page_c)
+	await brookers__timeline__item_c__init(brookers__page_c)
 }
-async function brookers__page__timeline__op__init(brookers__page_c:HTMLDivElement) {
-	const brookers__page_c_a = Array.from(
-		brookers__page_c.querySelectorAll('.brookers__page_c')
+async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement) {
+	const brookers__page__main_c = brookers__page_c.querySelector('.brookers__page__main_c')!
+	const brookers__timeline__item_c_a = Array.from(
+		brookers__page_c.querySelectorAll('.brookers__timeline__item_c')
 	) as HTMLOListElement[]
-	for (const brookers__page_c of brookers__page_c_a) {
-		const op_a =
-			JSON.parse(brookers__page_c.dataset.op_a ?? '{}') as brookers__timeline_op_T[]
-		for (const op of op_a) {
-			switch (op.type) {
-				case 'html':
-
+	for (const brookers__timeline__item_c of brookers__timeline__item_c_a) {
+		brookers__timeline__item_c.addEventListener('click', ()=>{
+			const op_a = JSON.parse(
+				brookers__timeline__item_c.dataset.op_a ?? '[]'
+			) as brookers__timeline_op_T[]
+			for (const op of op_a) {
+				switch (op.type) {
+					case 'html':
+						break
+					case 'youtube':
+						brookers__page__main_c.innerHTML =
+							'<iframe' +
+							' width="560"' +
+							' height="315"' +
+							' src="https://www.youtube.com/embed/FoFMRXlNJ6Y?si=lFkPNi-y6ixfWcW7"' +
+							' title="YouTube video player"' +
+							' frameborder="0"' +
+							' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
+							' allowfullscreen' +
+							'></iframe>'
+				}
 			}
-		}
+		})
 	}
 }
 async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
