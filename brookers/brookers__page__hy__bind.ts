@@ -23,7 +23,7 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 					case 'youtube':
 						brookers__page__main_c.innerHTML =
 							'<iframe' +
-							' class="w-full aspect-video"' +
+							' class="youtube w-full aspect-video"' +
 							' src="https://www.youtube.com/embed/FoFMRXlNJ6Y?si=lFkPNi-y6ixfWcW7"' +
 							' title="YouTube video player"' +
 							' frameborder="0"' +
