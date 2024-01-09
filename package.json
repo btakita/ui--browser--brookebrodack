@@ -21,7 +21,7 @@
 		"youtube-player": "^5.6.0"
 	},
 	"devDependencies": {
-		"@motionone/types": "^10.16.3",
+		"@motionone/types": "^10.17.0",
 		"@types/youtube-player": "^5.5.11",
 		"bun-types": "latest"
 	},
