@@ -34,6 +34,14 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 			}
 		})
 	}
+	async function youtube__op(op:brookers__timeline_op_T) {
+		let child:HTMLElement
+		// @ts-expect-error TS2740
+		// eslint-disable-next-line no-cond-assign
+		while (child = brookers__page__main_c.lastChild!) {
+			child.remove()
+		}
+	}
 }
 async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
 	const h1 = brookers__page_c.querySelector('h1')!
