@@ -2,7 +2,7 @@
 import { type brookers__timeline_op_T } from '@btakita/domain--any--brookebrodack'
 import { sleep } from 'ctx-core/function'
 import { spring, timeline } from 'motion'
-export async function brookers__page__hy__bind(brookers__page_c:HTMLDivElement) {
+export async function brookers__page__bind(brookers__page_c:HTMLDivElement) {
 	await brookers__page__animate(brookers__page_c)
 	await brookers__timeline__item_c__init(brookers__page_c)
 }
