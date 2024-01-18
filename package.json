@@ -16,8 +16,8 @@
 	],
 	"dependencies": {
 		"@btakita/domain--browser--brookebrodack": "workspace:*",
-		"@ctx-core/dom": "^15.2.32",
-		"ctx-core": "^5.23.0",
+		"@ctx-core/dom": "^15.2.34",
+		"ctx-core": "^5.25.0",
 		"youtube-player": "^5.6.0"
 	},
 	"devDependencies": {
