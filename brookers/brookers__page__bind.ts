@@ -1,18 +1,22 @@
 /// <reference lib="dom" />
 import { type brookers__timeline_op_T } from '@btakita/domain--any--brookebrodack'
-import { browser_ctx, YT$_ } from '@btakita/domain--browser--brookebrodack'
-import { rmemo__wait, run } from 'ctx-core/all'
-import { sleep } from 'ctx-core/function'
+import { browser_ctx, YT$_, type YT_Player } from '@btakita/domain--browser--brookebrodack'
+import { sleep, tup } from 'ctx-core/function'
+import { type circular_memo_T, memo_, nullish__none_, rmemo__unset, rmemo__wait, run, sig_ } from 'ctx-core/rmemo'
 import { spring, timeline } from 'motion'
 export async function brookers__page__bind(brookers__page_c:HTMLDivElement) {
 	await brookers__page__animate(brookers__page_c)
 	await brookers__timeline__item_c__init(brookers__page_c)
 }
 async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement) {
-	const brookers__page__main_c = brookers__page_c.querySelector('.brookers__page__main_c')!
+	const brookers__page__main_c = brookers__page_c.querySelector(
+		'.brookers__page__main_c'
+	)! as HTMLDivElement&{ YT_play$:circular_memo_T }
 	const brookers__timeline__item_c_a = Array.from(
 		brookers__page_c.querySelectorAll('.brookers__timeline__item_c')
 	) as HTMLOListElement[]
+	const videoId$ = sig_<string|undefined>(undefined)
+	YT__init()
 	for (const brookers__timeline__item_c of brookers__timeline__item_c_a) {
 		brookers__timeline__item_c.addEventListener('click', async ()=>{
 			const op = JSON.parse(
@@ -22,47 +26,65 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 				case 'html':
 					break
 				case 'youtube':
-					await run(async ()=>{
-						const YT = await rmemo__wait(
-							YT$_(browser_ctx),
-							YT=>YT,
-							10_000)!
-						const YT_iframe_placeholder =
-							brookers__page__main_c.querySelector('.YT_iframe_placeholder')!
-						YT_iframe_placeholder.classList.remove('hidden')
-						new YT!.Player(YT_iframe_placeholder, {
-							videoId: op.videoId,
-							playerVars: {
-								origin: window.location.hostname,
-								autoplay: 1,
-								rel: 0,
-							},
-							events: {
-								// onReady(evt) {
-								// 	evt.target.playVideo()
-								// }
-							}
-						})
-						// brookers__page__main_c.innerHTML =
-						// 	'<iframe' +
-						// 	' class="youtube w-full aspect-video"' +
-						// 	' src="https://www.youtube.com/embed/' + op.videoId + '?si=lFkPNi-y6ixfWcW7"' +
-						// 	' title="YouTube video player"' +
-						// 	' frameborder="0"' +
-						// 	' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
-						// 	' allowfullscreen' +
-						// 	'></iframe>'
-					})
+					youtube__op(op)
+					break
 			}
 		})
 	}
-	async function youtube__op(op:brookers__timeline_op_T) {
-		let child:HTMLElement
-		// @ts-expect-error TS2740
-		// eslint-disable-next-line no-cond-assign
-		while (child = brookers__page__main_c.lastChild!) {
-			child.remove()
-		}
+	function youtube__op(op:brookers__timeline_op_T&{ type:'youtube' }) {
+		videoId$._ = op.videoId
+		// brookers__page__main_c.innerHTML =
+		// 	'<iframe' +
+		// 	' class="youtube w-full aspect-video"' +
+		// 	' src="https://www.youtube.com/embed/' + op.videoId + '?si=lFkPNi-y6ixfWcW7"' +
+		// 	' title="YouTube video player"' +
+		// 	' frameborder="0"' +
+		// 	' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
+		// 	' allowfullscreen' +
+		// 	'></iframe>'
+	}
+	function YT__init() {
+		const YT_player$ = memo_<YT_Player|undefined>(
+			YT_player$=>{
+				rmemo__wait(
+					YT$_(browser_ctx),
+					YT=>YT,
+					10_000
+				).then(YT=>{
+					new YT!.Player(brookers__page__main_c.querySelector('.YT_iframe_placeholder')!, {
+						playerVars: {
+							origin: window.location.hostname,
+							autoplay: 0,
+							rel: 0,
+						},
+						events: {
+							onReady(evt) {
+								YT_player$._ = evt.target
+							},
+							onError() {
+								rmemo__unset(YT_player$)
+							}
+						}
+					})
+				}).catch(err=>{
+					console.error(err)
+					rmemo__unset(YT_player$)
+				})
+				return YT_player$.val
+			})
+		brookers__page__main_c.YT_play$ = run(
+			memo_<circular_memo_T>(YT_play$=>{
+				nullish__none_(tup(YT_player$(), videoId$()), (
+					YT_player,
+					videoId,
+				)=>{
+					YT_player.stopVideo()
+					YT_player.getIframe().classList.remove('hidden')
+					YT_player.loadVideoById({ videoId })
+					YT_player.playVideo()
+				})
+				return YT_play$
+			}))
 	}
 }
 async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
