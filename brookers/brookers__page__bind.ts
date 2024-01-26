@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 import { type brookers__timeline_op_T } from '@btakita/domain--any--brookebrodack'
-import { browser_ctx, YT$_, type YT_Player } from '@btakita/domain--browser--brookebrodack'
+import { browser_ctx, YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack'
 import { sleep, tup } from 'ctx-core/function'
 import { type circular_memo_T, memo_, nullish__none_, rmemo__unset, rmemo__wait, run, sig_ } from 'ctx-core/rmemo'
 import { spring, timeline } from 'motion'
@@ -9,49 +9,32 @@ export async function brookers__page__bind(brookers__page_c:HTMLDivElement) {
 	await brookers__timeline__item_c__init(brookers__page_c)
 }
 async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement) {
+	const spinner_template = brookers__page_c.querySelector<HTMLTemplateElement>('#spinner_template')!
 	const brookers__page__main_c = brookers__page_c.querySelector(
 		'.brookers__page__main_c'
-	)! as HTMLDivElement&{ YT_play$:circular_memo_T }
+	)! as HTMLDivElement&{ op__go$:circular_memo_T }
 	const brookers__timeline__item_c_a = Array.from(
 		brookers__page_c.querySelectorAll('.brookers__timeline__item_c')
 	) as HTMLOListElement[]
-	const videoId$ = sig_<string|undefined>(undefined)
-	YT__init()
-	for (const brookers__timeline__item_c of brookers__timeline__item_c_a) {
-		brookers__timeline__item_c.addEventListener('click', async ()=>{
-			const op = JSON.parse(
-				brookers__timeline__item_c.dataset.op ?? '{}'
-			) as brookers__timeline_op_T
-			switch (op.type) {
-				case 'html':
-					break
-				case 'youtube':
-					youtube__op(op)
-					break
-			}
-		})
-	}
-	function youtube__op(op:brookers__timeline_op_T&{ type:'youtube' }) {
-		videoId$._ = op.videoId
-		// brookers__page__main_c.innerHTML =
-		// 	'<iframe' +
-		// 	' class="youtube w-full aspect-video"' +
-		// 	' src="https://www.youtube.com/embed/' + op.videoId + '?si=lFkPNi-y6ixfWcW7"' +
-		// 	' title="YouTube video player"' +
-		// 	' frameborder="0"' +
-		// 	' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
-		// 	' allowfullscreen' +
-		// 	'></iframe>'
-	}
-	function YT__init() {
-		const YT_player$ = memo_<YT_Player|undefined>(
+	const html_op__container = brookers__page__main_c.querySelector('#html_op__container')!
+	const brookers__timeline_op$ =
+		sig_<brookers__timeline_op_T|undefined>(undefined)
+	const YT_player_state$ =
+		sig_<YT_PlayerState_val_T|undefined>(undefined)
+	const YT_player$ = YT_player$_()
+	op__init()
+	function YT_player$_() {
+		return memo_<YT_Player|undefined>(
 			YT_player$=>{
 				rmemo__wait(
 					YT$_(browser_ctx),
 					YT=>YT,
 					10_000
 				).then(YT=>{
-					new YT!.Player(brookers__page__main_c.querySelector('.YT_iframe_placeholder')!, {
+					const YT_iframe_placeholder =
+						brookers__page__main_c.querySelector('#YT_iframe_placeholder')!
+					const _YT_player = new YT!.Player(YT_iframe_placeholder, {
+						height: YT_player__height_(),
 						playerVars: {
 							origin: window.location.hostname,
 							autoplay: 0,
@@ -63,28 +46,88 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 							},
 							onError() {
 								rmemo__unset(YT_player$)
-							}
+							},
+							onStateChange(evt) {
+								YT_player_state$._ = evt.data
+							},
 						}
 					})
+					YT_iframe_placeholder.addEventListener('resize', ()=>{
+						_YT_player.setSize('100%', YT_player__height_())
+					})
+					function YT_player__height_() {
+						return YT_iframe_placeholder.clientWidth * 16 / 9
+					}
 				}).catch(err=>{
 					console.error(err)
 					rmemo__unset(YT_player$)
 				})
 				return YT_player$.val
 			})
-		brookers__page__main_c.YT_play$ = run(
-			memo_<circular_memo_T>(YT_play$=>{
-				nullish__none_(tup(YT_player$(), videoId$()), (
+	}
+	function op__init() {
+		brookers__page__main_c.op__go$ = run(
+			memo_<circular_memo_T, {
+				brookers__timeline_op:brookers__timeline_op_T
+			}>(op__go$=>{
+				nullish__none_(tup(brookers__timeline_op$(), YT_player$()), (
+					brookers__timeline_op,
 					YT_player,
-					videoId,
 				)=>{
-					YT_player.stopVideo()
-					YT_player.getIframe().classList.remove('hidden')
-					YT_player.loadVideoById({ videoId })
-					YT_player.playVideo()
+					switch (brookers__timeline_op.type) {
+						case 'html':
+							if (brookers__timeline_op !== op__go$.brookers__timeline_op) {
+								YT_player.stopVideo()
+								YT_player.getIframe().classList.add('hidden')
+								html_op__container.innerHTML = brookers__timeline_op.html
+								html_op__container.classList.remove('hidden')
+								const iframe = html_op__container.querySelector<HTMLIFrameElement>('iframe')
+								if (iframe) {
+									spinner__attach()
+									iframe.addEventListener('load', ()=>spinner__remove())
+								}
+							}
+							break
+						case 'youtube':
+							html_op__container.classList.add('hidden')
+							if (brookers__timeline_op !== op__go$.brookers__timeline_op) {
+								html_op__container.innerHTML = ''
+								YT_player.stopVideo()
+								YT_player.getIframe().classList.remove('hidden')
+								YT_player.loadVideoById({ videoId: brookers__timeline_op.videoId })
+								YT_player.playVideo()
+							}
+							if (YT_player_state$() === window.YT.PlayerState.CUED) {
+								spinner__attach()
+							}
+							else {
+								spinner__remove()
+							}
+							break
+						default:
+					}
+					op__go$.brookers__timeline_op = brookers__timeline_op
 				})
-				return YT_play$
+				return op__go$
 			}))
+		for (const brookers__timeline__item_c of brookers__timeline__item_c_a) {
+			brookers__timeline__item_c.addEventListener('click', async ()=>{
+				const op = JSON.parse(
+					brookers__timeline__item_c.dataset.op ?? '{}'
+				) as brookers__timeline_op_T
+				brookers__timeline_op$._ = op
+			})
+		}
+	}
+	function spinner__attach() {
+		if (!brookers__page__main_c.querySelector('.spinner')) {
+			brookers__page__main_c.appendChild(
+				spinner_template.content.cloneNode(true))
+		}
+	}
+	function spinner__remove() {
+		const spinner = brookers__page__main_c.querySelector('.spinner')
+		spinner?.remove?.()
 	}
 }
 async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
