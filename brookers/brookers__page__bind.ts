@@ -223,7 +223,7 @@ async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
 			[
 				brookers__page__hero_c,
 				{
-					x: [null, 12],
+					x: [null, 36],
 					y: 0,
 				},
 				{
