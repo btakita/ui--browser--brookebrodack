@@ -1,5 +1,7 @@
 /// <reference lib="dom" />
 import { type brookers__timeline_op_T } from '@btakita/domain--any--brookebrodack'
+import { browser_ctx, YT$_, YT_ } from '@btakita/domain--browser--brookebrodack'
+import { rmemo__wait, run } from 'ctx-core/all'
 import { sleep } from 'ctx-core/function'
 import { spring, timeline } from 'motion'
 export async function brookers__page__bind(brookers__page_c:HTMLDivElement) {
@@ -12,7 +14,7 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 		brookers__page_c.querySelectorAll('.brookers__timeline__item_c')
 	) as HTMLOListElement[]
 	for (const brookers__timeline__item_c of brookers__timeline__item_c_a) {
-		brookers__timeline__item_c.addEventListener('click', ()=>{
+		brookers__timeline__item_c.addEventListener('click', async ()=>{
 			const op_a = JSON.parse(
 				brookers__timeline__item_c.dataset.op_a ?? '[]'
 			) as brookers__timeline_op_T[]
@@ -21,15 +23,37 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 					case 'html':
 						break
 					case 'youtube':
-						brookers__page__main_c.innerHTML =
-							'<iframe' +
-							' class="youtube w-full aspect-video"' +
-							' src="https://www.youtube.com/embed/' + op.videoId + '?si=lFkPNi-y6ixfWcW7"' +
-							' title="YouTube video player"' +
-							' frameborder="0"' +
-							' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
-							' allowfullscreen' +
-							'></iframe>'
+						await run(async ()=>{
+							const YT = await rmemo__wait(
+								YT$_(browser_ctx),
+								YT=>YT,
+								10_000)!
+							const YT_iframe_placeholder =
+								brookers__page__main_c.querySelector('.YT_iframe_placeholder')!
+							YT_iframe_placeholder.classList.remove('hidden')
+							new YT!.Player(YT_iframe_placeholder, {
+								videoId: op.videoId,
+								playerVars: {
+									origin: window.location.hostname,
+									autoplay: 1,
+									rel: 0,
+								},
+								events: {
+									// onReady(evt) {
+									// 	evt.target.playVideo()
+									// }
+								}
+							})
+							// brookers__page__main_c.innerHTML =
+							// 	'<iframe' +
+							// 	' class="youtube w-full aspect-video"' +
+							// 	' src="https://www.youtube.com/embed/' + op.videoId + '?si=lFkPNi-y6ixfWcW7"' +
+							// 	' title="YouTube video player"' +
+							// 	' frameborder="0"' +
+							// 	' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
+							// 	' allowfullscreen' +
+							// 	'></iframe>'
+						})
 				}
 			}
 		})
