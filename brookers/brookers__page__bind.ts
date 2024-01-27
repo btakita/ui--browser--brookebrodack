@@ -132,6 +132,9 @@ async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
 					decodeURIComponent(brookers__timeline__item_c.dataset.op ?? '{}')
 				) as brookers__timeline_op_T
 			})
+			for (const a of Array.from(brookers__timeline__item_c.querySelectorAll<HTMLAnchorElement>('a'))) {
+				a.addEventListener('click', evt=>evt.stopPropagation())
+			}
 		}
 	}
 	function spinner__attach() {
