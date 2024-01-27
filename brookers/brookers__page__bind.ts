@@ -23,8 +23,8 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 	const YT_player_state$ =
 		sig_<YT_PlayerState_val_T|undefined>(undefined)
 	const YT_player$ = YT_player$_()
-	const html_op__title = brookers__page__detail_c.querySelector<HTMLDivElement>(
-		'#html_op__title')!
+	const op__title = brookers__page__detail_c.querySelector<HTMLDivElement>(
+		'#op__title')!
 	const html_op__close = brookers__page__detail_c.querySelector('#html_op__close')!
 	html_op__close.addEventListener('click', ()=>{
 		brookers__timeline_op$._ = undefined
@@ -82,7 +82,7 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 					const brookers__timeline_op = brookers__timeline_op$()
 					switch (brookers__timeline_op?.type) {
 						case 'html':
-							html_op__title.innerText = brookers__timeline_op.title
+							op__title.innerText = brookers__timeline_op.title
 							brookers__page__detail_c.classList.remove('hidden')
 							if (brookers__timeline_op !== op__go$.brookers__timeline_op) {
 								YT_player.stopVideo()
@@ -98,7 +98,7 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 							}
 							break
 						case 'youtube':
-							html_op__title.innerText = brookers__timeline_op.title
+							op__title.innerText = brookers__timeline_op.title
 							brookers__page__detail_c.classList.remove('hidden')
 							html_op__container.classList.add('hidden')
 							if (brookers__timeline_op !== op__go$.brookers__timeline_op) {
