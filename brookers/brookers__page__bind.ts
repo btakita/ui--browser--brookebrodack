@@ -4,17 +4,17 @@ import { browser_ctx, YT$_, type YT_Player, type YT_PlayerState_val_T } from '@b
 import { sleep, tup } from 'ctx-core/function'
 import { type circular_memo_T, memo_, nullish__none_, rmemo__unset, rmemo__wait, run, sig_ } from 'ctx-core/rmemo'
 import { spring, timeline } from 'motion'
-export async function brookers__page__bind(brookers__page_c:HTMLDivElement) {
-	await brookers__page__animate(brookers__page_c)
-	await brookers__timeline__item_c__init(brookers__page_c)
+export async function brookers__page__bind(brookers__page:HTMLDivElement) {
+	await brookers__page__animate(brookers__page)
+	await brookers__timeline__item_c__init(brookers__page)
 }
-async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement) {
-	const spinner_template = brookers__page_c.querySelector<HTMLTemplateElement>('#spinner_template')!
+async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
+	const spinner_template = brookers__page.querySelector<HTMLTemplateElement>('#spinner_template')!
 	const brookers__page__detail_c =
-		brookers__page_c.querySelector<HTMLDivElement&{ op__go$:circular_memo_T }>(
+		brookers__page.querySelector<HTMLDivElement&{ op__go$:circular_memo_T }>(
 			'.brookers__page__detail_c')!
 	const brookers__timeline__item_c_a =
-		Array.from(brookers__page_c.querySelectorAll<HTMLOListElement>(
+		Array.from(brookers__page.querySelectorAll<HTMLOListElement>(
 			'.brookers__timeline__item_c'))
 	const html_op__container =
 		brookers__page__detail_c.querySelector('#html_op__container')!
@@ -145,22 +145,22 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 		spinner?.remove?.()
 	}
 }
-async function brookers__page__animate(brookers__page_c:HTMLDivElement) {
-	const h1 = brookers__page_c.querySelector('h1')!
-	const h2 = brookers__page_c.querySelector('h2')!
+async function brookers__page__animate(brookers__page:HTMLDivElement) {
+	const h1 = brookers__page.querySelector('h1')!
+	const h2 = brookers__page.querySelector('h2')!
 	const brookers__page__hero_c =
-		brookers__page_c.querySelector('.brookers__page__hero_c') as HTMLElement
+		brookers__page.querySelector('.brookers__page__hero_c') as HTMLElement
 	const brookers__page__master_c =
-		brookers__page_c.querySelector('.brookers__page__master_c') as HTMLElement
+		brookers__page.querySelector('.brookers__page__master_c') as HTMLElement
 	const brookers__page__img_a_c =
-		brookers__page_c.querySelector('.brookers__page__img_a_c') as HTMLElement
+		brookers__page.querySelector('.brookers__page__img_a_c') as HTMLElement
 	await ready__wait_for()
 	const hero_middle_x = hero_middle_x_()
 	const hero__entry_animation = hero__entry_animation__new()
 	const img_a__slide_animation = img_a__slide_animation__new()
 	brookers__page__master__slide_animation__new()
 	brookers__page__hero__slide_animation__new()
-	brookers__page_c.classList.remove('hidden')
+	brookers__page.classList.remove('hidden')
 	async function ready__wait_for() {
 		const try_count = 0
 		while ((innerWidth__is_pending() || brookers__page__hero__is_pending()) && try_count < 5) {
