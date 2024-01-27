@@ -129,7 +129,7 @@ async function brookers__timeline__item_c__init(brookers__page_c:HTMLDivElement)
 		for (const brookers__timeline__item_c of brookers__timeline__item_c_a) {
 			brookers__timeline__item_c.addEventListener('click', async ()=>{
 				brookers__timeline_op$._ = JSON.parse(
-					brookers__timeline__item_c.dataset.op ?? '{}'
+					decodeURIComponent(brookers__timeline__item_c.dataset.op ?? '{}')
 				) as brookers__timeline_op_T
 			})
 		}
