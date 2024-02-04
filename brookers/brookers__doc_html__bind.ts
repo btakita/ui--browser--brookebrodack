@@ -4,29 +4,25 @@ import { browser_ctx, YT$_, type YT_Player, type YT_PlayerState_val_T } from '@b
 import { sleep, tup } from 'ctx-core/function'
 import { type circular_memo_T, memo_, nullish__none_, rmemo__unset, rmemo__wait, run, sig_ } from 'ctx-core/rmemo'
 import { spring, timeline } from 'motion'
-export async function brookers__page__bind(brookers__page:HTMLDivElement) {
-	await brookers__page__animate(brookers__page)
-	await brookers__timeline__item_c__init(brookers__page)
+export async function brookers__doc_html__bind(brookers__page:HTMLDivElement) {
+	await brookers__doc_html__animate(brookers__page)
+	await brookers_timeline__li__init(brookers__page)
 }
-async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
+async function brookers_timeline__li__init(brookers__page:HTMLDivElement) {
 	const spinner_template = brookers__page.querySelector<HTMLTemplateElement>('#spinner_template')!
-	const brookers__page__detail_c =
+	const brookers_detail__div =
 		brookers__page.querySelector<HTMLDivElement&{ op__go$:circular_memo_T }>(
-			'.brookers__page__detail_c')!
-	const brookers__timeline__item_c_a =
+			'.brookers_detail__div')!
+	const brookers_timeline__li_a =
 		Array.from(brookers__page.querySelectorAll<HTMLOListElement>(
-			'.brookers__timeline__item_c'))
-	const html_op__container =
-		brookers__page__detail_c.querySelector('#html_op__container')!
-	const brookers__timeline_op$ =
-		sig_<brookers__timeline_op_T|undefined>(undefined)
-	const YT_player_state$ =
-		sig_<YT_PlayerState_val_T|undefined>(undefined)
+			'.brookers_timeline__li'))
+	const html_op__div = brookers_detail__div.querySelector('#html_op__div')!
+	const brookers__timeline_op$ = sig_<brookers__timeline_op_T|undefined>(undefined)
+	const YT_player_state$ = sig_<YT_PlayerState_val_T|undefined>(undefined)
 	const YT_player$ = YT_player$_()
-	const op__title = brookers__page__detail_c.querySelector<HTMLDivElement>(
-		'#op__title')!
-	const html_op__close = brookers__page__detail_c.querySelector('#html_op__close')!
-	html_op__close.addEventListener('click', ()=>{
+	const op_title__div = brookers_detail__div.querySelector<HTMLDivElement>('#op_title__div')!
+	const html_op_close__div = brookers_detail__div.querySelector('#html_op_close__div')!
+	html_op_close__div.addEventListener('click', ()=>{
 		brookers__timeline_op$._ = undefined
 	})
 	op__init()
@@ -37,9 +33,9 @@ async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
 				return YT_player$.val
 				function init() {
 					rmemo__wait(YT$_(browser_ctx), YT=>YT, 10_000).then(YT=>{
-						const YT_iframe_placeholder =
-							brookers__page__detail_c.querySelector('#YT_iframe_placeholder')!
-						const _YT_player = new YT!.Player(YT_iframe_placeholder, {
+						const YT_iframe__div =
+							brookers_detail__div.querySelector('#YT_iframe__div')!
+						const _YT_player = new YT!.Player(YT_iframe__div, {
 							height: YT_player__height_(),
 							playerVars: {
 								origin: window.location.hostname,
@@ -58,11 +54,11 @@ async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
 								},
 							}
 						})
-						YT_iframe_placeholder.addEventListener('resize', ()=>{
+						YT_iframe__div.addEventListener('resize', ()=>{
 							_YT_player.setSize('100%', YT_player__height_())
 						})
 						function YT_player__height_() {
-							return YT_iframe_placeholder.clientWidth * 16 / 9
+							return YT_iframe__div.clientWidth * 16 / 9
 						}
 					}).catch(err=>{
 						console.error(err)
@@ -72,7 +68,7 @@ async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
 			})
 	}
 	function op__init() {
-		brookers__page__detail_c.op__go$ = run(
+		brookers_detail__div.op__go$ = run(
 			memo_<circular_memo_T, {
 				brookers__timeline_op:brookers__timeline_op_T|undefined
 			}>(op__go$=>{
@@ -82,15 +78,15 @@ async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
 					const brookers__timeline_op = brookers__timeline_op$()
 					switch (brookers__timeline_op?.type) {
 						case 'html':
-							op__title.innerText = brookers__timeline_op.title
-							brookers__page__detail_c.classList.remove('hidden')
+							op_title__div.innerText = brookers__timeline_op.title
+							brookers_detail__div.classList.remove('hidden')
 							if (brookers__timeline_op !== op__go$.brookers__timeline_op) {
 								YT_player.stopVideo()
 								YT_player.getIframe().classList.add('hidden')
-								html_op__container.innerHTML = brookers__timeline_op.html
-								html_op__container.classList.remove('hidden')
+								html_op__div.innerHTML = brookers__timeline_op.html
+								html_op__div.classList.remove('hidden')
 								const iframe =
-									html_op__container.querySelector<HTMLIFrameElement>('iframe')
+									html_op__div.querySelector<HTMLIFrameElement>('iframe')
 								if (iframe) {
 									spinner__attach()
 									iframe.addEventListener('load', ()=>spinner__remove())
@@ -98,11 +94,11 @@ async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
 							}
 							break
 						case 'youtube':
-							op__title.innerText = brookers__timeline_op.title
-							brookers__page__detail_c.classList.remove('hidden')
-							html_op__container.classList.add('hidden')
+							op_title__div.innerText = brookers__timeline_op.title
+							brookers_detail__div.classList.remove('hidden')
+							html_op__div.classList.add('hidden')
 							if (brookers__timeline_op !== op__go$.brookers__timeline_op) {
-								html_op__container.innerHTML = ''
+								html_op__div.innerHTML = ''
 								YT_player.stopVideo()
 								YT_player.getIframe().classList.remove('hidden')
 								YT_player.loadVideoById({
@@ -118,71 +114,71 @@ async function brookers__timeline__item_c__init(brookers__page:HTMLDivElement) {
 							}
 							break
 						default:
-							html_op__container.classList.remove('hidden')
+							html_op__div.classList.remove('hidden')
 							YT_player.getIframe().classList.remove('hidden')
-							brookers__page__detail_c.classList.add('hidden')
+							brookers_detail__div.classList.add('hidden')
 					}
 					op__go$.brookers__timeline_op = brookers__timeline_op
 				})
 				return op__go$
 			}))
-		for (const brookers__timeline__item_c of brookers__timeline__item_c_a) {
-			brookers__timeline__item_c.addEventListener('click', async ()=>{
+		for (const brookers_timeline__li of brookers_timeline__li_a) {
+			brookers_timeline__li.addEventListener('click', async ()=>{
 				brookers__timeline_op$._ = JSON.parse(
-					decodeURIComponent(brookers__timeline__item_c.dataset.op ?? '{}')
+					decodeURIComponent(brookers_timeline__li.dataset.op ?? '{}')
 				) as brookers__timeline_op_T
 			})
-			for (const a of Array.from(brookers__timeline__item_c.querySelectorAll<HTMLAnchorElement>('a'))) {
+			for (const a of Array.from(brookers_timeline__li.querySelectorAll<HTMLAnchorElement>('a'))) {
 				a.addEventListener('click', evt=>evt.stopPropagation())
 			}
 		}
 	}
 	function spinner__attach() {
-		if (!brookers__page__detail_c.querySelector('.spinner')) {
-			brookers__page__detail_c.appendChild(
+		if (!brookers_detail__div.querySelector('.spinner')) {
+			brookers_detail__div.appendChild(
 				spinner_template.content.cloneNode(true))
 		}
 	}
 	function spinner__remove() {
-		const spinner = brookers__page__detail_c.querySelector('.spinner')
+		const spinner = brookers_detail__div.querySelector('.spinner')
 		spinner?.remove?.()
 	}
 }
-async function brookers__page__animate(brookers__page:HTMLDivElement) {
+async function brookers__doc_html__animate(brookers__page:HTMLDivElement) {
 	const h1 = brookers__page.querySelector('h1')!
 	const h2 = brookers__page.querySelector('h2')!
-	const brookers__page__hero_c =
-		brookers__page.querySelector('.brookers__page__hero_c') as HTMLElement
-	const brookers__page__master_c =
-		brookers__page.querySelector('.brookers__page__master_c') as HTMLElement
-	const brookers__page__img_a_c =
-		brookers__page.querySelector('.brookers__page__img_a_c') as HTMLElement
-	await ready__wait_for()
-	const hero_middle_x = hero_middle_x_()
+	const brookers_hero__div =
+		brookers__page.querySelector('.brookers_hero__div') as HTMLElement
+	const brookers_master__div =
+		brookers__page.querySelector('.brookers_master__div') as HTMLElement
+	const brookers_img__div =
+		brookers__page.querySelector('.brookers_img__div') as HTMLElement
+	await ready__waitfor()
+	const hero__middle_x = hero__middle_x_()
 	const hero__entry_animation = hero__entry_animation__new()
-	const img_a__slide_animation = img_a__slide_animation__new()
-	brookers__page__master__slide_animation__new()
-	brookers__page__hero__slide_animation__new()
+	const brookers_img__div__slide_animation = brookers_img__div__slide_animation__new()
+	brookers__doc_html__master__slide_animation__new()
+	brookers__doc_html__hero__slide_animation__new()
 	brookers__page.classList.remove('hidden')
-	async function ready__wait_for() {
-		const try_count = 0
-		while ((innerWidth__is_pending() || brookers__page__hero__is_pending()) && try_count < 5) {
-			await sleep(100)
+	async function ready__waitfor() {
+		let try_count = 0
+		while ((innerWidth__is_pending() || brookers__page__hero__is_pending()) && try_count < 50) {
+			await sleep(10)
+			try_count++
 		}
 		/**
-		 * Chrome seems to have a short period where the innerWidth is incorrect.
-		 * During this period, outerWidth is 0.
+		 * Chrome seems to have a short period where the outerWidth is 0.
 		 * TODO: 2023-11-8: check if this is necessary in the future
 		 */
 		function innerWidth__is_pending() {
 			return !window.outerWidth
 		}
 		function brookers__page__hero__is_pending() {
-			return !brookers__page__hero_c.getBoundingClientRect().width
+			return !brookers_hero__div.getBoundingClientRect().width
 		}
 	}
-	function hero_middle_x_() {
-		const brookers__page__hero__width = brookers__page__hero_c.getBoundingClientRect().width
+	function hero__middle_x_() {
+		const brookers__page__hero__width = brookers_hero__div.getBoundingClientRect().width
 		return (
 			brookers__page__hero__width
 				? window.innerWidth / 2 - brookers__page__hero__width / 2
@@ -225,13 +221,13 @@ async function brookers__page__animate(brookers__page:HTMLDivElement) {
 			],
 		])
 	}
-	function img_a__slide_animation__new() {
+	function brookers_img__div__slide_animation__new() {
 		setTimeout(
-			()=>brookers__page__img_a_c.classList.remove('hidden'),
+			()=>brookers_img__div.classList.remove('hidden'),
 			hero__entry_animation.duration * 1000)
 		return timeline([
 			[
-				brookers__page__img_a_c,
+				brookers_img__div,
 				{
 					x: ['-100vw', '-100vw']
 				},
@@ -240,7 +236,7 @@ async function brookers__page__animate(brookers__page:HTMLDivElement) {
 				}
 			],
 			[
-				brookers__page__img_a_c,
+				brookers_img__div,
 				{
 					x: ['-100vw', '25vw'],
 					opacity: [0, 1]
@@ -250,7 +246,7 @@ async function brookers__page__animate(brookers__page:HTMLDivElement) {
 				}
 			],
 			[
-				brookers__page__img_a_c,
+				brookers_img__div,
 				{
 					x: [0, '-100vw'],
 				},
@@ -262,31 +258,34 @@ async function brookers__page__animate(brookers__page:HTMLDivElement) {
 			]
 		])
 	}
-	function brookers__page__master__slide_animation__new() {
+	function brookers__doc_html__master__slide_animation__new() {
+		setTimeout(()=>{
+			brookers_master__div.classList.remove('hidden')
+		}, brookers_img__div__slide_animation.duration)
 		return timeline([
 			[
-				brookers__page__master_c,
+				brookers_master__div,
 				{
 					x: [window.innerWidth, 0],
 					y: 0,
 				},
 				{
-					delay: img_a__slide_animation.duration,
+					delay: brookers_img__div__slide_animation.duration,
 					duration: .4
 				}
 			]
 		])
 	}
-	function brookers__page__hero__slide_animation__new() {
+	function brookers__doc_html__hero__slide_animation__new() {
 		return timeline([
 			[
-				brookers__page__hero_c,
+				brookers_hero__div,
 				{
-					x: [hero_middle_x, 36],
+					x: [hero__middle_x, 36],
 					y: 0,
 				},
 				{
-					delay: img_a__slide_animation.duration,
+					delay: brookers_img__div__slide_animation.duration,
 					duration: .4
 				}
 			]
