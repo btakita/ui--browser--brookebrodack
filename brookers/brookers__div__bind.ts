@@ -31,8 +31,8 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 	const YT_player_state$ = sig_<YT_PlayerState_val_T|undefined>(undefined)
 	const YT_player$ = YT_player$_()
 	const op_title__div = brookers_detail__div.querySelector<HTMLDivElement>('#op_title__div')!
-	const html_op_close__div = brookers_detail__div.querySelector('#html_op_close__div')!
-	html_op_close__div.addEventListener('click', ()=>{
+	const op_close__div = brookers_detail__div.querySelector('#op_close__div')!
+	op_close__div.addEventListener('click', ()=>{
 		brookers__timeline_op$._ = undefined
 	})
 	op__init()
