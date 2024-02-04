@@ -187,8 +187,10 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 	}
 	function brookers_hero__div__entry_animation_() {
 		setTimeout(
-			()=>brookers_hero__div.classList.remove('invisible'),
-			50)
+			()=>{
+				brookers_hero__div.style.transform = 'translateX(' + brookers_hero__div__middle_x + ')'
+				brookers_hero__div.classList.remove('invisible')
+			}, 0)
 		return timeline([
 			[h1,
 				{
