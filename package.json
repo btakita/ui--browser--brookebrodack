@@ -16,11 +16,10 @@
 	],
 	"dependencies": {
 		"@btakita/domain--browser--brookebrodack": "workspace:*",
-		"@ctx-core/dom": "^15.3.23",
-		"ctx-core": "^5.37.0"
+		"@ctx-core/dom": "^15.3.24",
+		"ctx-core": "^5.38.0"
 	},
 	"devDependencies": {
-		"@motionone/types": "^10.17.0",
 		"bun-types": "latest"
 	},
 	"peerDependencies": {
