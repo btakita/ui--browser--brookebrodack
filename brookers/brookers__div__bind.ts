@@ -182,10 +182,10 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		}
 	}
 	function animation__run() {
-		brookers_hero__div.style.left = '50%'
-		brookers_hero__div.style.transform = 'translateX(-50%)'
+		brookers_hero__div.style.transform = 'translateX(calc(50vw - 50%))'
+		const brookers_hero__div__width = brookers_hero__div.getBoundingClientRect().width
+		const h1__center__factor = `${brookers_hero__div__width / 2}px - 35%`
 		brookers_hero__div.classList.remove('opacity-0')
-		console.debug('animation__run|debug|1')
 		const h1__flyin_animation_o$ = h1__flyin_animation_o$_()
 		const h1__bounce_animation_o$ = h1__bounce_animation_o$_()
 		const h2__flyin_animation_o$ = h2__flyin_animation_o$_()
@@ -194,9 +194,11 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		const brookers_img__div__slideout_animation_o$ = brookers_img__div__slideout_animation_o$_()
 		const brookers_master__div__slide_animation_o$ = brookers_master__div__slide_animation_o$_()
 		const brookers_hero__div__slide_animation_o$ = brookers_hero__div__slide_animation_o$_()
+		const h1__center_to_left_animation_o$ = h1__center_to_left_animation_o$_()
 		return rmemo__wait(memo_(()=>
 			h1__flyin_animation_o$()?.finish
 				&& h1__bounce_animation_o$()?.finish
+				&& h1__center_to_left_animation_o$()?.finish
 				&& h2__flyin_animation_o$()?.finish
 				&& h2__bounce_animation_o$()?.finish
 				&& brookers_img__div__slidein_animation_o$()?.finish
@@ -210,10 +212,10 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				$=>{
 					h1.classList.remove('opacity-0')
 					const animation = h1.animate([
-						{ transform: `translate(-25vw, -25vh) rotate(-45deg)`, opacity: 0 },
-						{ transform: `translate(4px, 1px) rotate(10deg)`, opacity: 1 },
-						{ transform: `translate(40px, 10px) rotate(10deg)`, opacity: 1 },
-					], { duration: 400, fill: 'backwards', easing: 'ease-in' })
+						{ transform: `translate(calc(-25vw + ${h1__center__factor}), -25vh) rotate(-45deg)`, opacity: 0 },
+						{ transform: `translate(calc(4px + ${h1__center__factor}), 1px) rotate(10deg)`, opacity: 1 },
+						{ transform: `translate(calc(40px + ${h1__center__factor}), 10px) rotate(10deg)`, opacity: 1 },
+					], { duration: 400, fill: 'both', easing: 'ease-in' })
 					animation.addEventListener('finish', ()=>{
 						$._ = { ...$(), finish: true }
 					})
@@ -224,11 +226,14 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			return calling(memo_<animation_o_T|undefined>(
 				$=>{
 					if (!h1__flyin_animation_o$().finish) return
-					const keyframe_a1 = s180_d12_spring__keyframe_a1_(40, 10, 10)
+					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
+						X: 40, Y: 10, O: 10, X_factor: h1__center__factor
+					})
 					const val = {
 						animation: h1.animate(keyframe_a1, {
 							duration: 800,
-							easing: 'ease-in'
+							easing: 'ease-in',
+							fill: 'both'
 						}),
 						play: true,
 						finish: false
@@ -242,6 +247,30 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 					return val
 				}))
 		}
+		function h1__center_to_left_animation_o$_() {
+			return calling(memo_<animation_o_T|undefined>($=>{
+				if (!brookers_img__div__slideout_animation_o$()?.finish) return
+				const val = {
+					animation: h1.animate([
+						{
+							transform: 'translateX(50vw - 90%)'
+						},
+						{
+							transform: 'translateX(0)'
+						}
+					], { duration: 200, fill: 'forwards' }),
+					play: true,
+					finish: false
+				}
+				val.animation.addEventListener('finish', ()=>{
+					$._ = {
+						...$()!,
+						finish: true
+					}
+				})
+				return val
+			}))
+		}
 		function h2__flyin_animation_o$_() {
 			return calling(memo_<animation_o_T|undefined>(
 				$=>{
@@ -252,7 +281,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 							{ transform: `translate(25vw, -25vh) rotate(45deg)`, opacity: 0 },
 							{ transform: `translate(-4px, 1px) rotate(-10deg)`, opacity: 1 },
 							{ transform: `translate(-40px, 10px) rotate(-10deg)`, opacity: 1 },
-						], { duration: 400, fill: 'backwards', easing: 'ease-in' }),
+						], { duration: 400, easing: 'ease-in', fill: 'both' }),
 						play: true,
 						finish: false
 					}
@@ -276,11 +305,14 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			return calling(memo_<animation_o_T|undefined>(
 				$=>{
 					if (!h2__flyin_animation_o$()?.finish) return
-					const keyframe_a1 = s180_d12_spring__keyframe_a1_(-40, 10, -10)
+					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
+						X: -40, Y: 10, O: -10
+					})
 					const val = {
 						animation: h2.animate(keyframe_a1, {
 							duration: 800,
-							easing: 'ease-in'
+							easing: 'ease-in',
+							fill: 'both'
 						}),
 						play: true,
 						finish: false
@@ -366,7 +398,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 						}
 					], {
 						duration: 200,
-						fill: 'backwards'
+						fill: 'both'
 					}),
 					play: true,
 					finish: false
@@ -386,12 +418,10 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				const val = {
 					animation: brookers_hero__div.animate([
 						{
-							left: '50%',
-							transform: 'translateX(-50%)'
+							transform: 'translateX(calc(50vw - 50%))',
 						},
 						{
-							left: '32px',
-							transform: 'translateX(0)'
+							transform: 'translateX(32px)',
 						}
 					], { duration: 200, fill: 'forwards' }),
 					play: true,
@@ -411,20 +441,23 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 // f(0) = 0; f'(0) = 0; f''(t) = -180(f(t) - 1) - 12f'(t)
 // https://www.wolframalpha.com/input?i=f%280%29+%3D+0%3B+f%27%280%29+%3D+0%3B+f%27%27%28t%29+%3D+-180%28f%28t%29+-+1%29+-+12f%27%28t%29
 // f(t) = -1/2 e^(-6 t) (-2 e^(6 t) + sin(12 t) + 2 cos(12 t))
-function s180_d12_spring__keyframe_a1_(X:number, Y:number, O:number) {
+function s180_d12_spring__keyframe_a1_(config:{
+	X:number, Y:number, O:number, X_factor?:string
+}) {
+	const { X, Y, O, X_factor } = config
 	const keyframe_a1:Keyframe[] = []
 	keyframe_a1.push({
-		transform: `translate(${X}px, ${Y}px) rotate(${O}deg)`
+		transform: `translate(calc(${X}px${X_factor ? ` + ${X_factor}` : ''}), ${Y}px) rotate(${O}deg)`
 	})
 	for (let T = 1; T < 100; T++) {
 		const t = T / 100
 		const c = -.5 * Math.exp(-6 * t) * (-2 * Math.exp(6 * t) + Math.sin(12 * t) + 2 * Math.cos(12 * t))
 		keyframe_a1.push({
-			transform: `translate(${X - c * X}px, ${Y - c * Y}px) rotate(${O - c * O}deg)`
+			transform: `translate(calc(${X - c * X}px${X_factor ? ` + ${X_factor}` : ''}), ${Y - c * Y}px) rotate(${O - c * O}deg)`
 		})
 	}
 	keyframe_a1.push({
-		transform: `translate(0, 0) rotate(0deg)`
+		transform: `translate(calc(${X_factor ?? '0px'}), 0) rotate(0deg)`
 	})
 	return keyframe_a1
 }
