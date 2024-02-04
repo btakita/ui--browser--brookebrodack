@@ -1,1 +1,1 @@
-export * from './brookers__doc_html__bind.js'
+export * from './brookers__div__bind.js'
