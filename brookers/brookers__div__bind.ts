@@ -1,6 +1,7 @@
 /// <reference lib="dom" />
 import { type brookers__timeline_op_T } from '@btakita/domain--any--brookebrodack'
 import { browser_ctx, YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack'
+import { md_px_num } from '@btakita/ui--server--brookebrodack/css'
 import {
 	calling,
 	type circular_memo_T,
@@ -294,9 +295,10 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				}))
 		}
 		function brookers_img__div__slidein_animation_o$_() {
-			return calling(memo_<animation_o_T|undefined>($=>{
+			return calling(memo_<animation_o_T&{ forwards__transform:string }|undefined>($=>{
 				if (!h2__bounce_animation_o$()?.finish) return
 				brookers_img__div.classList.remove('opacity-0')
+				const forwards__transform = `translateX(${innerWidth > md_px_num ? '25vw' : '0'})`
 				const val = {
 					animation: brookers_img__div.animate([
 						{
@@ -304,12 +306,13 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 							opacity: 0
 						},
 						{
-							transform: 'translateX(25vw)',
+							transform: forwards__transform,
 							opacity: 1
 						}
 					], { duration: 200, fill: 'forwards' }),
 					play: true,
-					finish: false
+					finish: false,
+					forwards__transform
 				}
 				val.animation.addEventListener('finish', ()=>{
 					$._ = {
@@ -326,7 +329,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				const val = {
 					animation: brookers_img__div.animate([
 						{
-							transform: 'translateX(25vw)'
+							transform: brookers_img__div__slidein_animation_o$()!.forwards__transform
 						},
 						{
 							transform: 'translateX(-100vw)'
