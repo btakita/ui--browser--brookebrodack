@@ -1,5 +1,5 @@
 /// <reference lib="dom" />
-import { type brookers__timeline_op_T } from '@btakita/domain--any--brookebrodack'
+import { type brookers_timeline_op_T } from '@btakita/domain--any--brookebrodack'
 import { browser_ctx, YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack'
 import { md_px_num } from '@btakita/ui--server--brookebrodack/css'
 import {
@@ -27,7 +27,7 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 		Array.from(brookers__div.querySelectorAll<HTMLOListElement>(
 			'.brookers_timeline__li'))
 	const html_op__div = brookers_detail__div.querySelector('#html_op__div')!
-	const brookers__timeline_op$ = sig_<brookers__timeline_op_T|undefined>(undefined)
+	const brookers__timeline_op$ = sig_<brookers_timeline_op_T|undefined>(undefined)
 	const YT_player_state$ = sig_<YT_PlayerState_val_T|undefined>(undefined)
 	const YT_player$ = YT_player$_()
 	const op_title__div = brookers_detail__div.querySelector<HTMLDivElement>('#op_title__div')!
@@ -80,7 +80,7 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 	function op__init() {
 		brookers_detail__div.op__go$ = run(
 			memo_<circular_memo_T, {
-				brookers__timeline_op:brookers__timeline_op_T|undefined
+				brookers__timeline_op:brookers_timeline_op_T|undefined
 			}>(op__go$=>{
 				nullish__none_([YT_player$()], YT_player=>{
 					const brookers__timeline_op = brookers__timeline_op$()
@@ -134,7 +134,7 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 			brookers_timeline__li.addEventListener('click', async ()=>{
 				brookers__timeline_op$._ = JSON.parse(
 					decodeURIComponent(brookers_timeline__li.dataset.op ?? '{}')
-				) as brookers__timeline_op_T
+				) as brookers_timeline_op_T
 			})
 			for (const a of Array.from(brookers_timeline__li.querySelectorAll<HTMLAnchorElement>('a'))) {
 				a.addEventListener('click', evt=>evt.stopPropagation())
