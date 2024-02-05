@@ -82,9 +82,7 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 			memo_<circular_memo_T, {
 				brookers__timeline_op:brookers__timeline_op_T|undefined
 			}>(op__go$=>{
-				nullish__none_(tup(YT_player$()), (
-					YT_player,
-				)=>{
+				nullish__none_([YT_player$()], YT_player=>{
 					const brookers__timeline_op = brookers__timeline_op$()
 					switch (brookers__timeline_op?.type) {
 						case 'html':

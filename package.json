@@ -6,7 +6,8 @@
 	"types": "src/index.ts",
 	"exports": {
 		".": "./index.ts",
-		"./brookers": "./brookers/index.ts"
+		"./brookers": "./brookers/index.ts",
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"*.d.ts",
