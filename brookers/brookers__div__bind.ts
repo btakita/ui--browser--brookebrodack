@@ -11,8 +11,7 @@ import {
 	rmemo__wait,
 	run,
 	sig_,
-	sleep,
-	tup
+	sleep
 } from 'ctx-core/rmemo'
 export async function brookers__div__bind(brookers__div:HTMLDivElement) {
 	await brookers__div__animate(brookers__div)
