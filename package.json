@@ -2,8 +2,7 @@
 	"name": "@btakita/ui--browser--brookebrodack",
 	"type": "module",
 	"version": "0.0.0",
-	"module": "index.ts",
-	"types": "src/index.ts",
+	"types": "index.ts",
 	"exports": {
 		".": "./index.ts",
 		"./brookers": "./brookers/index.ts",
