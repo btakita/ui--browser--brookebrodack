@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
-import { type brookers_timeline_op_T } from '@btakita/domain--any--brookebrodack'
-import { YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack'
+import { type brookers_timeline_op_T } from '@btakita/domain--any--brookebrodack/brookers'
+import { YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack/youtube'
 import { md_px_num } from '@btakita/ui--server--brookebrodack/css'
 import { browser_ctx__ensure } from '@rappstack/domain--browser/ctx'
 import {
