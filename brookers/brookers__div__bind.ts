@@ -1,7 +1,8 @@
 /// <reference lib="dom" />
 import { type brookers_timeline_op_T } from '@btakita/domain--any--brookebrodack'
-import { browser_ctx, YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack'
+import { YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack'
 import { md_px_num } from '@btakita/ui--server--brookebrodack/css'
+import { browser_ctx__ensure } from '@rappstack/domain--browser/ctx'
 import {
 	calling,
 	type circular_memo_T,
@@ -18,6 +19,7 @@ export async function brookers__div__bind(brookers__div:HTMLDivElement) {
 	await brookers_timeline__li__init(brookers__div)
 }
 async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
+	const browser_ctx = browser_ctx__ensure()
 	const spinner_template = brookers__div.querySelector<HTMLTemplateElement>('#spinner_template')!
 	const brookers_detail__div =
 		brookers__div.querySelector<HTMLDivElement&{ op__go$:circular_memo_T }>(
