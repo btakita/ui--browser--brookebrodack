@@ -14,7 +14,7 @@ import {
 	sig_,
 	sleep
 } from 'ctx-core/rmemo'
-export async function brookers__div__bind(brookers__div:HTMLDivElement) {
+export async function brookers__hyop(brookers__div:HTMLDivElement) {
 	await brookers__div__animate(brookers__div)
 	await brookers_timeline__li__init(brookers__div)
 }

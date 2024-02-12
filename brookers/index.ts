@@ -1,1 +1,1 @@
-export * from './brookers__div__bind.js'
+export * from './brookers__hyop.js'
