@@ -130,7 +130,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 	function animation__run() {
 		brookers_hero__div.style.transform = 'translateX(calc(50vw - 50%))'
 		const brookers_hero__div__width = brookers_hero__div.getBoundingClientRect().width
-		const h1__center__factor = `${brookers_hero__div__width / 2}px - 35%`
+		const h1__center__factor = brookers_hero__div__width / 2 + 'px - 35%'
 		brookers_hero__div.classList.remove('opacity-0')
 		const h1__flyin_animation_o$ = h1__flyin_animation_o$_()
 		const h1__bounce_animation_o$ = h1__bounce_animation_o$_()
