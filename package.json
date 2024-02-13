@@ -6,13 +6,15 @@
 	"exports": {
 		".": "./index.ts",
 		"./brookers": "./brookers/index.ts",
+		"./youtube": "./youtube/index.ts",
 		"./package.json": "./package.json"
 	},
 	"files": [
 		"*.d.ts",
 		"*.js",
 		"*.json",
-		"brookers"
+		"brookers",
+		"youtube"
 	],
 	"dependencies": {
 		"@btakita/domain--browser--brookebrodack": "workspace:*",

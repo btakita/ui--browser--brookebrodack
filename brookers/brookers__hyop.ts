@@ -1,19 +1,9 @@
 /// <reference lib="dom" />
 import { type brookers_timeline_op_T } from '@btakita/domain--any--brookebrodack/brookers'
-import { YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack/youtube'
 import { md_px_num } from '@btakita/ui--server--brookebrodack/css'
 import { browser_ctx__ensure } from '@rappstack/domain--browser/ctx'
-import {
-	calling,
-	type circular_memo_T,
-	memo_,
-	nullish__none_,
-	rmemo__unset,
-	rmemo__wait,
-	run,
-	sig_,
-	sleep
-} from 'ctx-core/rmemo'
+import { calling, type circular_memo_T, memo_, nullish__none_, rmemo__wait, run, sig_, sleep } from 'ctx-core/rmemo'
+import { YT_player_, YT_player_state_ } from '../youtube/index.js'
 export async function brookers__hyop(brookers__div:HTMLDivElement) {
 	await brookers__div__animate(brookers__div)
 	await brookers_timeline__li__init(brookers__div)
@@ -29,61 +19,18 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 			'.brookers_timeline__li'))
 	const html_op__div = brookers_detail__div.querySelector('#html_op__div')!
 	const brookers__timeline_op$ = sig_<brookers_timeline_op_T|undefined>(undefined)
-	const YT_player_state$ = sig_<YT_PlayerState_val_T|undefined>(undefined)
-	const YT_player$ = YT_player$_()
 	const op_title__div = brookers_detail__div.querySelector<HTMLDivElement>('#op_title__div')!
 	const op_close__div = brookers_detail__div.querySelector('#op_close__div')!
 	op_close__div.addEventListener('click', ()=>{
 		brookers__timeline_op$._ = undefined
 	})
 	op__init()
-	function YT_player$_() {
-		return memo_<YT_Player|undefined>(
-			YT_player$=>{
-				init()
-				return YT_player$.val
-				function init() {
-					rmemo__wait(YT$_(browser_ctx), YT=>YT, 10_000).then(YT=>{
-						const YT_iframe__div =
-							brookers_detail__div.querySelector('#YT_iframe__div')!
-						const _YT_player = new YT!.Player(YT_iframe__div, {
-							height: YT_player__height_(),
-							playerVars: {
-								origin: window.location.hostname,
-								autoplay: 0,
-								rel: 0,
-							},
-							events: {
-								onReady(evt) {
-									YT_player$._ = evt.target
-								},
-								onError() {
-									rmemo__unset(YT_player$)
-								},
-								onStateChange(evt) {
-									YT_player_state$._ = evt.data
-								},
-							}
-						})
-						YT_iframe__div.addEventListener('resize', ()=>{
-							_YT_player.setSize('100%', YT_player__height_())
-						})
-						function YT_player__height_() {
-							return YT_iframe__div.clientWidth * 16 / 9
-						}
-					}).catch(err=>{
-						console.error(err)
-						rmemo__unset(YT_player$)
-					})
-				}
-			})
-	}
 	function op__init() {
 		brookers_detail__div.op__go$ = run(
 			memo_<circular_memo_T, {
 				brookers__timeline_op:brookers_timeline_op_T|undefined
 			}>(op__go$=>{
-				nullish__none_([YT_player$()], YT_player=>{
+				nullish__none_([YT_player_(browser_ctx)], YT_player=>{
 					const brookers__timeline_op = brookers__timeline_op$()
 					switch (brookers__timeline_op?.type) {
 						case 'html':
@@ -115,7 +62,7 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 								})
 								YT_player.playVideo()
 							}
-							if (YT_player_state$() === window.YT.PlayerState.CUED) {
+							if (YT_player_state_(browser_ctx) === window.YT.PlayerState.CUED) {
 								spinner__attach()
 							}
 							else {
