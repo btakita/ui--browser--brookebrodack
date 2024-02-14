@@ -5,7 +5,10 @@
 	"types": "index.ts",
 	"exports": {
 		".": "./index.ts",
+		"./animation": "./animation/index.ts",
 		"./brookers": "./brookers/index.ts",
+		"./content": "./content/index.ts",
+		"./spinner": "./spinner/index.ts",
 		"./youtube": "./youtube/index.ts",
 		"./package.json": "./package.json"
 	},
@@ -13,12 +16,15 @@
 		"*.d.ts",
 		"*.js",
 		"*.json",
+		"animation",
 		"brookers",
+		"content",
+		"spinner",
 		"youtube"
 	],
 	"dependencies": {
 		"@btakita/domain--browser--brookebrodack": "workspace:*",
-		"ctx-core": "^6.2.1"
+		"ctx-core": "^6.2.3"
 	},
 	"devDependencies": {
 		"bun-types": "latest"
