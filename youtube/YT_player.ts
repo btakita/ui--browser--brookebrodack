@@ -1,15 +1,50 @@
 import { YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack/youtube'
 import { be_memo_pair_, be_sig_triple_, nullish__none_, rmemo__unset, rmemo__wait } from 'ctx-core/rmemo'
 export const [
-	YT_iframe__div$_,
+	,
 	YT_iframe__div_,
 	YT_iframe__div__set,
 ] = be_sig_triple_<HTMLDivElement|undefined>(()=>undefined)
 export const [
-	YT_player_state$_,
-	YT_player_state_,
-	YT_player_state__set,
+	,
+	YT_PlayerState_,
+	YT_PlayerState__set,
 ] = be_sig_triple_<YT_PlayerState_val_T|undefined>(()=>undefined)
+export const [
+	,
+	YT_PlayerState__PLAYING_
+] = be_memo_pair_(ctx=>
+	nullish__none_([YT_PlayerState_(ctx)],
+		YT_PlayerState=>
+			YT_PlayerState === window.YT.PlayerState.PLAYING))
+export const [
+	,
+	YT_PlayerState__PAUSED_
+] = be_memo_pair_(ctx=>
+	nullish__none_([YT_PlayerState_(ctx)],
+		YT_PlayerState=>
+			YT_PlayerState === window.YT.PlayerState.PAUSED))
+export const [
+	,
+	YT_PlayerState__CUED_
+] = be_memo_pair_(ctx=>
+	nullish__none_([YT_PlayerState_(ctx)],
+		YT_PlayerState=>
+			YT_PlayerState === window.YT.PlayerState.CUED))
+export const [
+	,
+	YT_PlayerState__UNSTARTED_
+] = be_memo_pair_(ctx=>
+	nullish__none_([YT_PlayerState_(ctx)],
+		YT_PlayerState=>
+			YT_PlayerState === window.YT.PlayerState.UNSTARTED))
+export const [
+	,
+	YT_PlayerState__BUFFERING_
+] = be_memo_pair_(ctx=>
+	nullish__none_([YT_PlayerState_(ctx)],
+		YT_PlayerState=>
+			YT_PlayerState === window.YT.PlayerState.BUFFERING))
 export const [
 	YT_player$_,
 	YT_player_
@@ -36,7 +71,7 @@ export const [
 									rmemo__unset(YT_player$)
 								},
 								onStateChange(evt) {
-									YT_player_state__set(ctx, evt.data)
+									YT_PlayerState__set(ctx, evt.data)
 								},
 							}
 						})

@@ -3,9 +3,9 @@ import { type brookers_timeline_op_T } from '@btakita/domain--any--brookebrodack
 import { md_px_num } from '@btakita/ui--server--brookebrodack/css'
 import { browser_ctx__ensure } from '@rappstack/domain--browser/ctx'
 import { calling, type circular_memo_T, memo_, nullish__none_, rmemo__wait, run, sig_, sleep } from 'ctx-core/rmemo'
-import { type animation_o_T } from '../animation/index.js'
+import { type animate_o_T } from '../animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
-import { YT_player_, YT_player_state_ } from '../youtube/index.js'
+import { YT_player_, YT_PlayerState_, YT_PlayerState__CUED_ } from '../youtube/index.js'
 export async function brookers__hyop(brookers__div:HTMLDivElement) {
 	await brookers__div__animate(brookers__div)
 	await brookers_timeline__li__init(brookers__div)
@@ -64,7 +64,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		finish=>finish,
 		20_000)
 		function h1__flyin_animation_o$_() {
-			return calling(memo_<animation_o_T>(
+			return calling(memo_<animate_o_T>(
 				$=>{
 					h1.classList.remove('opacity-0')
 					const animation = h1.animate([
@@ -79,7 +79,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				}))
 		}
 		function h1__bounce_animation_o$_() {
-			return calling(memo_<animation_o_T|undefined>(
+			return calling(memo_<animate_o_T|undefined>(
 				$=>{
 					if (!h1__flyin_animation_o$().done) return
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
@@ -103,7 +103,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				}))
 		}
 		function h1__center_to_left_animation_o$_() {
-			return calling(memo_<animation_o_T|undefined>($=>{
+			return calling(memo_<animate_o_T|undefined>($=>{
 				if (!brookers_img__div__slideout_animation_o$()?.done) return
 				const val = {
 					animation: h1.animate([
@@ -126,7 +126,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			}))
 		}
 		function h2__flyin_animation_o$_() {
-			return calling(memo_<animation_o_T|undefined>(
+			return calling(memo_<animate_o_T|undefined>(
 				$=>{
 					if (!h1__flyin_animation_o$().done) return
 					h2.classList.remove('opacity-0')
@@ -148,7 +148,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				}))
 		}
 		function h2__bounce_animation_o$_() {
-			return calling(memo_<animation_o_T|undefined>(
+			return calling(memo_<animate_o_T|undefined>(
 				$=>{
 					if (!h2__flyin_animation_o$()?.done) return
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
@@ -172,7 +172,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				}))
 		}
 		function brookers_img__div__slidein_animation_o$_() {
-			return calling(memo_<animation_o_T&{ forwards__transform:string }|undefined>($=>{
+			return calling(memo_<animate_o_T&{ forwards__transform:string }|undefined>($=>{
 				if (!h2__bounce_animation_o$()?.done) return
 				brookers_img__div.classList.remove('opacity-0')
 				const forwards__transform = `translateX(${innerWidth > md_px_num ? '25vw' : '0'})`
@@ -200,7 +200,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			}))
 		}
 		function brookers_img__div__slideout_animation_o$_() {
-			return calling(memo_<animation_o_T|undefined>($=>{
+			return calling(memo_<animate_o_T|undefined>($=>{
 				if (!brookers_img__div__slidein_animation_o$()?.done) return
 				const val = {
 					animation: brookers_img__div.animate([
@@ -228,7 +228,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			}))
 		}
 		function brookers_master__div__slide_animation_o$_() {
-			return calling(memo_<animation_o_T|undefined>($=>{
+			return calling(memo_<animate_o_T|undefined>($=>{
 				if (!brookers_img__div__slideout_animation_o$()?.done) return
 				brookers_master__div.classList.remove('opacity-0')
 				const val = {
@@ -255,7 +255,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			}))
 		}
 		function brookers_hero__div__slide_animation_o$_() {
-			return calling(memo_<animation_o_T|undefined>($=>{
+			return calling(memo_<animate_o_T|undefined>($=>{
 				if (!brookers_img__div__slideout_animation_o$()?.done) return
 				const val = {
 					animation: brookers_hero__div.animate([
@@ -332,10 +332,9 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 								})
 								YT_player.playVideo()
 							}
-							if (YT_player_state_(browser_ctx) === window.YT.PlayerState.CUED) {
+							if (YT_PlayerState__CUED_(browser_ctx)) {
 								spinner__attach(brookers_detail__div)
-							}
-							else {
+							} else {
 								spinner__remove(brookers_detail__div)
 							}
 							break

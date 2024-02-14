@@ -1,4 +1,4 @@
-export type animation_o_T = {
+export type animate_o_T = {
 	animation:Animation
 	done:boolean
 }
