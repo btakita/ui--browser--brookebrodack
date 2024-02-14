@@ -1,7 +1,8 @@
 import { type YT_Player } from '@btakita/domain--browser--brookebrodack/youtube'
+import { lg_px_num } from '@btakita/ui--server--brookebrodack/css'
 import { browser_ctx__ensure } from '@rappstack/domain--browser/ctx'
 import { calling, memo_, type memo_T, nullish__none_, rmemo__wait, sig_ } from 'ctx-core/rmemo'
-import { type animate_o_T } from '../animation/index.js'
+import { animate_o_, type animate_o_T } from '../animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
 import {
 	YT_player_,
@@ -14,8 +15,10 @@ import {
 } from '../youtube/index.js'
 export function content__hyop(content:HTMLDivElement) {
 	const reduced_motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+	const site__header = document.querySelector('.site__header')!
 	const browser_ctx = browser_ctx__ensure()
 	const content_feed = content.querySelector('#content_feed')!
+	const top_half__div = content.querySelector('#top_half__div')!
 	const video__div = content.querySelector<
 		HTMLDivElement&{
 		spinner_cause$:memo_T<unknown>
@@ -52,7 +55,10 @@ export function content__hyop(content:HTMLDivElement) {
 		content_feed__a.addEventListener('click', content_feed__a__onclick)
 	}
 	const video__div__animate$ = video__div__animate$_()
-	const YT_iframe__animation$ = YT_iframe__animate$_()
+	const YT_iframe__animate$ = YT_iframe__animate$_()
+	const top_half__div__background$ = top_half__div__background$_()
+	const site_header__animate$ = site_header__animate$_()
+	const site_header__img__animate$ = site_header__img__animate$_()
 	video__div.spinner_cause$ = spinner_cause$_()
 	function content_feed__a__onclick(evt:MouseEvent) {
 		evt.stopPropagation()
@@ -75,7 +81,10 @@ export function content__hyop(content:HTMLDivElement) {
 			).then(YT_player=>{
 				if (video__a$() !== currentTarget) return
 				YT_player = YT_player as YT_Player
-				YT_iframe__animation$()
+				YT_iframe__animate$()
+				top_half__div__background$()
+				site_header__animate$()
+				site_header__img__animate$()
 				YT_player.stopVideo()
 				const props = JSON.parse(decodeURIComponent(currentTarget.dataset.op!))
 				YT_player.loadVideoById(props)
@@ -96,20 +105,10 @@ export function content__hyop(content:HTMLDivElement) {
 	function video__div__animate$_() {
 		return memo_<animate_o_T|undefined>($=>{
 			if (reduced_motion.matches) return
-			const val = {
-				animation: video__div.animate([
-					{ height: '0px' },
-					{ height: '600px' }
-				], { duration: 25, fill: 'both' }),
-				done: false
-			}
-			val.animation.addEventListener('finish', ()=>{
-				$._ = {
-					...$()!,
-					done: true
-				}
-			})
-			return val
+			return animate_o_($, video__div.animate([
+				{ height: '0px' },
+				{ height: window.innerWidth > lg_px_num ? '600px' : '50dvh' }
+			], { duration: 25, fill: 'both' }))
 		})
 	}
 	function YT_iframe__animate$_() {
@@ -126,13 +125,39 @@ export function content__hyop(content:HTMLDivElement) {
 						done: false
 					}
 					val.animation.addEventListener('finish', ()=>{
-						$._ = {
-							...$()!,
-							done: true
-						}
+						$._ = { ...$()!, done: true }
 					})
 					return $.val
 				})
+		})
+	}
+	function top_half__div__background$_() {
+		return memo_(()=>{
+			if (!YT_iframe__animate$()?.done) return
+			top_half__div.classList.add('sticky', 'bg-cyan-600/90')
+		})
+	}
+	function site_header__animate$_() {
+		return memo_<animate_o_T|undefined>($=>{
+			// if (!YT_iframe__animate$()?.done) return
+			const val = animate_o_($, site__header.animate([
+				{ height: '144px' },
+				{ height: '72px' },
+			], { duration: 50, fill: 'forwards' }))
+			val.animation.addEventListener('finish', ()=>{
+				site__header.classList.remove('h-32')
+			})
+			return val
+		})
+	}
+	function site_header__img__animate$_() {
+		return memo_<animate_o_T|undefined>($=>{
+			// if (!YT_iframe__animate$()?.done) return
+			const img = site__header.querySelector('img')!
+			return animate_o_($, img.animate([
+				{ height: '108px', width: '108px' },
+				{ height: '54px', width: `54px` },
+			], { duration: 50, fill: 'forwards' }))
 		})
 	}
 }

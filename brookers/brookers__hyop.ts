@@ -3,9 +3,9 @@ import { type brookers_timeline_op_T } from '@btakita/domain--any--brookebrodack
 import { md_px_num } from '@btakita/ui--server--brookebrodack/css'
 import { browser_ctx__ensure } from '@rappstack/domain--browser/ctx'
 import { calling, type circular_memo_T, memo_, nullish__none_, rmemo__wait, run, sig_, sleep } from 'ctx-core/rmemo'
-import { type animate_o_T } from '../animation/index.js'
+import { animate_o_, type animate_o_T } from '../animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
-import { YT_player_, YT_PlayerState_, YT_PlayerState__CUED_ } from '../youtube/index.js'
+import { YT_player_, YT_PlayerState__CUED_ } from '../youtube/index.js'
 export async function brookers__hyop(brookers__div:HTMLDivElement) {
 	await brookers__div__animate(brookers__div)
 	await brookers_timeline__li__init(brookers__div)
@@ -42,142 +42,94 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		const brookers_hero__div__width = brookers_hero__div.getBoundingClientRect().width
 		const h1__center__factor = brookers_hero__div__width / 2 + 'px - 35%'
 		brookers_hero__div.classList.remove('opacity-0')
-		const h1__flyin_animation_o$ = h1__flyin_animation_o$_()
-		const h1__bounce_animation_o$ = h1__bounce_animation_o$_()
-		const h2__flyin_animation_o$ = h2__flyin_animation_o$_()
-		const h2__bounce_animation_o$ = h2__bounce_animation_o$_()
-		const brookers_img__div__slidein_animation_o$ = brookers_img__div__slidein_animation_o$_()
-		const brookers_img__div__slideout_animation_o$ = brookers_img__div__slideout_animation_o$_()
-		const brookers_master__div__slide_animation_o$ = brookers_master__div__slide_animation_o$_()
-		const brookers_hero__div__slide_animation_o$ = brookers_hero__div__slide_animation_o$_()
-		const h1__center_to_left_animation_o$ = h1__center_to_left_animation_o$_()
+		const h1__flyin_animate_o$ = h1__flyin_animate_o$_()
+		const h1__bounce_animate_o$ = h1__bounce_animate_o$_()
+		const h2__flyin_animate_o$ = h2__flyin_animate_o$_()
+		const h2__bounce_animate_o$ = h2__bounce_animate_o$_()
+		const brookers_img__div__slidein_animate_o$ = brookers_img__div__slidein_animate_o$_()
+		const brookers_img__div__slideout_animate_o$ = brookers_img__div__slideout_animate_o$_()
+		const brookers_master__div__slide_animate_o$ = brookers_master__div__slide_animate_o$_()
+		const brookers_hero__div__slide_animate_o$ = brookers_hero__div__slide_animate_o$_()
+		const h1__center_to_left_animate_o$ = h1__center_to_left_animate_o$_()
 		return rmemo__wait(memo_(()=>
-			h1__flyin_animation_o$()?.done
-				&& h1__bounce_animation_o$()?.done
-				&& h1__center_to_left_animation_o$()?.done
-				&& h2__flyin_animation_o$()?.done
-				&& h2__bounce_animation_o$()?.done
-				&& brookers_img__div__slidein_animation_o$()?.done
-				&& brookers_img__div__slideout_animation_o$()?.done
-				&& brookers_master__div__slide_animation_o$()?.done
-				&& brookers_hero__div__slide_animation_o$()?.done),
+			h1__flyin_animate_o$()?.done
+				&& h1__bounce_animate_o$()?.done
+				&& h1__center_to_left_animate_o$()?.done
+				&& h2__flyin_animate_o$()?.done
+				&& h2__bounce_animate_o$()?.done
+				&& brookers_img__div__slidein_animate_o$()?.done
+				&& brookers_img__div__slideout_animate_o$()?.done
+				&& brookers_master__div__slide_animate_o$()?.done
+				&& brookers_hero__div__slide_animate_o$()?.done),
 		finish=>finish,
 		20_000)
-		function h1__flyin_animation_o$_() {
+		function h1__flyin_animate_o$_() {
 			return calling(memo_<animate_o_T>(
 				$=>{
 					h1.classList.remove('opacity-0')
-					const animation = h1.animate([
+					return animate_o_($, h1.animate([
 						{ transform: `translate(calc(-25vw + ${h1__center__factor}), -25vh) rotate(-45deg)`, opacity: 0 },
 						{ transform: `translate(calc(4px + ${h1__center__factor}), 1px) rotate(10deg)`, opacity: 1 },
 						{ transform: `translate(calc(40px + ${h1__center__factor}), 10px) rotate(10deg)`, opacity: 1 },
-					], { duration: 400, fill: 'both', easing: 'ease-in' })
-					animation.addEventListener('finish', ()=>{
-						$._ = { ...$(), done: true }
-					})
-					return { animation, done: false }
+					], { duration: 400, fill: 'both', easing: 'ease-in' }))
 				}))
 		}
-		function h1__bounce_animation_o$_() {
+		function h1__bounce_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>(
 				$=>{
-					if (!h1__flyin_animation_o$().done) return
+					if (!h1__flyin_animate_o$().done) return
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
 						X: 40, Y: 10, O: 10, X_factor: h1__center__factor
 					})
-					const val = {
-						animation: h1.animate(keyframe_a1, {
-							duration: 800,
-							easing: 'ease-in',
-							fill: 'both'
-						}),
-						done: false
-					}
-					val.animation.addEventListener('finish', ()=>{
-						$._ = {
-							...$()!,
-							done: true
-						}
-					})
-					return val
+					return animate_o_($, h1.animate(keyframe_a1, {
+						duration: 800,
+						easing: 'ease-in',
+						fill: 'both'
+					}))
 				}))
 		}
-		function h1__center_to_left_animation_o$_() {
+		function h1__center_to_left_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animation_o$()?.done) return
-				const val = {
-					animation: h1.animate([
-						{
-							transform: 'translateX(50vw - 90%)'
-						},
-						{
-							transform: 'translateX(0)'
-						}
-					], { duration: 200, fill: 'forwards' }),
-					done: false
-				}
-				val.animation.addEventListener('finish', ()=>{
-					$._ = {
-						...$()!,
-						done: true
-					}
-				})
-				return val
+				if (!brookers_img__div__slideout_animate_o$()?.done) return
+				return animate_o_($, h1.animate([
+					{ transform: 'translateX(50vw - 90%)' },
+					{ transform: 'translateX(0)' }
+				], { duration: 200, fill: 'forwards' }))
 			}))
 		}
-		function h2__flyin_animation_o$_() {
+		function h2__flyin_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>(
 				$=>{
-					if (!h1__flyin_animation_o$().done) return
+					if (!h1__flyin_animate_o$().done) return
 					h2.classList.remove('opacity-0')
-					const val = {
-						animation: h2.animate([
-							{ transform: `translate(25vw, -25vh) rotate(45deg)`, opacity: 0 },
-							{ transform: `translate(-4px, 1px) rotate(-10deg)`, opacity: 1 },
-							{ transform: `translate(-40px, 10px) rotate(-10deg)`, opacity: 1 },
-						], { duration: 400, easing: 'ease-in', fill: 'both' }),
-						done: false
-					}
-					val.animation.addEventListener('finish', ()=>{
-						$._ = {
-							...$()!,
-							done: true
-						}
-					})
-					return val
+					return animate_o_($, h2.animate([
+						{ transform: `translate(25vw, -25vh) rotate(45deg)`, opacity: 0 },
+						{ transform: `translate(-4px, 1px) rotate(-10deg)`, opacity: 1 },
+						{ transform: `translate(-40px, 10px) rotate(-10deg)`, opacity: 1 },
+					], { duration: 400, easing: 'ease-in', fill: 'both' }))
 				}))
 		}
-		function h2__bounce_animation_o$_() {
+		function h2__bounce_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>(
 				$=>{
-					if (!h2__flyin_animation_o$()?.done) return
+					if (!h2__flyin_animate_o$()?.done) return
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
 						X: -40, Y: 10, O: -10
 					})
-					const val = {
-						animation: h2.animate(keyframe_a1, {
-							duration: 800,
-							easing: 'ease-in',
-							fill: 'both'
-						}),
-						done: false
-					}
-					val.animation.addEventListener('finish', ()=>{
-						$._ = {
-							...$()!,
-							done: true
-						}
-					})
-					return val
+					return animate_o_($, h2.animate(keyframe_a1, {
+						duration: 800,
+						easing: 'ease-in',
+						fill: 'both'
+					}))
 				}))
 		}
-		function brookers_img__div__slidein_animation_o$_() {
+		function brookers_img__div__slidein_animate_o$_() {
 			return calling(memo_<animate_o_T&{ forwards__transform:string }|undefined>($=>{
-				if (!h2__bounce_animation_o$()?.done) return
+				if (!h2__bounce_animate_o$()?.done) return
 				brookers_img__div.classList.remove('opacity-0')
 				const forwards__transform = `translateX(${innerWidth > md_px_num ? '25vw' : '0'})`
-				const val = {
-					animation: brookers_img__div.animate([
+				return {
+					...animate_o_($, brookers_img__div.animate([
 						{
 							transform: 'translateX(-100vw)',
 							opacity: 0
@@ -186,95 +138,52 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 							transform: forwards__transform,
 							opacity: 1
 						}
-					], { duration: 200, fill: 'forwards' }),
-					done: false,
+					], { duration: 200, fill: 'forwards' })),
 					forwards__transform
 				}
-				val.animation.addEventListener('finish', ()=>{
-					$._ = {
-						...$()!,
-						done: true
-					}
-				})
-				return val
 			}))
 		}
-		function brookers_img__div__slideout_animation_o$_() {
+		function brookers_img__div__slideout_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slidein_animation_o$()?.done) return
-				const val = {
-					animation: brookers_img__div.animate([
-						{
-							transform: brookers_img__div__slidein_animation_o$()!.forwards__transform
-						},
-						{
-							transform: 'translateX(-100vw)'
-						}
-					], {
-						delay: 2000,
-						duration: 400,
-						fill: 'forwards'
-					}),
-					done: false
-				}
+				if (!brookers_img__div__slidein_animate_o$()?.done) return
+				const val = animate_o_($, brookers_img__div.animate([
+					{ transform: brookers_img__div__slidein_animate_o$()!.forwards__transform },
+					{ transform: 'translateX(-100vw)' }
+				], {
+					delay: 2000,
+					duration: 400,
+					fill: 'forwards'
+				}))
 				val.animation.addEventListener('finish', ()=>{
 					brookers_img__div.remove()
-					$._ = {
-						...$()!,
-						done: true
-					}
 				})
 				return val
 			}))
 		}
-		function brookers_master__div__slide_animation_o$_() {
+		function brookers_master__div__slide_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animation_o$()?.done) return
+				if (!brookers_img__div__slideout_animate_o$()?.done) return
 				brookers_master__div.classList.remove('opacity-0')
-				const val = {
-					animation: brookers_master__div.animate([
-						{
-							transform: `translateX(100vw)`
-						},
-						{
-							transform: 'translateX(0)'
-						}
-					], {
-						duration: 200,
-						fill: 'both'
-					}),
-					done: false
-				}
-				val.animation.addEventListener('finish', ()=>{
-					$._ = {
-						...$()!,
-						done: true
+				return animate_o_($, brookers_master__div.animate([
+					{
+						transform: `translateX(100vw)`
+					},
+					{
+						transform: 'translateX(0)'
 					}
-				})
-				return val
+				], {
+					duration: 200,
+					fill: 'both'
+				}))
 			}))
 		}
-		function brookers_hero__div__slide_animation_o$_() {
+		function brookers_hero__div__slide_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animation_o$()?.done) return
-				const val = {
-					animation: brookers_hero__div.animate([
-						{
-							transform: 'translateX(calc(50vw - 50%))',
-						},
-						{
-							transform: 'translateX(32px)',
-						}
-					], { duration: 200, fill: 'forwards' }),
-					done: false
-				}
-				val.animation.addEventListener('finish', ()=>{
-					$._ = {
-						...$()!,
-						done: true
-					}
-				})
-				return val
+				if (!brookers_img__div__slideout_animate_o$()?.done) return
+				return animate_o_($, brookers_hero__div.animate([
+					{ transform: 'translateX(calc(50vw - 50%))' },
+					{ transform: 'translateX(32px)' }
+				], { duration: 200, fill: 'forwards' }))
 			}))
 		}
 	}
