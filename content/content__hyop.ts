@@ -1,4 +1,4 @@
-import { YT_Player } from '@btakita/domain--browser--brookebrodack/youtube'
+import { type YT_Player } from '@btakita/domain--browser--brookebrodack/youtube'
 import { browser_ctx__ensure } from '@rappstack/domain--browser/ctx'
 import { calling, memo_, type memo_T, nullish__none_, rmemo__wait, sig_ } from 'ctx-core/rmemo'
 import { type animate_o_T } from '../animation/index.js'
