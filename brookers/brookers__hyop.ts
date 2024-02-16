@@ -248,6 +248,8 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 							}
 							break
 						default:
+							html_op__div.innerHTML = ''
+							YT_player.stopVideo()
 							html_op__div.classList.remove('hidden')
 							YT_player.getIframe().classList.remove('hidden')
 							brookers_detail__div.classList.add('hidden')
