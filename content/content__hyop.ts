@@ -9,7 +9,8 @@ import {
 	memo_,
 	type memo_T,
 	nullish__none_,
-	rmemo__wait
+	rmemo__wait,
+	tup
 } from 'ctx-core/rmemo'
 import { animate_o_, type animate_o_T } from '../animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
@@ -81,7 +82,7 @@ export function content__hyop(content:HTMLDivElement) {
 			}
 		} else {
 			video__div__animate_(ctx)
-			site_header__animate_(ctx)
+			site__header__animate_(ctx)
 			site_header__img__animate_(ctx)
 			video__a__set(ctx, currentTarget)
 			content_feed__a__onclick__YT_player__run()
@@ -97,7 +98,7 @@ export function content__hyop(content:HTMLDivElement) {
 				if (video__a_(ctx) !== currentTarget) return
 				YT_player = YT_player as YT_Player
 				YT_iframe__animate_(ctx)
-				top_half__div__background_(ctx)
+				site__header_top_half__div__background_(ctx)
 				YT_player.stopVideo()
 				const props = JSON.parse(decodeURIComponent(currentTarget.dataset.op!))
 				YT_player.loadVideoById(props)
@@ -135,7 +136,7 @@ const [
 const [
 	,
 	/** @see {site__header__img_} */
-	/** @see {site_header__animate_} */
+	/** @see {site__header__animate_} */
 	site__header_,
 ] = be_memo_pair_(()=>document.querySelector('.site__header')!)
 const [
@@ -146,7 +147,7 @@ const [
 	site__header_(ctx).querySelector<HTMLImageElement>('img')!)
 const [
 	,
-	/** @see {top_half__div__background_} */
+	/** @see {site__header_top_half__div__background_} */
 	top_half__div_,
 	/** @see {content__hyop} */
 	top_half__div__set
@@ -201,17 +202,20 @@ const [
 const [
 	,
 	/** @see {content_feed__a__onclick__YT_player__run} */
-	top_half__div__background_
+	site__header_top_half__div__background_
 ] = be_memo_pair_(ctx=>{
 	if (!YT_iframe__animate_(ctx)?.done) return
-	return nullish__none_([top_half__div_(ctx)],
-		top_half__div=>
-			top_half__div.classList.add('sticky', 'bg-cyan-600/90'))
+	return nullish__none_(tup(site__header_(ctx), top_half__div_(ctx)),
+		(site__header, top_half__div)=>{
+			site__header.classList.add('bg-cyan-600/90', 'text-white')
+			site__header.querySelector('.back_link svg')!.classList.add('!stroke-white')
+			top_half__div.classList.add('sticky', 'bg-cyan-600/90')
+		})
 })
 const [
 	,
 	/** @see {content_feed__a__onclick} */
-	site_header__animate_
+	site__header__animate_
 ] = be_memo_pair_<animate_o_T|undefined>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
 	const val = animate_o_($, site__header_(ctx).animate([
@@ -238,7 +242,7 @@ const [
 	,
 	/** @see {video__div__animate_} */
 	/** @see {YT_iframe__animate_} */
-	/** @see {site_header__animate_} */
+	/** @see {site__header__animate_} */
 	/** @see {site_header__img__animate_} */
 	reduced_motion_
 ] = be_memo_pair_(()=>
