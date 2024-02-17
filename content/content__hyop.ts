@@ -209,7 +209,12 @@ const [
 		(site__header, top_half__div)=>{
 			site__header.classList.add('bg-cyan-600/90', 'text-white')
 			site__header.querySelector('.back_link svg')!.classList.add('!stroke-white')
-			top_half__div.classList.add('sticky', 'bg-cyan-600/90')
+			top_half__div.classList.add(
+				'sticky',
+				'bg-cyan-600/90',
+				'border-b-1px',
+				'border-white/.3',
+				'shadow-md')
 		})
 })
 const [
