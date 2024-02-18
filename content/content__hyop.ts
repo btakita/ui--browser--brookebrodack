@@ -8,9 +8,11 @@ import {
 	calling,
 	memo_,
 	type memo_T,
+	type nullish,
 	nullish__none_,
 	rmemo__wait,
-	tup
+	tup,
+	type wide_ctx_T
 } from 'ctx-core/rmemo'
 import { animate_o_, type animate_o_T } from '../animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
@@ -25,10 +27,7 @@ import {
 } from '../youtube/index.js'
 export function content__hyop(content:HTMLDivElement) {
 	const ctx = browser_ctx__ensure()
-	top_half__div__set(ctx, content.querySelector('#top_half__div')!)
-	video__div__set(ctx, content.querySelector<HTMLDivElement&{
-		spinner_cause$:memo_T<unknown>
-	}>('.video__div')!)
+	video__div__set(ctx, content.querySelector<video__div_T>('#video__div')!)
 	const content_feed = content.querySelector('#content_feed')!
 	const content_feed__a_a1 = Array.from(
 		content_feed.querySelectorAll<HTMLAnchorElement&{ _icon_cause$:memo_T<unknown> }>('a'))
@@ -38,7 +37,7 @@ export function content__hyop(content:HTMLDivElement) {
 	/** @see {content__hyop} */
 	function content_feed__a__icon_cause__ensure(content_feed__a:HTMLAnchorElement&{ _icon_cause$?:memo_T<unknown> }) {
 		content_feed__a._icon_cause$ ??=
-			calling(memo_(()=>{
+			calling(memo_<HTMLAnchorElement|nullish>(()=>{
 				const video__a = video__a_(ctx)
 				const is_current = video__a === content_feed__a
 				const video_url = YT_player_(ctx)?.getVideoUrl()
@@ -66,6 +65,7 @@ export function content__hyop(content:HTMLDivElement) {
 					spinner__remove(content_feed__a)
 				}
 				content_feed__a.addEventListener('click', content_feed__a__onclick)
+				return content_feed__a
 			}))
 	}
 	/** @see {content_feed__a__icon_cause__ensure} */
@@ -81,9 +81,7 @@ export function content__hyop(content:HTMLDivElement) {
 				YT_player_(ctx)?.playVideo()
 			}
 		} else {
-			video__div__animate_(ctx)
-			site__header__animate_(ctx)
-			site_header__img__animate_(ctx)
+			video__div__open(ctx).catch(err=>console.error(err))
 			video__a__set(ctx, currentTarget)
 			content_feed__a__onclick__YT_player__run()
 				.catch(err=>console.error(err))
@@ -97,8 +95,8 @@ export function content__hyop(content:HTMLDivElement) {
 			).then(YT_player=>{
 				if (video__a_(ctx) !== currentTarget) return
 				YT_player = YT_player as YT_Player
-				YT_iframe__animate_(ctx)
-				site__header_top_half__div__background_(ctx)
+				YT_iframe__animate_o_(ctx)
+				site__header_video__div__background_(ctx)
 				YT_player.stopVideo()
 				const props = JSON.parse(decodeURIComponent(currentTarget.dataset.op!))
 				YT_player.loadVideoById(props)
@@ -115,15 +113,14 @@ const [
 	video__a_,
 	/** @see {content_feed__a__onclick} */
 	video__a__set
-] = be_sig_triple_<HTMLAnchorElement|undefined>(()=>undefined)
+] = be_sig_triple_<HTMLAnchorElement|nullish>(()=>undefined)
 const [
 	,
-	/** @see {video__div__animate_} */
-	/** @see {top_half__div_} */
+	/** @see {video__div__animate_o_} */
 	video__div_,
 	/** @see {content__hyop} */
 	video__div__set,
-] = be_sig_triple_<HTMLDivElement&{ spinner_cause$:memo_T<unknown> }|undefined>(
+] = be_sig_triple_<video__div_T|undefined>(
 	()=>undefined
 ).add((ctx, video__div$)=>
 	memo_(()=>{
@@ -132,123 +129,171 @@ const [
 			video__div.style.height = '0'
 			video__div.spinner_cause$ = spinner_cause$_(ctx)
 		}
-	}))
+	})
+).add((ctx, video__div$)=>
+	memo_<video_close__div_T|undefined>($=>
+		nullish__none_([video__div$()], video__div=>{
+			$.val?.removeEventListener('click', video_close__div__onclick)
+			const video_close__div = video__div.querySelector<video_close__div_T>('#video_close__div')!
+			video_close__div.addEventListener('click', video_close__div__onclick)
+			return video_close__div
+		})
+	).add(video_close__div$=>memo_(()=>
+		nullish__none_([video_close__div$()], video_close__div=>{
+			video_close__div.classList.toggle('block', video__div__is_open_(ctx))
+			video_close__div.classList.toggle('hidden', !video__div__is_open_(ctx))
+		}))))
+function video_close__div__onclick() {
+	const ctx = browser_ctx__ensure()
+	video__div__close(ctx).catch(err=>console.error(err))
+}
 const [
 	,
 	/** @see {site__header__img_} */
-	/** @see {site__header__animate_} */
+	/** @see {site__header__animate_o_} */
 	site__header_,
 ] = be_memo_pair_(()=>document.querySelector('.site__header')!)
 const [
 	,
-	/** @see {site_header__img__animate_} */
+	/** @see {site_header__img__animate_o_} */
 	site__header__img_,
 ] = be_memo_pair_(ctx=>
 	site__header_(ctx).querySelector<HTMLImageElement>('img')!)
-const [
-	,
-	/** @see {site__header_top_half__div__background_} */
-	top_half__div_,
-	/** @see {content__hyop} */
-	top_half__div__set
-] = be_sig_triple_<Element|undefined>(()=>undefined)
 const spinner_cause$_ = be_(ctx=>
-	calling(memo_<HTMLAnchorElement|undefined>(()=>
+	calling(memo_<HTMLAnchorElement|nullish>(()=>
 		nullish__none_([video__div_(ctx)],
 			video__div=>{
-				if (YT_PlayerState__CUED_(ctx)) {
+				if (video__a_(ctx) && YT_PlayerState__CUED_(ctx)) {
 					spinner__attach(video__div)
 				} else {
 					spinner__remove(video__div)
 				}
 				return video__a_(ctx)
 			}))))
+function video__div__animation_height_() {
+	return (
+		window.innerWidth > lg_px_num
+			? '600px'
+			: screen.orientation.type === 'landscape-primary'
+				? '100dvh'
+				: '50dvh'
+	)
+}
+const [
+	,
+	video__div__is_open_,
+	video__div__is_open__set
+] = be_sig_triple_(()=>false)
+async function video__div__open(ctx:wide_ctx_T) {
+	video__div__is_open__set(ctx, true)
+	await video__div__animate_o_(ctx)?.animation.ready
+	if (!video__div__animate_o_(ctx)?.finish_currentTime) {
+		video__div__animate_o_(ctx)?.animation.play()
+		YT_iframe__animate_o_(ctx)?.animation.play()
+		site__header__animate_o_(ctx)?.animation.play()
+		site_header__img__animate_o_(ctx)?.animation.play()
+	}
+}
+async function video__div__close(ctx:wide_ctx_T) {
+	video__a__set(ctx, null)
+	YT_player_(ctx)?.stopVideo()
+	video__div__is_open__set(ctx, false)
+	await video__div__animate_o_(ctx)?.animation.ready
+	if (video__div__animate_o_(ctx)?.finish_currentTime) {
+		video__div__animate_o_(ctx)?.animation.reverse()
+		YT_iframe__animate_o_(ctx)?.animation.reverse()
+		site__header__animate_o_(ctx)?.animation.reverse()
+		site_header__img__animate_o_(ctx)?.animation.reverse()
+	}
+}
 const [
 	,
 	/** @see {content_feed__a__onclick} */
-	video__div__animate_
-] = be_memo_pair_<animate_o_T|undefined>((ctx, $)=>{
+	video__div__animate_o_
+] = be_memo_pair_<animate_o_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
-	return nullish__none_([video__div_(ctx)],
-		video__div=>{
-			return animate_o_($, video__div.animate([
-				{ height: '0px' },
-				{ height: window.innerWidth > lg_px_num ? '600px' : '50dvh' }
-			], { duration: 25, fill: 'both' }))
-		})
+	return nullish__none_([video__div_(ctx)], video__div=>
+		animate_o_($, video__div, ()=>video__div.animate([
+			{ height: '0px' },
+			{ height: video__div__animation_height_() }
+		], { duration: 25, fill: 'both' })))
 })
 const [
 	,
 	/** @see {content_feed__a__onclick__YT_player__run} */
-	YT_iframe__animate_
-] = be_memo_pair_<animate_o_T|undefined>((ctx, $)=>{
+	YT_iframe__animate_o_
+] = be_memo_pair_<animate_o_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
-	return nullish__none_([YT_player_(ctx)],
-		YT_player=>{
-			YT_player.getIframe().classList.remove('hidden')
-			const val = {
-				animation: YT_player.getIframe().animate([
-					{ transform: 'scale(0)' },
-					{ transform: 'scale(1)' },
-				], { duration: 50, fill: 'forwards' }),
-				done: false
-			}
-			val.animation.addEventListener('finish', ()=>{
-				$._ = { ...$()!, done: true }
-			})
-			return $.val
-		})
-})
+	return nullish__none_([YT_player_(ctx)], YT_player=>
+		animate_o_($, YT_player.getIframe(), iframe=>
+			iframe.animate([
+				{ transform: 'scale(0)' },
+				{ transform: 'scale(1)' },
+			], { duration: 50, fill: 'forwards' })))
+}).add((ctx, YT_iframe__animate_o$)=>memo_(()=>
+	nullish__none_([YT_iframe__animate_o$()], YT_iframe__animate_o=>
+		YT_iframe__animate_o.animation.ready.then(()=>{
+			YT_iframe__animate_o.el.classList.toggle('hidden',
+				!YT_iframe__animate_o.finish_currentTime)
+		}))))
 const [
 	,
 	/** @see {content_feed__a__onclick__YT_player__run} */
-	site__header_top_half__div__background_
-] = be_memo_pair_(ctx=>{
-	if (!YT_iframe__animate_(ctx)?.done) return
-	return nullish__none_(tup(site__header_(ctx), top_half__div_(ctx)),
-		(site__header, top_half__div)=>{
-			site__header.classList.add('bg-cyan-600/90', 'text-white')
-			site__header.querySelector('.back_link svg')!.classList.add('!stroke-white')
-			top_half__div.classList.add(
-				'sticky',
-				'bg-cyan-600/90',
-				'border-b-1px',
-				'border-white/.3',
-				'shadow-md')
-		})
-})
+	site__header_video__div__background_
+] = be_memo_pair_(ctx=>
+	nullish__none_(tup(site__header_(ctx), video__div_(ctx), YT_iframe__animate_o_(ctx)),
+		(site__header, video__div, YT_iframe__animate_o)=>{
+			const is_end_state = YT_iframe__animate_o.is_finish && !!YT_iframe__animate_o.finish_currentTime
+			site__header.classList.toggle('bg-cyan-600/90', is_end_state)
+			site__header.classList.toggle('text-white', is_end_state)
+			site__header.querySelector('.back_link svg')!.classList.toggle('!stroke-white', is_end_state)
+			video__div.classList.toggle('sticky', is_end_state)
+			video__div.classList.toggle('bg-cyan-600/90', is_end_state)
+			video__div.classList.toggle('border-b-1px', is_end_state)
+			video__div.classList.toggle('border-white/.3', is_end_state)
+			video__div.classList.toggle('shadow-md', is_end_state)
+		}))
 const [
 	,
 	/** @see {content_feed__a__onclick} */
-	site__header__animate_
+	site__header__animate_o_
 ] = be_memo_pair_<animate_o_T|undefined>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
-	const val = animate_o_($, site__header_(ctx).animate([
-		{ height: '144px' },
-		{ height: '72px' },
-	], { duration: 25, fill: 'forwards' }))
-	val.animation.addEventListener('finish', ()=>{
-		site__header_(ctx).classList.remove('h-32')
-	})
-	return val
-})
+	return animate_o_(
+		$,
+		site__header_(ctx),
+		site__header=>site__header.animate([
+			{ height: '144px' },
+			{ height: '72px' },
+		], { duration: 25, fill: 'both' }))
+}).add((ctx, site__header__animate_o$)=>memo_(()=>{
+	site__header_(ctx).classList.toggle(
+		'h-32',
+		!site__header__animate_o$()?.is_finish
+		|| !site__header__animate_o$()?.finish_currentTime)
+}))
 const [
 	,
 	/** @see {content_feed__a__onclick} */
-	site_header__img__animate_,
+	site_header__img__animate_o_,
 ] = be_memo_pair_<animate_o_T|undefined>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
-	return animate_o_($, site__header__img_(ctx).animate([
-		{ height: '108px', width: '108px' },
-		{ height: '54px', width: `54px` },
-	], { duration: 25, fill: 'forwards' }))
+	return animate_o_(
+		$,
+		site__header__img_(ctx),
+		site__header__img=>site__header__img.animate([
+			{ height: '108px', width: '108px' },
+			{ height: '54px', width: `54px` },
+		], { duration: 25, fill: 'both' }))
 })
 const [
 	,
-	/** @see {video__div__animate_} */
-	/** @see {YT_iframe__animate_} */
-	/** @see {site__header__animate_} */
-	/** @see {site_header__img__animate_} */
+	/** @see {video__div__animate_o_} */
+	/** @see {YT_iframe__animate_o_} */
+	/** @see {site__header__animate_o_} */
+	/** @see {site_header__img__animate_o_} */
 	reduced_motion_
 ] = be_memo_pair_(()=>
 	window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+type video__div_T = HTMLDivElement&{ spinner_cause$:memo_T<unknown> }
+type video_close__div_T = HTMLDivElement&{ visible$:memo_T<unknown> }

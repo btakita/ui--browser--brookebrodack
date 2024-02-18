@@ -13,14 +13,14 @@ export async function brookers__hyop(brookers__div:HTMLDivElement) {
 async function brookers__div__animate(brookers__div:HTMLDivElement) {
 	const h1 = brookers__div.querySelector('h1')!
 	const h2 = brookers__div.querySelector('h2')!
-	const brookers_hero__div =
-		brookers__div.querySelector('.brookers_hero__div') as HTMLElement
-	const brookers_master__div =
-		brookers__div.querySelector('.brookers_master__div') as HTMLElement
-	const brookers_img__div =
-		brookers__div.querySelector('.brookers_img__div') as HTMLElement
+	const brookers_hero__div = brookers__div.querySelector<HTMLElement>(
+		'.brookers_hero__div')!
+	const brookers_master__div = brookers__div.querySelector<HTMLElement>(
+		'.brookers_master__div')!
+	const brookers_img__div = brookers__div.querySelector<HTMLElement>(
+		'.brookers_img__div')!
 	await ready__waitfor()
-	animation__run()
+	animation__run().catch(err=>console.error(err))
 	brookers__div.classList.remove('hidden')
 	async function ready__waitfor() {
 		while ((innerWidth__is_pending_() || brookers_hero__div__is_pending_())) {
@@ -37,7 +37,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			return !brookers_hero__div.getBoundingClientRect().width
 		}
 	}
-	function animation__run() {
+	async function animation__run() {
 		brookers_hero__div.style.transform = 'translateX(calc(50vw - 50%))'
 		const brookers_hero__div__width = brookers_hero__div.getBoundingClientRect().width
 		const h1__center__factor = brookers_hero__div__width / 2 + 'px - 35%'
@@ -51,23 +51,26 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		const brookers_master__div__slide_animate_o$ = brookers_master__div__slide_animate_o$_()
 		const brookers_hero__div__slide_animate_o$ = brookers_hero__div__slide_animate_o$_()
 		const h1__center_to_left_animate_o$ = h1__center_to_left_animate_o$_()
-		return rmemo__wait(memo_(()=>
-			h1__flyin_animate_o$()?.done
-				&& h1__bounce_animate_o$()?.done
-				&& h1__center_to_left_animate_o$()?.done
-				&& h2__flyin_animate_o$()?.done
-				&& h2__bounce_animate_o$()?.done
-				&& brookers_img__div__slidein_animate_o$()?.done
-				&& brookers_img__div__slideout_animate_o$()?.done
-				&& brookers_master__div__slide_animate_o$()?.done
-				&& brookers_hero__div__slide_animate_o$()?.done),
+		if (document.scrollingElement) document.scrollingElement.scrollTop = 0
+		document.body.style.overflowY = 'hidden'
+		await rmemo__wait(memo_(()=>
+			h1__flyin_animate_o$()?.is_finish
+				&& h1__bounce_animate_o$()?.is_finish
+				&& h1__center_to_left_animate_o$()?.is_finish
+				&& h2__flyin_animate_o$()?.is_finish
+				&& h2__bounce_animate_o$()?.is_finish
+				&& brookers_img__div__slidein_animate_o$()?.is_finish
+				&& brookers_img__div__slideout_animate_o$()?.is_finish
+				&& brookers_master__div__slide_animate_o$()?.is_finish
+				&& brookers_hero__div__slide_animate_o$()?.is_finish),
 		finish=>finish,
 		20_000)
+		document.body.style.overflowY = 'auto'
 		function h1__flyin_animate_o$_() {
 			return calling(memo_<animate_o_T>(
 				$=>{
 					h1.classList.remove('opacity-0')
-					return animate_o_($, h1.animate([
+					return animate_o_($, h1, ()=>h1.animate([
 						{ transform: `translate(calc(-25vw + ${h1__center__factor}), -25vh) rotate(-45deg)`, opacity: 0 },
 						{ transform: `translate(calc(4px + ${h1__center__factor}), 1px) rotate(10deg)`, opacity: 1 },
 						{ transform: `translate(calc(40px + ${h1__center__factor}), 10px) rotate(10deg)`, opacity: 1 },
@@ -77,11 +80,11 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		function h1__bounce_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>(
 				$=>{
-					if (!h1__flyin_animate_o$().done) return
+					if (!h1__flyin_animate_o$().is_finish) return
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
 						X: 40, Y: 10, O: 10, X_factor: h1__center__factor
 					})
-					return animate_o_($, h1.animate(keyframe_a1, {
+					return animate_o_($, h1, ()=>h1.animate(keyframe_a1, {
 						duration: 800,
 						easing: 'ease-in',
 						fill: 'both'
@@ -90,8 +93,8 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		}
 		function h1__center_to_left_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animate_o$()?.done) return
-				return animate_o_($, h1.animate([
+				if (!brookers_img__div__slideout_animate_o$()?.is_finish) return
+				return animate_o_($, h1, ()=>h1.animate([
 					{ transform: 'translateX(50vw - 90%)' },
 					{ transform: 'translateX(0)' }
 				], { duration: 200, fill: 'forwards' }))
@@ -100,9 +103,9 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		function h2__flyin_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>(
 				$=>{
-					if (!h1__flyin_animate_o$().done) return
+					if (!h1__flyin_animate_o$().is_finish) return
 					h2.classList.remove('opacity-0')
-					return animate_o_($, h2.animate([
+					return animate_o_($, h2, ()=>h2.animate([
 						{ transform: `translate(25vw, -25vh) rotate(45deg)`, opacity: 0 },
 						{ transform: `translate(-4px, 1px) rotate(-10deg)`, opacity: 1 },
 						{ transform: `translate(-40px, 10px) rotate(-10deg)`, opacity: 1 },
@@ -112,11 +115,11 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		function h2__bounce_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>(
 				$=>{
-					if (!h2__flyin_animate_o$()?.done) return
+					if (!h2__flyin_animate_o$()?.is_finish) return
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
 						X: -40, Y: 10, O: -10
 					})
-					return animate_o_($, h2.animate(keyframe_a1, {
+					return animate_o_($, h2, ()=>h2.animate(keyframe_a1, {
 						duration: 800,
 						easing: 'ease-in',
 						fill: 'both'
@@ -125,11 +128,11 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		}
 		function brookers_img__div__slidein_animate_o$_() {
 			return calling(memo_<animate_o_T&{ forwards__transform:string }|undefined>($=>{
-				if (!h2__bounce_animate_o$()?.done) return
+				if (!h2__bounce_animate_o$()?.is_finish) return
 				brookers_img__div.classList.remove('opacity-0')
 				const forwards__transform = `translateX(${innerWidth > md_px_num ? '25vw' : '0'})`
 				return {
-					...animate_o_($, brookers_img__div.animate([
+					...animate_o_($, brookers_img__div, ()=>brookers_img__div.animate([
 						{
 							transform: 'translateX(-100vw)',
 							opacity: 0
@@ -145,8 +148,8 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		}
 		function brookers_img__div__slideout_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slidein_animate_o$()?.done) return
-				const val = animate_o_($, brookers_img__div.animate([
+				if (!brookers_img__div__slidein_animate_o$()?.is_finish) return
+				const val = animate_o_($, brookers_img__div, ()=>brookers_img__div.animate([
 					{ transform: brookers_img__div__slidein_animate_o$()!.forwards__transform },
 					{ transform: 'translateX(-100vw)' }
 				], {
@@ -162,9 +165,9 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		}
 		function brookers_master__div__slide_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animate_o$()?.done) return
+				if (!brookers_img__div__slideout_animate_o$()?.is_finish) return
 				brookers_master__div.classList.remove('opacity-0')
-				return animate_o_($, brookers_master__div.animate([
+				return animate_o_($, brookers_master__div, ()=>brookers_master__div.animate([
 					{
 						transform: `translateX(100vw)`
 					},
@@ -179,8 +182,8 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		}
 		function brookers_hero__div__slide_animate_o$_() {
 			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animate_o$()?.done) return
-				return animate_o_($, brookers_hero__div.animate([
+				if (!brookers_img__div__slideout_animate_o$()?.is_finish) return
+				return animate_o_($, brookers_hero__div, ()=>brookers_hero__div.animate([
 					{ transform: 'translateX(calc(50vw - 50%))' },
 					{ transform: 'translateX(32px)' }
 				], { duration: 200, fill: 'forwards' }))
