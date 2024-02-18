@@ -25,9 +25,9 @@ import {
 	YT_PlayerState__PLAYING_,
 	YT_PlayerState__UNSTARTED_
 } from '../youtube/index.js'
-export function content__hyop(content:HTMLDivElement) {
+export function content__hyop(content:HTMLElement) {
 	const ctx = browser_ctx__ensure()
-	video__div__set(ctx, content.querySelector<video__div_T>('#video__div')!)
+	content__set(ctx, content)
 	const content_feed = content.querySelector('#content_feed')!
 	const content_feed__a_a1 = Array.from(
 		content_feed.querySelectorAll<HTMLAnchorElement&{ _icon_cause$:memo_T<unknown> }>('a'))
@@ -116,12 +116,22 @@ const [
 ] = be_sig_triple_<HTMLAnchorElement|nullish>(()=>undefined)
 const [
 	,
+	/** @see {video__div_} */
+	content_,
+	/** @see {content__hyop} */
+	content__set,
+] = be_sig_triple_<HTMLElement|undefined>(
+	()=>undefined
+).add(ctx=>memo_(()=>{
+	video__div_(ctx)
+}))
+const [
+	,
 	/** @see {video__div__animate_o_} */
 	video__div_,
-	/** @see {content__hyop} */
-	video__div__set,
-] = be_sig_triple_<video__div_T|undefined>(
-	()=>undefined
+] = be_memo_pair_(ctx=>
+	nullish__none_([content_(ctx)], content=>
+		content.querySelector<video__div_T>('#video__div')!)
 ).add((ctx, video__div$)=>
 	memo_(()=>{
 		const video__div = video__div$()
@@ -186,8 +196,9 @@ const [
 ] = be_sig_triple_(()=>false)
 async function video__div__open(ctx:wide_ctx_T) {
 	video__div__is_open__set(ctx, true)
-	await video__div__animate_o_(ctx)?.animation.ready
-	if (!video__div__animate_o_(ctx)?.finish_currentTime) {
+	const video__div__animate_o = video__div__animate_o_(ctx)
+	await video__div__animate_o?.animation.ready
+	if (video__div__animate_o && !video__div__animate_o?.finish_currentTime) {
 		video__div__animate_o_(ctx)?.animation.play()
 		YT_iframe__animate_o_(ctx)?.animation.play()
 		site__header__animate_o_(ctx)?.animation.play()
@@ -208,7 +219,8 @@ async function video__div__close(ctx:wide_ctx_T) {
 }
 const [
 	,
-	/** @see {content_feed__a__onclick} */
+	/** @see {video__div__open} */
+	/** @see {video__div__close} */
 	video__div__animate_o_
 ] = be_memo_pair_<animate_o_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
@@ -217,7 +229,13 @@ const [
 			{ height: '0px' },
 			{ height: video__div__animation_height_() }
 		], { duration: 25, fill: 'both' })))
-})
+}).add((ctx, video__div__animate_o$)=>
+	memo_(()=>{
+		content_(ctx)?.classList.toggle('z-20',
+			!!(video__div__animate_o$()?.is_finish && video__div__animate_o$()?.finish_currentTime))
+		content_(ctx)?.classList.toggle('z-10',
+			!(video__div__animate_o$()?.is_finish && video__div__animate_o$()?.finish_currentTime))
+	}))
 const [
 	,
 	/** @see {content_feed__a__onclick__YT_player__run} */

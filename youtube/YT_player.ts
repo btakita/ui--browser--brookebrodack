@@ -46,6 +46,11 @@ export const [
 		YT_PlayerState=>
 			YT_PlayerState === window.YT.PlayerState.BUFFERING))
 export const [
+	,
+	YT_videoUrl_,
+	YT_videoUrl__set
+] = be_sig_triple_<string|undefined>(()=>undefined)
+export const [
 	YT_player$_,
 	YT_player_
 ] = be_memo_pair_<YT_Player|undefined>((ctx, YT_player$)=>
@@ -72,6 +77,9 @@ export const [
 								},
 								onStateChange(evt) {
 									YT_PlayerState__set(ctx, evt.data)
+									if (YT_videoUrl_(ctx) !== _YT_player.getVideoUrl()) {
+										YT_videoUrl__set(ctx, _YT_player.getVideoUrl())
+									}
 								},
 							}
 						})
