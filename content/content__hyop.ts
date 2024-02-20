@@ -259,18 +259,22 @@ const [
 	/** @see {content_feed__a__onclick__YT_player__run} */
 	site__header_video__div__background_
 ] = be_memo_pair_(ctx=>
-	nullish__none_(tup(site__header_(ctx), video__div_(ctx), YT_iframe__animate_o_(ctx)),
-		(site__header, video__div, YT_iframe__animate_o)=>{
-			const is_end_state = YT_iframe__animate_o.is_finish && !!YT_iframe__animate_o.finish_currentTime
-			site__header.classList.toggle('bg-cyan-600/90', is_end_state)
-			site__header.classList.toggle('text-white', is_end_state)
-			site__header.querySelector('.back_link svg')!.classList.toggle('!stroke-white', is_end_state)
-			video__div.classList.toggle('sticky', is_end_state)
-			video__div.classList.toggle('bg-cyan-600/90', is_end_state)
-			video__div.classList.toggle('border-b-1px', is_end_state)
-			video__div.classList.toggle('border-white/.3', is_end_state)
-			video__div.classList.toggle('shadow-md', is_end_state)
-		}))
+	nullish__none_(tup(
+		content_(ctx),
+		site__header_(ctx),
+		video__div_(ctx),
+		YT_iframe__animate_o_(ctx)
+	), (content, site__header, video__div, YT_iframe__animate_o)=>{
+		const is_end_state = YT_iframe__animate_o.is_finish && !!YT_iframe__animate_o.finish_currentTime
+		site__header.classList.toggle('bg-cyan-600/90', is_end_state)
+		site__header.classList.toggle('text-white', is_end_state)
+		content.querySelector('.back_link__a svg')!.classList.toggle('!stroke-white', is_end_state)
+		video__div.classList.toggle('sticky', is_end_state)
+		video__div.classList.toggle('bg-cyan-600/90', is_end_state)
+		video__div.classList.toggle('border-b-1px', is_end_state)
+		video__div.classList.toggle('border-white/.3', is_end_state)
+		video__div.classList.toggle('shadow-md', is_end_state)
+	}))
 const [
 	,
 	/** @see {content_feed__a__onclick} */
