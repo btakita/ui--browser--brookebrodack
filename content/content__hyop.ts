@@ -127,6 +127,16 @@ const [
 }))
 const [
 	,
+	back_link__a_
+] = be_memo_pair_(()=>
+	document.querySelector<HTMLAnchorElement>('.back_link__a')!)
+const [
+	,
+	back_link__a__svg_
+] = be_memo_pair_(ctx=>
+	back_link__a_(ctx).querySelector<SVGSVGElement>('svg')!)
+const [
+	,
 	/** @see {video__div__animate_o_} */
 	video__div_,
 ] = be_memo_pair_(ctx=>
@@ -268,7 +278,7 @@ const [
 		const is_end_state = YT_iframe__animate_o.is_finish && !!YT_iframe__animate_o.finish_currentTime
 		site__header.classList.toggle('bg-cyan-600/90', is_end_state)
 		site__header.classList.toggle('text-white', is_end_state)
-		content.querySelector('.back_link__a svg')!.classList.toggle('!stroke-white', is_end_state)
+		back_link__a__svg_(ctx).classList.toggle('!stroke-white', is_end_state)
 		video__div.classList.toggle('sticky', is_end_state)
 		video__div.classList.toggle('bg-cyan-600/90', is_end_state)
 		video__div.classList.toggle('border-b-1px', is_end_state)
