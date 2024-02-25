@@ -24,7 +24,7 @@
 	],
 	"dependencies": {
 		"@btakita/domain--browser--brookebrodack": "workspace:*",
-		"ctx-core": "^6.4.5"
+		"ctx-core": "^6.5.0"
 	},
 	"devDependencies": {
 		"bun-types": "latest"
