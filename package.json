@@ -7,9 +7,13 @@
 		".": "./index.ts",
 		"./animation": "./animation/index.ts",
 		"./brookers": "./brookers/index.ts",
+		"./brookers/hyop": "./brookers/hyop/index.ts",
 		"./content": "./content/index.ts",
+		"./content/hyop": "./content/hyop/index.ts",
 		"./spinner": "./spinner/index.ts",
+		"./spinner/hyop": "./spinner/hyop/index.ts",
 		"./youtube": "./youtube/index.ts",
+		"./youtube/hyop": "./youtube/hyop/index.ts",
 		"./package.json": "./package.json"
 	},
 	"files": [

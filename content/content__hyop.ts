@@ -26,14 +26,11 @@ import {
 	YT_PlayerState__UNSTARTED_
 } from '../youtube/index.js'
 export function content__hyop(content:HTMLElement) {
+	content__set(browser_ctx__ensure(), content)
+}
+export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 	const ctx = browser_ctx__ensure()
-	content__set(ctx, content)
-	const content_feed = content.querySelector('#content_feed')!
-	const content_feed__a_a1 = Array.from(
-		content_feed.querySelectorAll<HTMLAnchorElement&{ _icon_cause$:memo_T<unknown> }>('a'))
-	for (const content_feed__a of content_feed__a_a1) {
-		content_feed__a__icon_cause__ensure(content_feed__a)
-	}
+	content_feed__a__icon_cause__ensure(content_feed__a)
 	/** @see {content__hyop} */
 	function content_feed__a__icon_cause__ensure(content_feed__a:HTMLAnchorElement&{ _icon_cause$?:memo_T<unknown> }) {
 		content_feed__a._icon_cause$ ??=
@@ -105,6 +102,18 @@ export function content__hyop(content:HTMLElement) {
 		}
 	}
 }
+export function content__back_link__a__hyop(back_link__a:HTMLAnchorElement) {
+	back_link__a__set(browser_ctx__ensure(), back_link__a)
+}
+export function content__video__div__hyop(video__div:HTMLElement) {
+	video__div__set(browser_ctx__ensure(), <video__div_T>video__div)
+}
+export function content__video_close__div__hyop(video_close__div:HTMLElement) {
+	video_close__div__set(browser_ctx__ensure(), <video_close__div_T>video_close__div)
+}
+export function content__site__header__hyop(site__header:HTMLElement) {
+	site__header__set(browser_ctx__ensure(), site__header)
+}
 const [
 	,
 	/** @see {content_feed__a__icon_cause__ensure} */
@@ -127,9 +136,9 @@ const [
 }))
 const [
 	,
-	back_link__a_
-] = be_memo_pair_(()=>
-	document.querySelector<HTMLAnchorElement>('.back_link__a')!)
+	back_link__a_,
+	back_link__a__set,
+] = be_sig_triple_<HTMLAnchorElement>(()=>undefined!)
 const [
 	,
 	back_link__a__svg_
@@ -139,9 +148,9 @@ const [
 	,
 	/** @see {video__div__animate_o_} */
 	video__div_,
-] = be_memo_pair_(ctx=>
-	nullish__none_([content_(ctx)], content=>
-		content.querySelector<video__div_T>('#video__div')!)
+	video__div__set,
+] = be_sig_triple_<video__div_T>(
+	()=>undefined!
 ).add((ctx, video__div$)=>
 	memo_(()=>{
 		const video__div = video__div$()
@@ -149,20 +158,24 @@ const [
 			video__div.style.height = '0'
 			video__div.spinner_cause$ = spinner_cause$_(ctx)
 		}
+	}))
+const [
+	,
+	,
+	video_close__div__set
+] = be_sig_triple_<video_close__div_T|undefined>(
+	()=>undefined
+).add((ctx, video_close__div$)=>memo_<video_close__div_T|undefined>($=>
+	nullish__none_([video_close__div$()], video_close__div=>{
+		$.val?.removeEventListener('click', video_close__div__onclick)
+		video_close__div.addEventListener('click', video_close__div__onclick)
+		return video_close__div
 	})
-).add((ctx, video__div$)=>
-	memo_<video_close__div_T|undefined>($=>
-		nullish__none_([video__div$()], video__div=>{
-			$.val?.removeEventListener('click', video_close__div__onclick)
-			const video_close__div = video__div.querySelector<video_close__div_T>('#video_close__div')!
-			video_close__div.addEventListener('click', video_close__div__onclick)
-			return video_close__div
-		})
-	).add(video_close__div$=>memo_(()=>
-		nullish__none_([video_close__div$()], video_close__div=>{
-			video_close__div.classList.toggle('block', video__div__is_open_(ctx))
-			video_close__div.classList.toggle('hidden', !video__div__is_open_(ctx))
-		}))))
+)).add((ctx, video_close__div$)=>memo_(()=>
+	nullish__none_([video_close__div$()], video_close__div=>{
+		video_close__div.classList.toggle('block', video__div__is_open_(ctx))
+		video_close__div.classList.toggle('hidden', !video__div__is_open_(ctx))
+	})))
 function video_close__div__onclick() {
 	const ctx = browser_ctx__ensure()
 	video__div__close(ctx).catch(err=>console.error(err))
@@ -172,7 +185,8 @@ const [
 	/** @see {site__header__img_} */
 	/** @see {site__header__animate_o_} */
 	site__header_,
-] = be_memo_pair_(()=>document.querySelector('.site__header')!)
+	site__header__set,
+] = be_sig_triple_<HTMLElement>(()=>undefined!)
 const [
 	,
 	/** @see {site_header__img__animate_o_} */
