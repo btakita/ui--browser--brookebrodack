@@ -1,4 +1,4 @@
-import { YT$_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack/youtube'
+import { YT_, type YT_Player, type YT_PlayerState_val_T } from '@btakita/domain--browser--brookebrodack/youtube'
 import { be_memo_pair_, be_sig_triple_, nullish__none_, rmemo__unset, rmemo__wait } from 'ctx-core/rmemo'
 export const [
 	,
@@ -51,7 +51,7 @@ export const [
 	YT_videoUrl__set
 ] = be_sig_triple_<string|undefined>(()=>undefined)
 export const [
-	YT_player$_,
+	,
 	YT_player_
 ] = be_memo_pair_<YT_Player|undefined>((ctx, YT_player$)=>
 	nullish__none_([YT_iframe__div_(ctx)],
@@ -59,7 +59,7 @@ export const [
 			init()
 			return YT_player$.val
 			function init() {
-				rmemo__wait(YT$_(ctx), YT=>YT, 10_000)
+				rmemo__wait(()=>YT_(ctx), YT=>YT, 10_000)
 					.then(YT=>{
 						const _YT_player = new YT!.Player(YT_iframe__div, {
 							height: YT_player__height_(),
