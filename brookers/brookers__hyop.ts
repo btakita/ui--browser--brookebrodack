@@ -2,7 +2,17 @@
 import { type brookers_timeline_op_T } from '@btakita/domain--any--brookebrodack/brookers'
 import { md_px_num } from '@btakita/ui--server--brookebrodack/css'
 import { browser_ctx__ensure } from '@rappstack/domain--browser/ctx'
-import { calling, type circular_memo_T, memo_, nullish__none_, rmemo__wait, run, sig_, sleep } from 'ctx-core/rmemo'
+import {
+	calling,
+	type circular_memo_T,
+	memo_,
+	memo_T,
+	nullish__none_,
+	rmemo__wait,
+	run,
+	sig_,
+	sleep
+} from 'ctx-core/rmemo'
 import { animate_o_, type animate_o_T } from '../animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
 import { YT_player_, YT_PlayerState__CUED_ } from '../youtube/index.js'
@@ -197,7 +207,7 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 		brookers__div.querySelector<HTMLDivElement&{ op__go$:circular_memo_T }>(
 			'.brookers_detail__div')!
 	const brookers_timeline__li_a =
-		Array.from(brookers__div.querySelectorAll<HTMLOListElement>(
+		Array.from(brookers__div.querySelectorAll<brookers_timeline__li_T>(
 			'.brookers_timeline__li'))
 	const html_op__div = brookers_detail__div.querySelector('#html_op__div')!
 	const brookers__timeline_op$ = sig_<brookers_timeline_op_T|undefined>(undefined)
@@ -262,10 +272,16 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 				return op__go$
 			}))
 		for (const brookers_timeline__li of brookers_timeline__li_a) {
+			brookers_timeline__li.op = JSON.parse(
+				decodeURIComponent(brookers_timeline__li.dataset.op ?? '{}')
+			) as brookers_timeline_op_T
+			brookers_timeline__li.selected__watch$ = calling(memo_(()=>{
+				brookers_timeline__li.classList.toggle(
+					'selected',
+					brookers__timeline_op$() === brookers_timeline__li.op)
+			}))
 			brookers_timeline__li.addEventListener('click', async ()=>{
-				brookers__timeline_op$._ = JSON.parse(
-					decodeURIComponent(brookers_timeline__li.dataset.op ?? '{}')
-				) as brookers_timeline_op_T
+				brookers__timeline_op$._ = brookers_timeline__li.op
 			})
 			for (const a of Array.from(brookers_timeline__li.querySelectorAll<HTMLAnchorElement>('a'))) {
 				a.addEventListener('click', evt=>evt.stopPropagation())
@@ -295,4 +311,8 @@ function s180_d12_spring__keyframe_a1_(config:{
 		transform: `translate(calc(${X_factor ?? '0px'}), 0) rotate(0deg)`
 	})
 	return keyframe_a1
+}
+type brookers_timeline__li_T = HTMLOListElement&{
+	op:brookers_timeline_op_T
+	selected__watch$:memo_T<unknown>
 }
