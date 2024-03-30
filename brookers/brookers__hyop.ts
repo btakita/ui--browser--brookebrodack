@@ -6,14 +6,14 @@ import {
 	calling,
 	type circular_memo_T,
 	memo_,
-	memo_T,
+	type memo_T,
 	nullish__none_,
 	rmemo__wait,
 	run,
 	sig_,
 	sleep
 } from 'ctx-core/rmemo'
-import { animate_o_, type animate_o_T } from '../animation/index.js'
+import { wanimato_, type wanimato_T } from '../web_animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
 import { YT_player_, YT_PlayerState__CUED_ } from '../youtube/index.js'
 export async function brookers__hyop(brookers__div:HTMLDivElement) {
@@ -52,97 +52,97 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		const brookers_hero__div__width = brookers_hero__div.getBoundingClientRect().width
 		const h1__center__factor = brookers_hero__div__width / 2 + 'px - 35%'
 		brookers_hero__div.classList.remove('opacity-0')
-		const h1__flyin_animate_o$ = h1__flyin_animate_o$_()
-		const h1__bounce_animate_o$ = h1__bounce_animate_o$_()
-		const h2__flyin_animate_o$ = h2__flyin_animate_o$_()
-		const h2__bounce_animate_o$ = h2__bounce_animate_o$_()
-		const brookers_img__div__slidein_animate_o$ = brookers_img__div__slidein_animate_o$_()
-		const brookers_img__div__slideout_animate_o$ = brookers_img__div__slideout_animate_o$_()
-		const brookers_master__div__slide_animate_o$ = brookers_master__div__slide_animate_o$_()
-		const brookers_hero__div__slide_animate_o$ = brookers_hero__div__slide_animate_o$_()
-		const h1__center_to_left_animate_o$ = h1__center_to_left_animate_o$_()
+		const h1__flyin_wanimato$ = h1__flyin_wanimato$_()
+		const h1__bounce_wanimato$ = h1__bounce_wanimato$_()
+		const h2__flyin_wanimato$ = h2__flyin_wanimato$_()
+		const h2__bounce_wanimato$ = h2__bounce_wanimato$_()
+		const brookers_img__div__slidein_wanimato$ = brookers_img__div__slidein_wanimato$_()
+		const brookers_img__div__slideout_wanimato$ = brookers_img__div__slideout_wanimato$_()
+		const brookers_master__div__slide_wanimato$ = brookers_master__div__slide_wanimato$_()
+		const brookers_hero__div__slide_wanimato$ = brookers_hero__div__slide_wanimato$_()
+		const h1__center_to_left_wanimato$ = h1__center_to_left_wanimato$_()
 		if (document.scrollingElement) document.scrollingElement.scrollTop = 0
 		document.body.style.overflowY = 'hidden'
 		await rmemo__wait(memo_(()=>
-			h1__flyin_animate_o$()?.is_finish
-				&& h1__bounce_animate_o$()?.is_finish
-				&& h1__center_to_left_animate_o$()?.is_finish
-				&& h2__flyin_animate_o$()?.is_finish
-				&& h2__bounce_animate_o$()?.is_finish
-				&& brookers_img__div__slidein_animate_o$()?.is_finish
-				&& brookers_img__div__slideout_animate_o$()?.is_finish
-				&& brookers_master__div__slide_animate_o$()?.is_finish
-				&& brookers_hero__div__slide_animate_o$()?.is_finish),
+			h1__flyin_wanimato$()?.is_finish
+				&& h1__bounce_wanimato$()?.is_finish
+				&& h1__center_to_left_wanimato$()?.is_finish
+				&& h2__flyin_wanimato$()?.is_finish
+				&& h2__bounce_wanimato$()?.is_finish
+				&& brookers_img__div__slidein_wanimato$()?.is_finish
+				&& brookers_img__div__slideout_wanimato$()?.is_finish
+				&& brookers_master__div__slide_wanimato$()?.is_finish
+				&& brookers_hero__div__slide_wanimato$()?.is_finish),
 		finish=>finish,
 		20_000)
 		document.body.style.overflowY = 'auto'
-		function h1__flyin_animate_o$_() {
-			return calling(memo_<animate_o_T>(
+		function h1__flyin_wanimato$_() {
+			return calling(memo_<wanimato_T>(
 				$=>{
 					h1.classList.remove('opacity-0')
-					return animate_o_($, h1, ()=>h1.animate([
+					return wanimato_($, h1, ()=>h1.animate([
 						{ transform: `translate(calc(-25vw + ${h1__center__factor}), -25vh) rotate(-45deg)`, opacity: 0 },
 						{ transform: `translate(calc(4px + ${h1__center__factor}), 1px) rotate(10deg)`, opacity: 1 },
 						{ transform: `translate(calc(40px + ${h1__center__factor}), 10px) rotate(10deg)`, opacity: 1 },
 					], { duration: 400, fill: 'both', easing: 'ease-in' }))
 				}))
 		}
-		function h1__bounce_animate_o$_() {
-			return calling(memo_<animate_o_T|undefined>(
+		function h1__bounce_wanimato$_() {
+			return calling(memo_<wanimato_T|undefined>(
 				$=>{
-					if (!h1__flyin_animate_o$().is_finish) return
+					if (!h1__flyin_wanimato$().is_finish) return
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
 						X: 40, Y: 10, O: 10, X_factor: h1__center__factor
 					})
-					return animate_o_($, h1, ()=>h1.animate(keyframe_a1, {
+					return wanimato_($, h1, ()=>h1.animate(keyframe_a1, {
 						duration: 800,
 						easing: 'ease-in',
 						fill: 'both'
 					}))
 				}))
 		}
-		function h1__center_to_left_animate_o$_() {
-			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animate_o$()?.is_finish) return
-				return animate_o_($, h1, ()=>h1.animate([
+		function h1__center_to_left_wanimato$_() {
+			return calling(memo_<wanimato_T|undefined>($=>{
+				if (!brookers_img__div__slideout_wanimato$()?.is_finish) return
+				return wanimato_($, h1, ()=>h1.animate([
 					{ transform: 'translateX(50vw - 90%)' },
 					{ transform: 'translateX(0)' }
 				], { duration: 200, fill: 'forwards' }))
 			}))
 		}
-		function h2__flyin_animate_o$_() {
-			return calling(memo_<animate_o_T|undefined>(
+		function h2__flyin_wanimato$_() {
+			return calling(memo_<wanimato_T|undefined>(
 				$=>{
-					if (!h1__flyin_animate_o$().is_finish) return
+					if (!h1__flyin_wanimato$().is_finish) return
 					h2.classList.remove('opacity-0')
-					return animate_o_($, h2, ()=>h2.animate([
+					return wanimato_($, h2, ()=>h2.animate([
 						{ transform: `translate(25vw, -25vh) rotate(45deg)`, opacity: 0 },
 						{ transform: `translate(-4px, 1px) rotate(-10deg)`, opacity: 1 },
 						{ transform: `translate(-40px, 10px) rotate(-10deg)`, opacity: 1 },
 					], { duration: 400, easing: 'ease-in', fill: 'both' }))
 				}))
 		}
-		function h2__bounce_animate_o$_() {
-			return calling(memo_<animate_o_T|undefined>(
+		function h2__bounce_wanimato$_() {
+			return calling(memo_<wanimato_T|undefined>(
 				$=>{
-					if (!h2__flyin_animate_o$()?.is_finish) return
+					if (!h2__flyin_wanimato$()?.is_finish) return
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
 						X: -40, Y: 10, O: -10
 					})
-					return animate_o_($, h2, ()=>h2.animate(keyframe_a1, {
+					return wanimato_($, h2, ()=>h2.animate(keyframe_a1, {
 						duration: 800,
 						easing: 'ease-in',
 						fill: 'both'
 					}))
 				}))
 		}
-		function brookers_img__div__slidein_animate_o$_() {
-			return calling(memo_<animate_o_T&{ forwards__transform:string }|undefined>($=>{
-				if (!h2__bounce_animate_o$()?.is_finish) return
+		function brookers_img__div__slidein_wanimato$_() {
+			return calling(memo_<wanimato_T&{ forwards__transform:string }|undefined>($=>{
+				if (!h2__bounce_wanimato$()?.is_finish) return
 				brookers_img__div.classList.remove('opacity-0')
 				const forwards__transform = `translateX(${innerWidth > md_px_num ? '25vw' : '0'})`
 				return {
-					...animate_o_($, brookers_img__div, ()=>brookers_img__div.animate([
+					...wanimato_($, brookers_img__div, ()=>brookers_img__div.animate([
 						{
 							transform: 'translateX(-100vw)',
 							opacity: 0
@@ -156,11 +156,11 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				}
 			}))
 		}
-		function brookers_img__div__slideout_animate_o$_() {
-			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slidein_animate_o$()?.is_finish) return
-				const val = animate_o_($, brookers_img__div, ()=>brookers_img__div.animate([
-					{ transform: brookers_img__div__slidein_animate_o$()!.forwards__transform },
+		function brookers_img__div__slideout_wanimato$_() {
+			return calling(memo_<wanimato_T|undefined>($=>{
+				if (!brookers_img__div__slidein_wanimato$()?.is_finish) return
+				const val = wanimato_($, brookers_img__div, ()=>brookers_img__div.animate([
+					{ transform: brookers_img__div__slidein_wanimato$()!.forwards__transform },
 					{ transform: 'translateX(-100vw)' }
 				], {
 					delay: 2000,
@@ -173,11 +173,11 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				return val
 			}))
 		}
-		function brookers_master__div__slide_animate_o$_() {
-			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animate_o$()?.is_finish) return
+		function brookers_master__div__slide_wanimato$_() {
+			return calling(memo_<wanimato_T|undefined>($=>{
+				if (!brookers_img__div__slideout_wanimato$()?.is_finish) return
 				brookers_master__div.classList.remove('opacity-0')
-				return animate_o_($, brookers_master__div, ()=>brookers_master__div.animate([
+				return wanimato_($, brookers_master__div, ()=>brookers_master__div.animate([
 					{
 						transform: `translateX(100vw)`
 					},
@@ -190,10 +190,10 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				}))
 			}))
 		}
-		function brookers_hero__div__slide_animate_o$_() {
-			return calling(memo_<animate_o_T|undefined>($=>{
-				if (!brookers_img__div__slideout_animate_o$()?.is_finish) return
-				return animate_o_($, brookers_hero__div, ()=>brookers_hero__div.animate([
+		function brookers_hero__div__slide_wanimato$_() {
+			return calling(memo_<wanimato_T|undefined>($=>{
+				if (!brookers_img__div__slideout_wanimato$()?.is_finish) return
+				return wanimato_($, brookers_hero__div, ()=>brookers_hero__div.animate([
 					{ transform: 'translateX(calc(50vw - 50%))' },
 					{ transform: 'translateX(32px)' }
 				], { duration: 200, fill: 'forwards' }))

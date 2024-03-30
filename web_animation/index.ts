@@ -1,6 +1,6 @@
 import { type nullish, run, type sig_T } from 'ctx-core/rmemo'
-export function animate_o_<E extends Element>(
-	$:sig_T<animate_o_T|nullish>,
+export function wanimato_<E extends Element>(
+	$:sig_T<wanimato_T|nullish>,
 	el:E,
 	animation_:(el:E)=>Animation
 ) {
@@ -133,7 +133,7 @@ export function animate_o_<E extends Element>(
 		}
 	}
 }
-export type animate_o_T = {
+export type wanimato_T = {
 	animation:Animation
 	el:Element
 	is_play:boolean

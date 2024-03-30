@@ -14,7 +14,7 @@ import {
 	tup,
 	type wide_ctx_T
 } from 'ctx-core/rmemo'
-import { animate_o_, type animate_o_T } from '../animation/index.js'
+import { wanimato_, type wanimato_T } from '../web_animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
 import {
 	YT_player_,
@@ -92,7 +92,7 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 			).then(YT_player=>{
 				if (video__a_(ctx) !== currentTarget) return
 				YT_player = YT_player as YT_Player
-				YT_iframe__animate_o_(ctx)
+				YT_iframe__wanimato_(ctx)
 				site__header_video__div__background_(ctx)
 				YT_player.stopVideo()
 				const props = JSON.parse(decodeURIComponent(currentTarget.dataset.op!))
@@ -146,7 +146,7 @@ const [
 	back_link__a_(ctx).querySelector<SVGSVGElement>('svg')!)
 const [
 	,
-	/** @see {video__div__animate_o_} */
+	/** @see {video__div__wanimato_} */
 	video__div_,
 	video__div__set,
 ] = be_sig_triple_<video__div_T>(
@@ -183,13 +183,13 @@ function video_close__div__onclick() {
 const [
 	,
 	/** @see {site__header__img_} */
-	/** @see {site__header__animate_o_} */
+	/** @see {site__header__wanimato_} */
 	site__header_,
 	site__header__set,
 ] = be_sig_triple_<HTMLElement>(()=>undefined!)
 const [
 	,
-	/** @see {site_header__img__animate_o_} */
+	/** @see {site_header__img__wanimato_} */
 	site__header__img_,
 ] = be_memo_pair_(ctx=>
 	site__header_(ctx).querySelector<HTMLImageElement>('img')!)
@@ -220,63 +220,63 @@ const [
 ] = be_sig_triple_(()=>false)
 async function video__div__open(ctx:wide_ctx_T) {
 	video__div__is_open__set(ctx, true)
-	const video__div__animate_o = video__div__animate_o_(ctx)
-	await video__div__animate_o?.animation.ready
-	if (video__div__animate_o && !video__div__animate_o?.finish_currentTime) {
-		video__div__animate_o_(ctx)?.animation.play()
-		YT_iframe__animate_o_(ctx)?.animation.play()
-		site__header__animate_o_(ctx)?.animation.play()
-		site_header__img__animate_o_(ctx)?.animation.play()
+	const video__div__wanimato = video__div__wanimato_(ctx)
+	await video__div__wanimato?.animation.ready
+	if (video__div__wanimato && !video__div__wanimato?.finish_currentTime) {
+		video__div__wanimato_(ctx)?.animation.play()
+		YT_iframe__wanimato_(ctx)?.animation.play()
+		site__header__wanimato_(ctx)?.animation.play()
+		site_header__img__wanimato_(ctx)?.animation.play()
 	}
 }
 async function video__div__close(ctx:wide_ctx_T) {
 	video__a__set(ctx, null)
 	YT_player_(ctx)?.stopVideo()
 	video__div__is_open__set(ctx, false)
-	await video__div__animate_o_(ctx)?.animation.ready
-	if (video__div__animate_o_(ctx)?.finish_currentTime) {
-		video__div__animate_o_(ctx)?.animation.reverse()
-		YT_iframe__animate_o_(ctx)?.animation.reverse()
-		site__header__animate_o_(ctx)?.animation.reverse()
-		site_header__img__animate_o_(ctx)?.animation.reverse()
+	await video__div__wanimato_(ctx)?.animation.ready
+	if (video__div__wanimato_(ctx)?.finish_currentTime) {
+		video__div__wanimato_(ctx)?.animation.reverse()
+		YT_iframe__wanimato_(ctx)?.animation.reverse()
+		site__header__wanimato_(ctx)?.animation.reverse()
+		site_header__img__wanimato_(ctx)?.animation.reverse()
 	}
 }
 const [
 	,
 	/** @see {video__div__open} */
 	/** @see {video__div__close} */
-	video__div__animate_o_
-] = be_memo_pair_<animate_o_T|nullish>((ctx, $)=>{
+	video__div__wanimato_
+] = be_memo_pair_<wanimato_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
 	return nullish__none_([video__div_(ctx)], video__div=>
-		animate_o_($, video__div, ()=>video__div.animate([
+		wanimato_($, video__div, ()=>video__div.animate([
 			{ height: '0px' },
 			{ height: video__div__animation_height_() }
 		], { duration: 25, fill: 'both' })))
-}).add((ctx, video__div__animate_o$)=>
+}).add((ctx, video__div__wanimato$)=>
 	memo_(()=>{
 		content_(ctx)?.classList.toggle('z-20',
-			!!(video__div__animate_o$()?.is_finish && video__div__animate_o$()?.finish_currentTime))
+			!!(video__div__wanimato$()?.is_finish && video__div__wanimato$()?.finish_currentTime))
 		content_(ctx)?.classList.toggle('z-10',
-			!(video__div__animate_o$()?.is_finish && video__div__animate_o$()?.finish_currentTime))
+			!(video__div__wanimato$()?.is_finish && video__div__wanimato$()?.finish_currentTime))
 	}))
 const [
 	,
 	/** @see {content_feed__a__onclick__YT_player__run} */
-	YT_iframe__animate_o_
-] = be_memo_pair_<animate_o_T|nullish>((ctx, $)=>{
+	YT_iframe__wanimato_
+] = be_memo_pair_<wanimato_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
 	return nullish__none_([YT_player_(ctx)], YT_player=>
-		animate_o_($, YT_player.getIframe(), iframe=>
+		wanimato_($, YT_player.getIframe(), iframe=>
 			iframe.animate([
 				{ transform: 'scale(0)' },
 				{ transform: 'scale(1)' },
 			], { duration: 50, fill: 'forwards' })))
-}).add((ctx, YT_iframe__animate_o$)=>memo_(()=>
-	nullish__none_([YT_iframe__animate_o$()], YT_iframe__animate_o=>
-		YT_iframe__animate_o.animation.ready.then(()=>{
-			YT_iframe__animate_o.el.classList.toggle('hidden',
-				!YT_iframe__animate_o.finish_currentTime)
+}).add((ctx, YT_iframe__wanimato$)=>memo_(()=>
+	nullish__none_([YT_iframe__wanimato$()], YT_iframe__wanimato=>
+		YT_iframe__wanimato.animation.ready.then(()=>{
+			YT_iframe__wanimato.el.classList.toggle('hidden',
+				!YT_iframe__wanimato.finish_currentTime)
 		}))))
 const [
 	,
@@ -287,9 +287,9 @@ const [
 		content_(ctx),
 		site__header_(ctx),
 		video__div_(ctx),
-		YT_iframe__animate_o_(ctx)
-	), (content, site__header, video__div, YT_iframe__animate_o)=>{
-		const is_end_state = YT_iframe__animate_o.is_finish && !!YT_iframe__animate_o.finish_currentTime
+		YT_iframe__wanimato_(ctx)
+	), (content, site__header, video__div, YT_iframe__wanimato)=>{
+		const is_end_state = YT_iframe__wanimato.is_finish && !!YT_iframe__wanimato.finish_currentTime
 		site__header.classList.toggle('bg-cyan-600/90', is_end_state)
 		site__header.classList.toggle('text-white', is_end_state)
 		back_link__a__svg_(ctx).classList.toggle('!stroke-white', is_end_state)
@@ -302,29 +302,29 @@ const [
 const [
 	,
 	/** @see {content_feed__a__onclick} */
-	site__header__animate_o_
-] = be_memo_pair_<animate_o_T|undefined>((ctx, $)=>{
+	site__header__wanimato_
+] = be_memo_pair_<wanimato_T|undefined>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
-	return animate_o_(
+	return wanimato_(
 		$,
 		site__header_(ctx),
 		site__header=>site__header.animate([
 			{ height: '144px' },
 			{ height: '72px' },
 		], { duration: 25, fill: 'both' }))
-}).add((ctx, site__header__animate_o$)=>memo_(()=>{
+}).add((ctx, site__header__wanimato$)=>memo_(()=>{
 	site__header_(ctx).classList.toggle(
 		'h-32',
-		!site__header__animate_o$()?.is_finish
-		|| !site__header__animate_o$()?.finish_currentTime)
+		!site__header__wanimato$()?.is_finish
+		|| !site__header__wanimato$()?.finish_currentTime)
 }))
 const [
 	,
 	/** @see {content_feed__a__onclick} */
-	site_header__img__animate_o_,
-] = be_memo_pair_<animate_o_T|undefined>((ctx, $)=>{
+	site_header__img__wanimato_,
+] = be_memo_pair_<wanimato_T|undefined>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
-	return animate_o_(
+	return wanimato_(
 		$,
 		site__header__img_(ctx),
 		site__header__img=>site__header__img.animate([
@@ -334,10 +334,10 @@ const [
 })
 const [
 	,
-	/** @see {video__div__animate_o_} */
-	/** @see {YT_iframe__animate_o_} */
-	/** @see {site__header__animate_o_} */
-	/** @see {site_header__img__animate_o_} */
+	/** @see {video__div__wanimato_} */
+	/** @see {YT_iframe__wanimato_} */
+	/** @see {site__header__wanimato_} */
+	/** @see {site_header__img__wanimato_} */
 	reduced_motion_
 ] = be_memo_pair_(()=>
 	window.matchMedia('(prefers-reduced-motion: reduce)').matches)
