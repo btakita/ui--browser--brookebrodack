@@ -1,5 +1,5 @@
 import { type nullish, run, type sig_T } from 'ctx-core/rmemo'
-export function wanimato_<E extends Element>(
+export function wanimato__new<E extends Element>(
 	$:sig_T<wanimato_T|nullish>,
 	el:E,
 	animation_:(el:E)=>Animation

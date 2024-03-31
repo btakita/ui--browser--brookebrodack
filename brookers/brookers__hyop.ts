@@ -13,7 +13,7 @@ import {
 	sig_,
 	sleep
 } from 'ctx-core/rmemo'
-import { wanimato_, type wanimato_T } from '../web_animation/index.js'
+import { wanimato__new, type wanimato_T } from '../web_animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
 import { YT_player_, YT_PlayerState__CUED_ } from '../youtube/index.js'
 export async function brookers__hyop(brookers__div:HTMLDivElement) {
@@ -80,7 +80,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			return calling(memo_<wanimato_T>(
 				$=>{
 					h1.classList.remove('opacity-0')
-					return wanimato_($, h1, ()=>h1.animate([
+					return wanimato__new($, h1, ()=>h1.animate([
 						{ transform: `translate(calc(-25vw + ${h1__center__factor}), -25vh) rotate(-45deg)`, opacity: 0 },
 						{ transform: `translate(calc(4px + ${h1__center__factor}), 1px) rotate(10deg)`, opacity: 1 },
 						{ transform: `translate(calc(40px + ${h1__center__factor}), 10px) rotate(10deg)`, opacity: 1 },
@@ -94,7 +94,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
 						X: 40, Y: 10, O: 10, X_factor: h1__center__factor
 					})
-					return wanimato_($, h1, ()=>h1.animate(keyframe_a1, {
+					return wanimato__new($, h1, ()=>h1.animate(keyframe_a1, {
 						duration: 800,
 						easing: 'ease-in',
 						fill: 'both'
@@ -104,7 +104,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		function h1__center_to_left_wanimato$_() {
 			return calling(memo_<wanimato_T|undefined>($=>{
 				if (!brookers_img__div__slideout_wanimato$()?.is_finish) return
-				return wanimato_($, h1, ()=>h1.animate([
+				return wanimato__new($, h1, ()=>h1.animate([
 					{ transform: 'translateX(50vw - 90%)' },
 					{ transform: 'translateX(0)' }
 				], { duration: 200, fill: 'forwards' }))
@@ -115,7 +115,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				$=>{
 					if (!h1__flyin_wanimato$().is_finish) return
 					h2.classList.remove('opacity-0')
-					return wanimato_($, h2, ()=>h2.animate([
+					return wanimato__new($, h2, ()=>h2.animate([
 						{ transform: `translate(25vw, -25vh) rotate(45deg)`, opacity: 0 },
 						{ transform: `translate(-4px, 1px) rotate(-10deg)`, opacity: 1 },
 						{ transform: `translate(-40px, 10px) rotate(-10deg)`, opacity: 1 },
@@ -129,7 +129,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 					const keyframe_a1 = s180_d12_spring__keyframe_a1_({
 						X: -40, Y: 10, O: -10
 					})
-					return wanimato_($, h2, ()=>h2.animate(keyframe_a1, {
+					return wanimato__new($, h2, ()=>h2.animate(keyframe_a1, {
 						duration: 800,
 						easing: 'ease-in',
 						fill: 'both'
@@ -142,7 +142,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 				brookers_img__div.classList.remove('opacity-0')
 				const forwards__transform = `translateX(${innerWidth > md_px_num ? '25vw' : '0'})`
 				return {
-					...wanimato_($, brookers_img__div, ()=>brookers_img__div.animate([
+					...wanimato__new($, brookers_img__div, ()=>brookers_img__div.animate([
 						{
 							transform: 'translateX(-100vw)',
 							opacity: 0
@@ -159,7 +159,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		function brookers_img__div__slideout_wanimato$_() {
 			return calling(memo_<wanimato_T|undefined>($=>{
 				if (!brookers_img__div__slidein_wanimato$()?.is_finish) return
-				const val = wanimato_($, brookers_img__div, ()=>brookers_img__div.animate([
+				const val = wanimato__new($, brookers_img__div, ()=>brookers_img__div.animate([
 					{ transform: brookers_img__div__slidein_wanimato$()!.forwards__transform },
 					{ transform: 'translateX(-100vw)' }
 				], {
@@ -177,7 +177,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			return calling(memo_<wanimato_T|undefined>($=>{
 				if (!brookers_img__div__slideout_wanimato$()?.is_finish) return
 				brookers_master__div.classList.remove('opacity-0')
-				return wanimato_($, brookers_master__div, ()=>brookers_master__div.animate([
+				return wanimato__new($, brookers_master__div, ()=>brookers_master__div.animate([
 					{
 						transform: `translateX(100vw)`
 					},
@@ -193,7 +193,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 		function brookers_hero__div__slide_wanimato$_() {
 			return calling(memo_<wanimato_T|undefined>($=>{
 				if (!brookers_img__div__slideout_wanimato$()?.is_finish) return
-				return wanimato_($, brookers_hero__div, ()=>brookers_hero__div.animate([
+				return wanimato__new($, brookers_hero__div, ()=>brookers_hero__div.animate([
 					{ transform: 'translateX(calc(50vw - 50%))' },
 					{ transform: 'translateX(32px)' }
 				], { duration: 200, fill: 'forwards' }))

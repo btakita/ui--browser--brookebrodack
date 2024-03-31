@@ -14,7 +14,7 @@ import {
 	tup,
 	type wide_ctx_T
 } from 'ctx-core/rmemo'
-import { wanimato_, type wanimato_T } from '../web_animation/index.js'
+import { wanimato__new, type wanimato_T } from '../web_animation/index.js'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
 import {
 	YT_player_,
@@ -249,7 +249,7 @@ const [
 ] = be_memo_pair_<wanimato_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
 	return nullish__none_([video__div_(ctx)], video__div=>
-		wanimato_($, video__div, ()=>video__div.animate([
+		wanimato__new($, video__div, ()=>video__div.animate([
 			{ height: '0px' },
 			{ height: video__div__animation_height_() }
 		], { duration: 25, fill: 'both' })))
@@ -267,7 +267,7 @@ const [
 ] = be_memo_pair_<wanimato_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
 	return nullish__none_([YT_player_(ctx)], YT_player=>
-		wanimato_($, YT_player.getIframe(), iframe=>
+		wanimato__new($, YT_player.getIframe(), iframe=>
 			iframe.animate([
 				{ transform: 'scale(0)' },
 				{ transform: 'scale(1)' },
@@ -305,7 +305,7 @@ const [
 	site__header__wanimato_
 ] = be_memo_pair_<wanimato_T|undefined>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
-	return wanimato_(
+	return wanimato__new(
 		$,
 		site__header_(ctx),
 		site__header=>site__header.animate([
@@ -324,7 +324,7 @@ const [
 	site_header__img__wanimato_,
 ] = be_memo_pair_<wanimato_T|undefined>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
-	return wanimato_(
+	return wanimato__new(
 		$,
 		site__header__img_(ctx),
 		site__header__img=>site__header__img.animate([
