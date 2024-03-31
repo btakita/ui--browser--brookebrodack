@@ -13,7 +13,7 @@ import {
 	sig_,
 	sleep
 } from 'ctx-core/rmemo'
-import { wanimato__new, type wanimato_T } from '../web_animation/index.js'
+import { wanimato__new, type wanimato_T } from 'ctx-core/web_animation'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
 import { YT_player_, YT_PlayerState__CUED_ } from '../youtube/index.js'
 export async function brookers__hyop(brookers__div:HTMLDivElement) {
@@ -105,7 +105,7 @@ async function brookers__div__animate(brookers__div:HTMLDivElement) {
 			return calling(memo_<wanimato_T|undefined>($=>{
 				if (!brookers_img__div__slideout_wanimato$()?.is_finish) return
 				return wanimato__new($, h1, ()=>h1.animate([
-					{ transform: 'translateX(50vw - 90%)' },
+					{ transform: 'translateX(calc(50vw - 90%))' },
 					{ transform: 'translateX(0)' }
 				], { duration: 200, fill: 'forwards' }))
 			}))

@@ -14,7 +14,7 @@ import {
 	tup,
 	type wide_ctx_T
 } from 'ctx-core/rmemo'
-import { wanimato__new, type wanimato_T } from '../web_animation/index.js'
+import { wanimato__new, type wanimato_T } from 'ctx-core/web_animation'
 import { spinner__attach, spinner__remove } from '../spinner/index.js'
 import {
 	YT_player_,
