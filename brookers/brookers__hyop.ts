@@ -214,7 +214,7 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 	const op_title__div = brookers_detail__div.querySelector<HTMLDivElement>('#op_title__div')!
 	const op_close__div = brookers_detail__div.querySelector('#op_close__div')!
 	op_close__div.addEventListener('click', ()=>{
-		brookers__timeline_op$._ = undefined
+		brookers__timeline_op$.set(undefined)
 	})
 	op__init()
 	function op__init() {
@@ -281,7 +281,7 @@ async function brookers_timeline__li__init(brookers__div:HTMLDivElement) {
 					brookers__timeline_op$() === brookers_timeline__li.op)
 			}))
 			brookers_timeline__li.addEventListener('click', async ()=>{
-				brookers__timeline_op$._ = brookers_timeline__li.op
+				brookers__timeline_op$.set(brookers_timeline__li.op)
 			})
 			for (const a of Array.from(brookers_timeline__li.querySelectorAll<HTMLAnchorElement>('a'))) {
 				a.addEventListener('click', evt=>evt.stopPropagation())
@@ -314,5 +314,5 @@ function s180_d12_spring__keyframe_a1_(config:{
 }
 type brookers_timeline__li_T = HTMLOListElement&{
 	op:brookers_timeline_op_T
-	selected__watch$:memo_T<unknown>
+	selected__watch$:memo_T<void>
 }

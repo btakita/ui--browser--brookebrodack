@@ -70,7 +70,7 @@ export const [
 							},
 							events: {
 								onReady(evt) {
-									YT_player$._ = evt.target
+									YT_player$.set(evt.target)
 								},
 								onError() {
 									rmemo__unset(YT_player$)

@@ -32,9 +32,9 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 	const ctx = browser_ctx__ensure()
 	content_feed__a__icon_cause__ensure(content_feed__a)
 	/** @see {content__hyop} */
-	function content_feed__a__icon_cause__ensure(content_feed__a:HTMLAnchorElement&{ _icon_cause$?:memo_T<unknown> }) {
+	function content_feed__a__icon_cause__ensure(content_feed__a:HTMLAnchorElement&{ _icon_cause$?:memo_T<void> }) {
 		content_feed__a._icon_cause$ ??=
-			calling(memo_<HTMLAnchorElement|nullish>(()=>{
+			calling(memo_(()=>{
 				const video__a = video__a_(ctx)
 				const is_current = video__a === content_feed__a
 				const video_url = YT_player_(ctx)?.getVideoUrl()
@@ -62,7 +62,6 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 					spinner__remove(content_feed__a)
 				}
 				content_feed__a.addEventListener('click', content_feed__a__onclick)
-				return content_feed__a
 			}))
 	}
 	/** @see {content_feed__a__icon_cause__ensure} */
@@ -130,10 +129,12 @@ const [
 	/** @see {content__hyop} */
 	content__set,
 ] = be_sig_triple_<HTMLElement|undefined>(
-	()=>undefined
-).add(ctx=>memo_(()=>{
-	video__div_(ctx)
-}))
+	()=>undefined,
+	[
+		ctx=>memo_(()=>{
+			video__div_(ctx)
+		})
+	])
 const [
 	,
 	back_link__a_,
@@ -150,32 +151,37 @@ const [
 	video__div_,
 	video__div__set,
 ] = be_sig_triple_<video__div_T>(
-	()=>undefined!
-).add((ctx, video__div$)=>
-	memo_(()=>{
-		const video__div = video__div$()
-		if (video__div) {
-			video__div.style.height = '0'
-			video__div.spinner_cause$ = spinner_cause$_(ctx)
-		}
-	}))
+	()=>undefined!,
+	[
+		(ctx, video__div$)=>
+			memo_(()=>{
+				const video__div = video__div$()
+				if (video__div) {
+					video__div.style.height = '0'
+					video__div.spinner_cause$ = spinner_cause$_(ctx)
+				}
+			})
+	])
 const [
 	,
 	,
 	video_close__div__set
 ] = be_sig_triple_<video_close__div_T|undefined>(
-	()=>undefined
-).add((ctx, video_close__div$)=>memo_<video_close__div_T|undefined>($=>
-	nullish__none_([video_close__div$()], video_close__div=>{
-		$.val?.removeEventListener('click', video_close__div__onclick)
-		video_close__div.addEventListener('click', video_close__div__onclick)
-		return video_close__div
-	})
-)).add((ctx, video_close__div$)=>memo_(()=>
-	nullish__none_([video_close__div$()], video_close__div=>{
-		video_close__div.classList.toggle('block', video__div__is_open_(ctx))
-		video_close__div.classList.toggle('hidden', !video__div__is_open_(ctx))
-	})))
+	()=>undefined,
+	[
+		(ctx, video_close__div$)=>memo_<video_close__div_T|undefined>($=>
+			nullish__none_([video_close__div$()], video_close__div=>{
+				$.val?.removeEventListener('click', video_close__div__onclick)
+				video_close__div.addEventListener('click', video_close__div__onclick)
+				return video_close__div
+			})
+		),
+		(ctx, video_close__div$)=>memo_(()=>
+			nullish__none_([video_close__div$()], video_close__div=>{
+				video_close__div.classList.toggle('block', video__div__is_open_(ctx))
+				video_close__div.classList.toggle('hidden', !video__div__is_open_(ctx))
+			}))
+	])
 function video_close__div__onclick() {
 	const ctx = browser_ctx__ensure()
 	video__div__close(ctx).catch(err=>console.error(err))
@@ -194,7 +200,7 @@ const [
 ] = be_memo_pair_(ctx=>
 	site__header_(ctx).querySelector<HTMLImageElement>('img')!)
 const spinner_cause$_ = be_(ctx=>
-	calling(memo_<HTMLAnchorElement|nullish>(()=>
+	calling(memo_(()=>{
 		nullish__none_([video__div_(ctx)],
 			video__div=>{
 				if (video__a_(ctx) && YT_PlayerState__CUED_(ctx)) {
@@ -203,7 +209,8 @@ const spinner_cause$_ = be_(ctx=>
 					spinner__remove(video__div)
 				}
 				return video__a_(ctx)
-			}))))
+			})
+	})))
 function video__div__animation_height_() {
 	return (
 		window.innerWidth > lg_px_num
@@ -253,13 +260,15 @@ const [
 			{ height: '0px' },
 			{ height: video__div__animation_height_() }
 		], { duration: 25, fill: 'both' })))
-}).add((ctx, video__div__wanimato$)=>
-	memo_(()=>{
-		content_(ctx)?.classList.toggle('z-20',
-			!!(video__div__wanimato$()?.is_finish && video__div__wanimato$()?.finish_currentTime))
-		content_(ctx)?.classList.toggle('z-10',
-			!(video__div__wanimato$()?.is_finish && video__div__wanimato$()?.finish_currentTime))
-	}))
+}, [
+	(ctx, video__div__wanimato$)=>
+		memo_(()=>{
+			content_(ctx)?.classList.toggle('z-20',
+				!!(video__div__wanimato$()?.is_finish && video__div__wanimato$()?.finish_currentTime))
+			content_(ctx)?.classList.toggle('z-10',
+				!(video__div__wanimato$()?.is_finish && video__div__wanimato$()?.finish_currentTime))
+		})
+])
 const [
 	,
 	/** @see {content_feed__a__onclick__YT_player__run} */
@@ -272,12 +281,14 @@ const [
 				{ transform: 'scale(0)' },
 				{ transform: 'scale(1)' },
 			], { duration: 50, fill: 'forwards' })))
-}).add((ctx, YT_iframe__wanimato$)=>memo_(()=>
-	nullish__none_([YT_iframe__wanimato$()], YT_iframe__wanimato=>
-		YT_iframe__wanimato.animation.ready.then(()=>{
-			YT_iframe__wanimato.el.classList.toggle('hidden',
-				!YT_iframe__wanimato.finish_currentTime)
-		}))))
+}, [
+	(ctx, YT_iframe__wanimato$)=>memo_(()=>
+		nullish__none_([YT_iframe__wanimato$()], YT_iframe__wanimato=>
+			YT_iframe__wanimato.animation.ready.then(()=>{
+				YT_iframe__wanimato.el.classList.toggle('hidden',
+					!YT_iframe__wanimato.finish_currentTime)
+			})))
+])
 const [
 	,
 	/** @see {content_feed__a__onclick__YT_player__run} */
@@ -303,7 +314,7 @@ const [
 	,
 	/** @see {content_feed__a__onclick} */
 	site__header__wanimato_
-] = be_memo_pair_<wanimato_T|undefined>((ctx, $)=>{
+] = be_memo_pair_<wanimato_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
 	return wanimato__new(
 		$,
@@ -312,17 +323,19 @@ const [
 			{ height: '144px' },
 			{ height: '72px' },
 		], { duration: 25, fill: 'both' }))
-}).add((ctx, site__header__wanimato$)=>memo_(()=>{
-	site__header_(ctx).classList.toggle(
-		'h-32',
-		!site__header__wanimato$()?.is_finish
-		|| !site__header__wanimato$()?.finish_currentTime)
-}))
+}, [
+	(ctx, site__header__wanimato$)=>memo_(()=>{
+		site__header_(ctx).classList.toggle(
+			'h-32',
+			!site__header__wanimato$()?.is_finish
+			|| !site__header__wanimato$()?.finish_currentTime)
+	})
+])
 const [
 	,
 	/** @see {content_feed__a__onclick} */
 	site_header__img__wanimato_,
-] = be_memo_pair_<wanimato_T|undefined>((ctx, $)=>{
+] = be_memo_pair_<wanimato_T|nullish>((ctx, $)=>{
 	if (reduced_motion_(ctx)) return
 	return wanimato__new(
 		$,
@@ -341,5 +354,5 @@ const [
 	reduced_motion_
 ] = be_memo_pair_(()=>
 	window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-type video__div_T = HTMLDivElement&{ spinner_cause$:memo_T<unknown> }
+type video__div_T = HTMLDivElement&{ spinner_cause$:memo_T<void> }
 type video_close__div_T = HTMLDivElement&{ visible$:memo_T<unknown> }
