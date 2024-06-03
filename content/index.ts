@@ -1,1 +1,1 @@
-export * from './content__hyop.js'
+export * from './hyop/index.js'

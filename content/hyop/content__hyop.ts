@@ -10,12 +10,13 @@ import {
 	type memo_T,
 	type nullish,
 	nullish__none_,
+	ref__bind,
 	rmemo__wait,
 	tup,
 	type wide_ctx_T
 } from 'ctx-core/rmemo'
 import { wanimato__new, type wanimato_T } from 'ctx-core/web_animation'
-import { spinner__attach, spinner__remove } from '../spinner/index.js'
+import { spinner__attach, spinner__remove } from '../../spinner/index.js'
 import {
 	YT_player_,
 	YT_PlayerState_,
@@ -23,46 +24,51 @@ import {
 	YT_PlayerState__CUED_,
 	YT_PlayerState__PAUSED_,
 	YT_PlayerState__PLAYING_,
-	YT_PlayerState__UNSTARTED_
-} from '../youtube/index.js'
+	YT_PlayerState__UNSTARTED_,
+} from '../../youtube/index.js'
 export function content__hyop(content:HTMLElement) {
 	content__set(browser_ctx__ensure(), content)
+	window.addEventListener('keydown', evt=>{
+		if (evt.key === 'Escape') {
+			video__div__close(browser_ctx__ensure())
+				.catch(err=>console.error(err))
+		}
+	})
 }
 export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 	const ctx = browser_ctx__ensure()
 	content_feed__a__icon_cause__ensure(content_feed__a)
 	/** @see {content__hyop} */
-	function content_feed__a__icon_cause__ensure(content_feed__a:HTMLAnchorElement&{ _icon_cause$?:memo_T<void> }) {
-		content_feed__a._icon_cause$ ??=
-			calling(memo_(()=>{
-				const video__a = video__a_(ctx)
-				const is_current = video__a === content_feed__a
-				const video_url = YT_player_(ctx)?.getVideoUrl()
-				const video_searchParams = video_url ? new URL(video_url).searchParams : null
-				const content_feed__a_searchParams = new URL(content_feed__a.href).searchParams
-				const same_video = video_searchParams?.get('v') === content_feed__a_searchParams.get('v')
-				content_feed__a.classList.toggle(
-					'play',
-					is_current
-					&& same_video
-					&& YT_PlayerState__PLAYING_(ctx))
-				content_feed__a.classList.toggle(
-					'pause',
-					is_current
-					&& same_video
-					&& YT_PlayerState__PAUSED_(ctx))
-				if (is_current && (
-					YT_PlayerState_(ctx) == null
-					|| YT_PlayerState__UNSTARTED_(ctx)
-					|| YT_PlayerState__BUFFERING_(ctx)
-					|| YT_PlayerState__CUED_(ctx)
-				)) {
-					spinner__attach(content_feed__a)
-				} else {
-					spinner__remove(content_feed__a)
-				}
-				content_feed__a.addEventListener('click', content_feed__a__onclick)
-			}))
+	function content_feed__a__icon_cause__ensure(content_feed__a:HTMLAnchorElement) {
+		ref__bind(content_feed__a, calling(memo_(()=>{
+			const video__a = video__a_(ctx)
+			const is_current = video__a === content_feed__a
+			const video_url = YT_player_(ctx)?.getVideoUrl()
+			const video_searchParams = video_url ? new URL(video_url).searchParams : null
+			const content_feed__a_searchParams = new URL(content_feed__a.href).searchParams
+			const same_video = video_searchParams?.get('v') === content_feed__a_searchParams.get('v')
+			content_feed__a.classList.toggle(
+				'play',
+				is_current
+				&& same_video
+				&& YT_PlayerState__PLAYING_(ctx))
+			content_feed__a.classList.toggle(
+				'pause',
+				is_current
+				&& same_video
+				&& YT_PlayerState__PAUSED_(ctx))
+			if (is_current && (
+				YT_PlayerState_(ctx) == null
+				|| YT_PlayerState__UNSTARTED_(ctx)
+				|| YT_PlayerState__BUFFERING_(ctx)
+				|| YT_PlayerState__CUED_(ctx)
+			)) {
+				spinner__attach(content_feed__a)
+			} else {
+				spinner__remove(content_feed__a)
+			}
+			content_feed__a.addEventListener('click', content_feed__a__onclick)
+		})))
 	}
 	/** @see {content_feed__a__icon_cause__ensure} */
 	function content_feed__a__onclick(evt:MouseEvent) {
