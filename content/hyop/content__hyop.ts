@@ -253,6 +253,7 @@ async function video__div__close(ctx:wide_ctx_T) {
 		site__header__wanimato_(ctx)?.animation.reverse()
 		site_header__img__wanimato_(ctx)?.animation.reverse()
 	}
+	(<HTMLElement>document.activeElement)?.blur()
 }
 const [
 	,
