@@ -1,1 +1,1 @@
-export * from './brookers__hyop.js'
+export * from './hyop/index.js'

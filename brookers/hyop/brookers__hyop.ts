@@ -14,8 +14,8 @@ import {
 	sleep
 } from 'ctx-core/rmemo'
 import { wanimato__new, type wanimato_T } from 'ctx-core/web_animation'
-import { spinner__attach, spinner__remove } from '../spinner/index.js'
-import { YT_player_, YT_PlayerState__CUED_ } from '../youtube/index.js'
+import { spinner__attach, spinner__remove } from '../../spinner/index.js'
+import { YT_player_, YT_PlayerState__CUED_ } from '../../youtube/index.js'
 export async function brookers__hyop(brookers__div:HTMLDivElement) {
 	await brookers__div__animate(brookers__div)
 	await brookers_timeline__li__init(brookers__div)
