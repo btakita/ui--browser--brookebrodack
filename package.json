@@ -27,12 +27,12 @@
 	],
 	"dependencies": {
 		"@btakita/domain--browser--brookebrodack": "workspace:*",
-		"ctx-core": "^7.2.22"
+		"ctx-core": "^7.2.24"
 	},
 	"devDependencies": {
 		"bun-types": "latest"
 	},
 	"peerDependencies": {
-		"typescript": "^5.4.5"
+		"typescript": "^5.5.2"
 	}
 }
