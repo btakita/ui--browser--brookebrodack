@@ -18,6 +18,7 @@ import {
 import { wanimato__new, type wanimato_T } from 'ctx-core/web_animation'
 import { spinner__attach, spinner__remove } from '../../spinner/index.js'
 import {
+	YT_iframe__div_,
 	YT_player_,
 	YT_PlayerState_,
 	YT_PlayerState__BUFFERING_,
@@ -101,7 +102,7 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 				if (iframe_wanimato && !iframe_wanimato.finish_currentTime) {
 					iframe_wanimato.animation.play()
 				} else if (!iframe_wanimato && reduced_motion_(ctx)) {
-					YT_player.getIframe().classList.remove('hidden')
+					YT_iframe__div_(ctx)?.classList.remove('hidden')
 				}
 				site__header_video__div__background_(ctx)
 				YT_player.stopVideo()
@@ -295,9 +296,9 @@ const [
 			], { duration: 50, fill: 'forwards' })))
 }, [
 	(ctx, YT_iframe__wanimato$)=>memo_(()=>
-		nullish__none_([YT_iframe__wanimato$()], YT_iframe__wanimato=>
+		nullish__none_([YT_iframe__wanimato$(), YT_iframe__div_(ctx)], (YT_iframe__wanimato, YT_iframe__div)=>
 			YT_iframe__wanimato.animation.ready.then(()=>{
-				YT_iframe__wanimato.el.classList.toggle('hidden',
+				YT_iframe__div.classList.toggle('hidden',
 					!YT_iframe__wanimato.finish_currentTime)
 			})))
 ])
