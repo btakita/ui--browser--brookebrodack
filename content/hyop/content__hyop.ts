@@ -100,6 +100,11 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 				const iframe = YT_player.getIframe()
 				iframe.classList.remove('hidden')
 				iframe.classList.remove('scale-0')
+				// Ensure video__div has height (may be 0 from close or init)
+				const vdiv = video__div_(ctx)
+				if (vdiv && vdiv.style.height === '0px') {
+					vdiv.style.height = video__div__animation_height_()
+				}
 				const iframe_wanimato = YT_iframe__wanimato_(ctx)
 				if (iframe_wanimato && !iframe_wanimato.finish_currentTime) {
 					iframe_wanimato.animation.play()
