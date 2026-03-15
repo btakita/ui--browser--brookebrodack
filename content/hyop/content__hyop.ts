@@ -98,11 +98,10 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 			).then(YT_player=>{
 				if (video__a_(ctx) !== currentTarget) return
 				YT_player = YT_player as YT_Player
+				YT_iframe__div_(ctx)?.classList.remove('hidden')
 				const iframe_wanimato = YT_iframe__wanimato_(ctx)
 				if (iframe_wanimato && !iframe_wanimato.finish_currentTime) {
 					iframe_wanimato.animation.play()
-				} else if (!iframe_wanimato && reduced_motion_(ctx)) {
-					YT_iframe__div_(ctx)?.classList.remove('hidden')
 				}
 				site__header_video__div__background_(ctx)
 				YT_player.stopVideo()
