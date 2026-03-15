@@ -313,9 +313,13 @@ const [
 	(ctx, YT_iframe__wanimato$)=>memo_(()=>
 		nullish__none_([YT_iframe__wanimato$()], YT_iframe__wanimato=>
 			YT_iframe__wanimato.animation.ready.then(()=>{
-				// wanimato.el is the live iframe (from YT_player.getIframe())
-				YT_iframe__wanimato.el.classList.toggle('hidden',
-					!YT_iframe__wanimato.finish_currentTime)
+				// Only hide if the video div is actually closed.
+				// Prevents race: close reverse finish event firing after
+				// a new open already removed hidden.
+				const should_hide =
+					!YT_iframe__wanimato.finish_currentTime
+					&& !video__div__is_open_(ctx)
+				YT_iframe__wanimato.el.classList.toggle('hidden', should_hide)
 			})))
 ])
 const [
