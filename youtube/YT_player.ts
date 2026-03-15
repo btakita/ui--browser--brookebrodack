@@ -87,7 +87,7 @@ export const [
 							_YT_player.setSize('100%', YT_player__height_())
 						})
 						function YT_player__height_() {
-							return YT_iframe__div.clientWidth * 16 / 9
+							return YT_iframe__div.clientWidth * 9 / 16
 						}
 					})
 					.catch(err=>{
