@@ -97,11 +97,10 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 			).then(YT_player=>{
 				if (video__a_(ctx) !== currentTarget) return
 				YT_player = YT_player as YT_Player
-				// Ensure video__div has height (may be 0 from close or init)
+				// Always set video__div height — animation fill:both can
+				// override inline style after close reverse
 				const vdiv = video__div_(ctx)
-				if (vdiv && vdiv.style.height === '0px') {
-					vdiv.style.height = video__div__animation_height_()
-				}
+				if (vdiv) vdiv.style.height = video__div__animation_height_()
 				const iframe_wanimato = YT_iframe__wanimato_(ctx)
 				if (iframe_wanimato && !iframe_wanimato.finish_currentTime) {
 					iframe_wanimato.animation.play()
@@ -241,6 +240,9 @@ const [
 ] = be_sig_triple_(()=>false)
 async function video__div__open(ctx:wide_ctx_T) {
 	video__div__is_open__set(ctx, true)
+	// Always set height directly — animation fill:both can fight with inline styles
+	const vdiv = video__div_(ctx)
+	if (vdiv) vdiv.style.height = video__div__animation_height_()
 	const video__div__wanimato = video__div__wanimato_(ctx)
 	if (video__div__wanimato) {
 		await video__div__wanimato.animation.ready
@@ -250,11 +252,6 @@ async function video__div__open(ctx:wide_ctx_T) {
 			site__header__wanimato_(ctx)?.animation.play()
 			site_header__img__wanimato_(ctx)?.animation.play()
 		}
-	} else {
-		// Reduced-motion or no animation: set height directly
-		// (inline style.height='0' overrides CSS classes)
-		const vdiv = video__div_(ctx)
-		if (vdiv) vdiv.style.height = video__div__animation_height_()
 	}
 }
 async function video__div__close(ctx:wide_ctx_T) {
