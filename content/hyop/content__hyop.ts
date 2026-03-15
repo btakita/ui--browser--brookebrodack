@@ -97,9 +97,6 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 			).then(YT_player=>{
 				if (video__a_(ctx) !== currentTarget) return
 				YT_player = YT_player as YT_Player
-				const iframe = YT_player.getIframe()
-				iframe.classList.remove('hidden')
-				iframe.classList.remove('scale-0')
 				// Ensure video__div has height (may be 0 from close or init)
 				const vdiv = video__div_(ctx)
 				if (vdiv && vdiv.style.height === '0px') {
@@ -274,10 +271,9 @@ async function video__div__close(ctx:wide_ctx_T) {
 			site_header__img__wanimato_(ctx)?.animation.reverse()
 		}
 	} else {
-		// Reduced-motion: reset height and re-hide iframe
+		// Reduced-motion: reset height (overflow-hidden on parent hides content)
 		const vdiv = video__div_(ctx)
 		if (vdiv) vdiv.style.height = '0'
-		YT_player_(ctx)?.getIframe()?.classList.add('hidden')
 	}
 	(<HTMLElement>document.activeElement)?.blur()
 }
@@ -314,19 +310,7 @@ const [
 				{ transform: 'scale(0)' },
 				{ transform: 'scale(1)' },
 			], { duration: 50, fill: 'forwards' })))
-}, [
-	(ctx, YT_iframe__wanimato$)=>memo_(()=>
-		nullish__none_([YT_iframe__wanimato$()], YT_iframe__wanimato=>
-			YT_iframe__wanimato.animation.ready.then(()=>{
-				// Only hide if the video div is actually closed.
-				// Prevents race: close reverse finish event firing after
-				// a new open already removed hidden.
-				const should_hide =
-					!YT_iframe__wanimato.finish_currentTime
-					&& !video__div__is_open_(ctx)
-				YT_iframe__wanimato.el.classList.toggle('hidden', should_hide)
-			})))
-])
+})
 const [
 	,
 	/** @see {content_feed__a__onclick__YT_player__run} */
