@@ -317,17 +317,16 @@ const [
 		content_(ctx),
 		site__header_(ctx),
 		video__div_(ctx),
-		YT_iframe__wanimato_(ctx)
-	), (content, site__header, video__div, YT_iframe__wanimato)=>{
-		const is_end_state = YT_iframe__wanimato.is_finish && !!YT_iframe__wanimato.finish_currentTime
-		site__header.classList.toggle('bg-cyan-600/90', is_end_state)
-		site__header.classList.toggle('text-white', is_end_state)
-		back_link__a__svg_(ctx).classList.toggle('!stroke-white', is_end_state)
-		video__div.classList.toggle('sticky', is_end_state)
-		video__div.classList.toggle('bg-cyan-600/90', is_end_state)
-		video__div.classList.toggle('border-b-1px', is_end_state)
-		video__div.classList.toggle('border-white/.3', is_end_state)
-		video__div.classList.toggle('shadow-md', is_end_state)
+	), (content, site__header, video__div)=>{
+		const is_open = video__div__is_open_(ctx)
+		site__header.classList.toggle('bg-cyan-600/90', is_open)
+		site__header.classList.toggle('text-white', is_open)
+		back_link__a__svg_(ctx).classList.toggle('!stroke-white', is_open)
+		video__div.classList.toggle('sticky', is_open)
+		video__div.classList.toggle('bg-cyan-600/90', is_open)
+		video__div.classList.toggle('border-b-1px', is_open)
+		video__div.classList.toggle('border-white/.3', is_open)
+		video__div.classList.toggle('shadow-md', is_open)
 	}))
 const [
 	,
