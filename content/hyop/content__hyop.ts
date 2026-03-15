@@ -18,7 +18,6 @@ import {
 import { wanimato__new, type wanimato_T } from 'ctx-core/web_animation'
 import { spinner__attach, spinner__remove } from '../../spinner/index.js'
 import {
-	YT_iframe__div_,
 	YT_player_,
 	YT_PlayerState_,
 	YT_PlayerState__BUFFERING_,
@@ -98,7 +97,9 @@ export function content_feed__a__hyop(content_feed__a:HTMLAnchorElement) {
 			).then(YT_player=>{
 				if (video__a_(ctx) !== currentTarget) return
 				YT_player = YT_player as YT_Player
-				YT_iframe__div_(ctx)?.classList.remove('hidden')
+				const iframe = YT_player.getIframe()
+				iframe.classList.remove('hidden')
+				iframe.classList.remove('scale-0')
 				const iframe_wanimato = YT_iframe__wanimato_(ctx)
 				if (iframe_wanimato && !iframe_wanimato.finish_currentTime) {
 					iframe_wanimato.animation.play()
@@ -239,24 +240,39 @@ const [
 async function video__div__open(ctx:wide_ctx_T) {
 	video__div__is_open__set(ctx, true)
 	const video__div__wanimato = video__div__wanimato_(ctx)
-	await video__div__wanimato?.animation.ready
-	if (video__div__wanimato && !video__div__wanimato?.finish_currentTime) {
-		video__div__wanimato_(ctx)?.animation.play()
-		YT_iframe__wanimato_(ctx)?.animation.play()
-		site__header__wanimato_(ctx)?.animation.play()
-		site_header__img__wanimato_(ctx)?.animation.play()
+	if (video__div__wanimato) {
+		await video__div__wanimato.animation.ready
+		if (!video__div__wanimato.finish_currentTime) {
+			video__div__wanimato_(ctx)?.animation.play()
+			YT_iframe__wanimato_(ctx)?.animation.play()
+			site__header__wanimato_(ctx)?.animation.play()
+			site_header__img__wanimato_(ctx)?.animation.play()
+		}
+	} else {
+		// Reduced-motion or no animation: set height directly
+		// (inline style.height='0' overrides CSS classes)
+		const vdiv = video__div_(ctx)
+		if (vdiv) vdiv.style.height = video__div__animation_height_()
 	}
 }
 async function video__div__close(ctx:wide_ctx_T) {
 	video__a__set(ctx, null)
 	YT_player_(ctx)?.stopVideo()
 	video__div__is_open__set(ctx, false)
-	await video__div__wanimato_(ctx)?.animation.ready
-	if (video__div__wanimato_(ctx)?.finish_currentTime) {
-		video__div__wanimato_(ctx)?.animation.reverse()
-		YT_iframe__wanimato_(ctx)?.animation.reverse()
-		site__header__wanimato_(ctx)?.animation.reverse()
-		site_header__img__wanimato_(ctx)?.animation.reverse()
+	const wanimato = video__div__wanimato_(ctx)
+	if (wanimato) {
+		await wanimato.animation.ready
+		if (wanimato.finish_currentTime) {
+			video__div__wanimato_(ctx)?.animation.reverse()
+			YT_iframe__wanimato_(ctx)?.animation.reverse()
+			site__header__wanimato_(ctx)?.animation.reverse()
+			site_header__img__wanimato_(ctx)?.animation.reverse()
+		}
+	} else {
+		// Reduced-motion: reset height and re-hide iframe
+		const vdiv = video__div_(ctx)
+		if (vdiv) vdiv.style.height = '0'
+		YT_player_(ctx)?.getIframe()?.classList.add('hidden')
 	}
 	(<HTMLElement>document.activeElement)?.blur()
 }
@@ -295,9 +311,10 @@ const [
 			], { duration: 50, fill: 'forwards' })))
 }, [
 	(ctx, YT_iframe__wanimato$)=>memo_(()=>
-		nullish__none_([YT_iframe__wanimato$(), YT_iframe__div_(ctx)], (YT_iframe__wanimato, YT_iframe__div)=>
+		nullish__none_([YT_iframe__wanimato$()], YT_iframe__wanimato=>
 			YT_iframe__wanimato.animation.ready.then(()=>{
-				YT_iframe__div.classList.toggle('hidden',
+				// wanimato.el is the live iframe (from YT_player.getIframe())
+				YT_iframe__wanimato.el.classList.toggle('hidden',
 					!YT_iframe__wanimato.finish_currentTime)
 			})))
 ])
