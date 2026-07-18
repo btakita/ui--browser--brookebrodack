@@ -9,6 +9,8 @@
 		"./brookers/hyop": "./brookers/hyop/index.ts",
 		"./content": "./content/index.ts",
 		"./content/hyop": "./content/hyop/index.ts",
+		"./guestbook": "./guestbook/index.ts",
+		"./guestbook/hyop": "./guestbook/hyop/index.ts",
 		"./spinner": "./spinner/index.ts",
 		"./spinner/hyop": "./spinner/hyop/index.ts",
 		"./youtube": "./youtube/index.ts",
@@ -26,8 +28,10 @@
 		"youtube"
 	],
 	"dependencies": {
+		"@btakita/domain--any--brookebrodack": "workspace:*",
 		"@btakita/domain--browser--brookebrodack": "workspace:*",
 		"@btakita/ui--server--brookebrodack": "workspace:*",
+		"@lazily-hub/lazily-js": "^0.24.0",
 		"@rappstack/domain--browser": "^0.1.0",
 		"ctx-core": "^7.2.27"
 	},
