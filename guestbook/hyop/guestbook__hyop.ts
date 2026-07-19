@@ -45,6 +45,11 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 	// Each effect owns one region and re-runs only when the cell it reads
 	// changes. Lazily skips a set that does not change the value, so a repeated
 	// state assignment costs no DOM work.
+	//
+	// The explicit `return undefined` is lazily-js's `EffectRun` contract:
+	// `() => (() => void) | null | undefined`. A block-bodied arrow infers
+	// `void`, which TypeScript will not assign to `undefined`, so an effect
+	// with no cleanup has to say so.
 	ctx.effect(()=>{
 		const view = ctx.getCell(entry_view)
 		entries__div.replaceChildren(...
@@ -53,6 +58,7 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 					'The guestbook could not be loaded. Please try again later.')]
 					: view.entry_a1.length ? view.entry_a1.map(entry__article_)
 						: [status__p_('Be the first to sign the guestbook.')])
+		return undefined
 	})
 	ctx.effect(()=>{
 		const current = ctx.getCell(notice)
@@ -60,9 +66,11 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 		form_error__p.classList.toggle('hidden', current.kind === 'none')
 		form_error__p.classList.toggle('text-red-700', current.kind === 'error')
 		form_error__p.classList.toggle('text-gray-700', current.kind === 'info')
+		return undefined
 	})
 	ctx.effect(()=>{
 		button.disabled = ctx.getCell(submitting)
+		return undefined
 	})
 	// --- events ------------------------------------------------------------
 	form.addEventListener('submit', evt=>{
