@@ -53,11 +53,14 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 	ctx.effect(()=>{
 		const view = ctx.getCell(entry_view)
 		entries__div.replaceChildren(...
-			view.kind === 'loading' ? [status__p_('Loading the guestbook…')]
-				: view.kind === 'error' ? [status__p_(
+		view.kind === 'loading'
+			? [status__p_('Loading the guestbook…')]
+			: view.kind === 'error'
+				? [status__p_(
 					'The guestbook could not be loaded. Please try again later.')]
-					: view.entry_a1.length ? view.entry_a1.map(entry__article_)
-						: [status__p_('Be the first to sign the guestbook.')])
+				: view.entry_a1.length
+					? view.entry_a1.map(entry__article_)
+					: [status__p_('Be the first to sign the guestbook.')])
 		return undefined
 	})
 	ctx.effect(()=>{

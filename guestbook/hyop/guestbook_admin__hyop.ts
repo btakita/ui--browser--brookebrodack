@@ -205,8 +205,10 @@ export async function guestbook_admin__hyop(admin__section:HTMLElement) {
 		const button = document.createElement('button')
 		button.type = 'button'
 		button.textContent =
-			next === 'approved' ? 'Approve'
-				: next === 'rejected' ? 'Reject'
+			next === 'approved'
+				? 'Approve'
+				: next === 'rejected'
+					? 'Reject'
 					: 'Back to pending'
 		button.className = [
 			'min-h-8 py-1 px-4 rounded-md font-bold transition-all hover:scale-105',
