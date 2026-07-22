@@ -19,7 +19,7 @@ type notice_T =
  * Hydrates the guestbook section: loads entries from the guestbook API and
  * wires the sign form.
  *
- * State lives in Lazily cells and the DOM is derived from them by effects, so
+* State lives in Lazily sources and the DOM is derived from them by effects, so
  * there is exactly one source of truth per piece of UI. Event handlers only
  * move state; nothing but an effect touches the DOM. That removes the class of
  * bug where two code paths disagree about what is on screen — the reason the
@@ -38,11 +38,11 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 		'#guestbook__form_error')!
 	const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!
 	const ctx = createContext()
-	const entry_view = ctx.cell<entry_view_T>({ kind: 'loading' })
-	const notice = ctx.cell<notice_T>({ kind: 'none' })
-	const submitting = ctx.cell(false)
+	const entry_view = ctx.source<entry_view_T>({ kind: 'loading' })
+	const notice = ctx.source<notice_T>({ kind: 'none' })
+	const submitting = ctx.source(false)
 	// --- derived DOM -------------------------------------------------------
-	// Each effect owns one region and re-runs only when the cell it reads
+	// Each effect owns one region and re-runs only when the source it reads
 	// changes. Lazily skips a set that does not change the value, so a repeated
 	// state assignment costs no DOM work.
 	//
@@ -50,8 +50,8 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 	// `() => (() => void) | null | undefined`. A block-bodied arrow infers
 	// `void`, which TypeScript will not assign to `undefined`, so an effect
 	// with no cleanup has to say so.
-	ctx.effect(()=>{
-		const view = ctx.getCell(entry_view)
+	ctx.effect(compute=>{
+		const view = compute.get(entry_view)
 		entries__div.replaceChildren(...
 		view.kind === 'loading'
 			? [status__p_('Loading the guestbook…')]
@@ -63,16 +63,16 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 					: [status__p_('Be the first to sign the guestbook.')])
 		return undefined
 	})
-	ctx.effect(()=>{
-		const current = ctx.getCell(notice)
+	ctx.effect(compute=>{
+		const current = compute.get(notice)
 		form_error__p.textContent = current.kind === 'none' ? '' : current.text
 		form_error__p.classList.toggle('hidden', current.kind === 'none')
 		form_error__p.classList.toggle('text-red-700', current.kind === 'error')
 		form_error__p.classList.toggle('text-gray-700', current.kind === 'info')
 		return undefined
 	})
-	ctx.effect(()=>{
-		button.disabled = ctx.getCell(submitting)
+	ctx.effect(compute=>{
+		button.disabled = compute.get(submitting)
 		return undefined
 	})
 	// --- events ------------------------------------------------------------
@@ -85,13 +85,13 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 		try {
 			const res = await fetch(guestbook_entry_a1__url)
 			if (!res.ok) throw new Error(`guestbook load failed: ${res.status}`)
-			ctx.setCell(entry_view, {
+			ctx.set(entry_view, {
 				kind: 'ready',
 				entry_a1: await res.json() as guestbook_entry_T[],
 			})
 		} catch (err) {
 			console.error(err)
-			ctx.setCell(entry_view, { kind: 'error' })
+			ctx.set(entry_view, { kind: 'error' })
 		}
 	}
 	async function form__submit() {
@@ -101,12 +101,12 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 			message: String(data.get('message') ?? ''),
 		}
 		const invalid = guestbook_entry__validate(entry)
-		if (invalid) return ctx.setCell(notice, { kind: 'error', text: invalid })
+		if (invalid) return ctx.set(notice, { kind: 'error', text: invalid })
 		// One batch so the form cannot paint an intermediate state where the old
 		// error is still showing while the button has already gone disabled.
 		ctx.batch(()=>{
-			ctx.setCell(notice, { kind: 'none' })
-			ctx.setCell(submitting, true)
+			ctx.set(notice, { kind: 'none' })
+			ctx.set(submitting, true)
 		})
 		try {
 			const res = await fetch(guestbook_entry_a1__url, {
@@ -115,7 +115,7 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 				body: JSON.stringify(entry),
 			})
 			if (!res.ok) {
-				ctx.setCell(notice, {
+				ctx.set(notice, {
 					kind: 'error',
 					text: await res.text()
 						|| 'Your message could not be posted. Please try again.',
@@ -127,7 +127,7 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 			// went live or is waiting for review. Without this a held message just
 			// disappears — the form clears and the list looks unchanged.
 			const body = await res.json().catch(()=>null) as { message?:string }|null
-			ctx.setCell(notice, {
+			ctx.set(notice, {
 				kind: 'info',
 				text: body?.message
 					?? 'Thank you! Your message will appear once it has been reviewed.',
@@ -135,9 +135,9 @@ export async function guestbook__hyop(guestbook__section:HTMLElement) {
 			await entry_a1__load()
 		} catch (err) {
 			console.error(err)
-			ctx.setCell(notice, { kind: 'error', text: 'Network error. Please try again.' })
+			ctx.set(notice, { kind: 'error', text: 'Network error. Please try again.' })
 		} finally {
-			ctx.setCell(submitting, false)
+			ctx.set(submitting, false)
 		}
 	}
 	function status__p_(text:string) {
